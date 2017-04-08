@@ -48,8 +48,7 @@ public class Simulator<T> {
 
         for (int i = 0; i < numberOfItems; i++) {
             try {
-                store[i] = (T) obj.getClass().getConstructor().newInstance(obj); //initialize by obj
-                System.out.println(store[i]);
+                store[i] = (T) obj.getClass().getConstructor(obj.getClass()).newInstance(obj); //initialize store by obj
             }
             catch (IllegalArgumentException e) {
                 try {
