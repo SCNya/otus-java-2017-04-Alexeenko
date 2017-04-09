@@ -13,7 +13,7 @@ public class Simulator {
     private final Runtime runtime;
     private BigInteger memoryConsumption;
     private Object[] store;
-    private Supplier<Object> getItem;
+    private Supplier getItem;
 
     public Simulator() {
         runtime = Runtime.getRuntime();
