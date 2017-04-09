@@ -27,7 +27,7 @@ public class SimulatorTest {
 
         System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
-        assertTrue (size >= 60 && size <= 76); //68 bytes on my system
+        assertTrue(size >= 60 && size <= 76); //68 bytes on my system
     }
 
     @Test
@@ -36,7 +36,7 @@ public class SimulatorTest {
 
         System.out.println("\nEmpty String about " + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
+        assertTrue(size >= 20 && size <= 36); //28 bytes on my system
     }
 
     @Test
@@ -45,27 +45,28 @@ public class SimulatorTest {
 
         System.out.println("\nSize of Integer about " + size + " bytes\n");
 
-        assertTrue (size >= 12 && size <= 28); //20 bytes on my system
+        assertTrue(size >= 12 && size <= 28); //20 bytes on my system
     }
 
+    //Capacity not transmitted in new the Collection
     @Test
-    public void getSizeArrayListOfDoubleWithCapacity() {
-        List<Double> list = new ArrayList<>(numberOfItems);
+    public void getSizeArrayListOfDoubleWithStartCapacity() {
+        List<Double> list = new ArrayList<>(numberOfItems * 2);
 
         for (int i = 0; i < numberOfItems; i++)
             list.add(i / Math.PI);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
-        System.out.println("\nSize of ArrayList with capacity (Double * " + numberOfItems
-                + ") about "  + size + " bytes\n");
+        System.out.println("\nSize of ArrayList with start capacity and filling (Double * " + numberOfItems
+                + ") about " + size + " bytes\n");
 
-        assertTrue (size >= (4 * numberOfItems) &&
+        assertTrue(size >= (4 * numberOfItems) &&
                 size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 bytes on my system
     }
 
     @Test
-    public void getSizeArrayListOfDoubleWithoutCapacity() {
+    public void getSizeArrayListOfDouble() {
         List<Double> list = new ArrayList<>();
 
         for (int i = 0; i < numberOfItems; i++)
@@ -73,23 +74,23 @@ public class SimulatorTest {
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
-        System.out.println("\nSize of ArrayList without capacity  (Double * " + numberOfItems
-                + ") about "  + size + " bytes\n");
+        System.out.println("\nSize of ArrayList without capacity and filling (Double * " + numberOfItems
+                + ") about " + size + " bytes\n");
 
-        assertTrue (size >= (4 * numberOfItems) &&
+        assertTrue(size >= (4 * numberOfItems) &&
                 size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 bytes on my system
     }
 
     @Test
     public void getSizeEmptyArrayListOfIntegerWithoutCapacity() {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>(0);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
         System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
-                0 + " about "  + size + " bytes\n");
+                0 + " about " + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
+        assertTrue(size >= 20 && size <= 36); //28 bytes on my system
 
     }
 
@@ -97,22 +98,23 @@ public class SimulatorTest {
     public void getSizeEmptyArrayListOfIntegerWithCapacity() {
         List<Integer> list = new ArrayList<>(numberOfItems);
 
-        size = simulator.getSize(ArrayList.class, Collection.class, list);
+        size = simulator.getSize(ArrayList.class, int.class, numberOfItems);
 
-        System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
-                numberOfItems + " about "  + size + " bytes\n");
+        System.out.println("\nSize of ArrayList (Integer empty) " + "with manual capacity " +
+                numberOfItems + " per list about " + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
+        assertTrue(size >= (4 * numberOfItems) &&
+                size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 bytes on my system
     }
 
     @Test
     public void getSizeMyTestClassWithTwoArguments() {
-        size = simulator.getSize(MyTestClass.class, new Class[]{int.class, float.class}, new Object[] {1, 0.1f});
+        size = simulator.getSize(MyTestClass.class, new Class[]{int.class, float.class}, new Object[]{1, 0.1f});
 
         System.out.println("\nSize of MyTestClass " + "with int array[" +
-                numberOfItems + "] and two fields about "  + size + " bytes\n");
+                numberOfItems + "] and two fields on stack about " + size + " bytes\n");
 
-        assertTrue (size >= (4 * MyTestClass.arraySize) &&
+        assertTrue(size >= (4 * MyTestClass.arraySize) &&
                 size <= (4 * MyTestClass.arraySize + (4 * MyTestClass.arraySize / 4))); //244 bytes on my system
     }
 

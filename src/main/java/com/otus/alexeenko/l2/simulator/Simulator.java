@@ -63,9 +63,9 @@ public class Simulator {
 
         System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Types: ");
 
-        for (Class parameterType : parameterTypes )
+        for (Class parameterType : parameterTypes)
             System.out.println(parameterType);
-        
+
 
         return simulate();
     }
