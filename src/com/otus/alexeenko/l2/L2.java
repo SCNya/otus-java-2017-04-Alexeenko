@@ -8,17 +8,19 @@ import java.lang.management.ManagementFactory;
 public class L2 {
 
     public static void main(String[] args) {
+        long size;
+
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
-        /*try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 
-        Simulator<String> simulator = new Simulator<>();
+        Simulator simulator = new Simulator();
 
-        long size = simulator.getSize(new String("Nice try!"));
+        size = simulator.getSize(String.class, String.class, new String("Nice try!"));
+        System.out.println("Size is " + size + " byte");
 
+        size = simulator.getSize(Integer.class, int.class, 1);
+        System.out.println("Size is " + size + " byte");
+
+        size = simulator.getSize(String.class);
         System.out.println("Size is " + size + " byte");
     }
 }
