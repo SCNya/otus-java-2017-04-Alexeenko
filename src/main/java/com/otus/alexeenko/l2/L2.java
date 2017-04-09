@@ -20,13 +20,13 @@ public class L2 {
         Simulator simulator = new Simulator();
 
         size = simulator.getSize(String.class, String.class, "Nice try!");
-        System.out.println("Size is " + size + " byte");
+        System.out.println("Size is " + size + " bytes");
 
         size = simulator.getSize(Integer.class, int.class, 1);
-        System.out.println("Size is " + size + " byte");
+        System.out.println("Size is " + size + " bytes");
 
         size = simulator.getSize(String.class);
-        System.out.println("Size is " + size + " byte");
+        System.out.println("Size is " + size + " bytes");
 
         List<Double> list = new ArrayList<>(numberOfItems);
 
@@ -34,6 +34,6 @@ public class L2 {
             list.add(i/Math.PI);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
-        System.out.println("Size is " + size + " byte");
+        System.out.println("Size is " + size + " bytes");
     }
 }

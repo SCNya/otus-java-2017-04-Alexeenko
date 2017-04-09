@@ -25,27 +25,27 @@ public class SimulatorTest {
     public void getSizeString() {
         size = simulator.getSize(String.class, String.class, "Nice try!");
 
-        System.out.println("\nSize of \"Nice try!\" String about " + size + " byte\n");
+        System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
-        assertTrue (size >= 60 && size <= 76); //68 byte on my system
+        assertTrue (size >= 60 && size <= 76); //68 bytes on my system
     }
 
     @Test
     public void getSizeEmptyString() {
         size = simulator.getSize(String.class);
 
-        System.out.println("\nEmpty String about " + size + " byte\n");
+        System.out.println("\nEmpty String about " + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 byte on my system
+        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
     }
 
     @Test
     public void getSizeInteger() {
         size = simulator.getSize(Integer.class, int.class, 101010); //any int
 
-        System.out.println("\nSize of Integer about " + size + " byte\n");
+        System.out.println("\nSize of Integer about " + size + " bytes\n");
 
-        assertTrue (size >= 12 && size <= 28); //20 byte on my system
+        assertTrue (size >= 12 && size <= 28); //20 bytes on my system
     }
 
     @Test
@@ -58,10 +58,10 @@ public class SimulatorTest {
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
         System.out.println("\nSize of ArrayList with capacity (Double * " + numberOfItems
-                + ") about "  + size + " byte\n");
+                + ") about "  + size + " bytes\n");
 
         assertTrue (size >= (4 * numberOfItems) &&
-                size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 byte on my system
+                size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 bytes on my system
     }
 
     @Test
@@ -74,10 +74,10 @@ public class SimulatorTest {
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
         System.out.println("\nSize of ArrayList without capacity  (Double * " + numberOfItems
-                + ") about "  + size + " byte\n");
+                + ") about "  + size + " bytes\n");
 
         assertTrue (size >= (4 * numberOfItems) &&
-                size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 byte on my system
+                size <= (4 * numberOfItems + (4 * numberOfItems / 4))); //444 bytes on my system
     }
 
     @Test
@@ -87,9 +87,9 @@ public class SimulatorTest {
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
         System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
-                0 + " about "  + size + " byte\n");
+                0 + " about "  + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 byte on my system
+        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
 
     }
 
@@ -100,9 +100,9 @@ public class SimulatorTest {
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
         System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
-                numberOfItems + " about "  + size + " byte\n");
+                numberOfItems + " about "  + size + " bytes\n");
 
-        assertTrue (size >= 20 && size <= 36); //28 byte on my system
+        assertTrue (size >= 20 && size <= 36); //28 bytes on my system
     }
 
     @Test
@@ -110,10 +110,10 @@ public class SimulatorTest {
         size = simulator.getSize(MyTestClass.class, new Class[]{int.class, float.class}, new Object[] {1, 0.1f});
 
         System.out.println("\nSize of MyTestClass " + "with int array[" +
-                numberOfItems + "] and two fields about "  + size + " byte\n");
+                numberOfItems + "] and two fields about "  + size + " bytes\n");
 
         assertTrue (size >= (4 * MyTestClass.arraySize) &&
-                size <= (4 * MyTestClass.arraySize + (4 * MyTestClass.arraySize / 4))); //244 byte on my system
+                size <= (4 * MyTestClass.arraySize + (4 * MyTestClass.arraySize / 4))); //244 bytes on my system
     }
 
 }
