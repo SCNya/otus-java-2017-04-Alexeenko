@@ -19,19 +19,23 @@ public class Simulator {
         runtime = Runtime.getRuntime();
     }
 
-    @SuppressWarnings("unchecked")
     public long getSize(Class classType, Class parameterType, Object obj) {
+        return getSize(classType, new Class[]{parameterType}, new Object[]{obj});
+    }
 
-        if (classType != String.class || parameterType != String.class || obj.getClass() != String.class) {
+    @SuppressWarnings("unchecked")
+    public long getSize(Class classType, Class[] parameterTypes, Object[] objs) {
+
+        if (classType != String.class || parameterTypes[0] != String.class || objs[0].getClass() != String.class) {
             getItem = new Supplier<Object>() {
                 private final Class cType = classType;
-                private final Class pType = parameterType;
-                private final Object object = obj;
+                private final Class[] pType = parameterTypes;
+                private final Object[] object = objs;
 
                 @Override
                 public Object get() {
                     try {
-                        return cType.getConstructor(pType).newInstance(object); //initialize store by obj
+                        return cType.getDeclaredConstructor(pType).newInstance(object); //initialize store by obj
                     } catch (Exception e) {
                         e.printStackTrace();
                         return null;
@@ -41,13 +45,13 @@ public class Simulator {
         } else {
             getItem = new Supplier<Object>() {
                 private final Class cType = classType;
-                private final Class pType = parameterType;
-                private final Object object = obj;
+                private final Class[] pType = parameterTypes;
+                private final Object[] object = objs;
 
                 @Override
                 public Object get() {
                     try {
-                        return cType.getConstructor(pType).newInstance("".concat(((String) object))); //initialize store by String
+                        return cType.getDeclaredConstructor(pType[0]).newInstance("".concat(((String) object[0]))); //initialize store by String
                     } catch (Exception e) {
                         e.printStackTrace();
                         return null;
@@ -57,8 +61,11 @@ public class Simulator {
 
         }
 
-        System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Type: "
-                + parameterType);
+        System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Types: ");
+
+        for (Class parameterType : parameterTypes )
+            System.out.println(parameterType);
+        
 
         return simulate();
     }
