@@ -11,7 +11,6 @@ public class Simulator {
     private static final int numberOfTests = 1000;
     private static final int numberOfItems = 1000;
     private final Runtime runtime;
-    private long memoryBeforeTest;
     private BigInteger memoryConsumption;
     private Object[] store;
     private Supplier<Object> getItem;
@@ -20,13 +19,14 @@ public class Simulator {
         runtime = Runtime.getRuntime();
     }
 
+    @SuppressWarnings("unchecked")
     public long getSize(Class classType, Class parameterType, Object obj) {
 
         if (classType != String.class || parameterType != String.class || obj.getClass() != String.class) {
             getItem = new Supplier<Object>() {
-                Class cType = classType;
-                Class pType = parameterType;
-                Object object = obj;
+                private final Class cType = classType;
+                private final Class pType = parameterType;
+                private final Object object = obj;
 
                 @Override
                 public Object get() {
@@ -38,17 +38,16 @@ public class Simulator {
                     }
                 }
             };
-        }
-        else {
+        } else {
             getItem = new Supplier<Object>() {
-                Class cType = classType;
-                Class pType = parameterType;
-                Object object = obj;
+                private final Class cType = classType;
+                private final Class pType = parameterType;
+                private final Object object = obj;
 
                 @Override
                 public Object get() {
                     try {
-                        return cType.getConstructor(pType).newInstance("".concat(((String) object)));
+                        return cType.getConstructor(pType).newInstance("".concat(((String) object))); //initialize store by String
                     } catch (Exception e) {
                         e.printStackTrace();
                         return null;
@@ -67,7 +66,7 @@ public class Simulator {
     public long getSize(Class classType) {
 
         getItem = new Supplier<Object>() {
-            Class cType = classType;
+            private final Class cType = classType;
 
             @Override
             public Object get() {
@@ -104,15 +103,14 @@ public class Simulator {
         this.store = null;
     }
 
-    //@SuppressWarnings("unchecked")
     private void test() {
         System.gc();
-        memoryBeforeTest = runtime.freeMemory();
+        long memoryBeforeTest = runtime.freeMemory();
 
         this.store = new Object[numberOfItems];
 
         for (int i = 0; i < numberOfItems; i++) {
-                store[i] = getItem.get(); //initialize store
+            store[i] = getItem.get(); //initialize store
         }
 
         System.gc();

@@ -14,7 +14,7 @@ public class L2 {
 
         Simulator simulator = new Simulator();
 
-        size = simulator.getSize(String.class, String.class, new String("Nice try!"));
+        size = simulator.getSize(String.class, String.class, "Nice try!");
         System.out.println("Size is " + size + " byte");
 
         size = simulator.getSize(Integer.class, int.class, 1);
