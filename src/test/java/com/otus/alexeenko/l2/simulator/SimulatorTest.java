@@ -22,6 +22,15 @@ public class SimulatorTest {
     }
 
     @Test
+    public void getSizeObject() {
+        size = simulator.getSize(Object.class);
+
+        System.out.println("\nSize of Object about " + size + " bytes\n");
+
+        assertTrue(size >= 12 && size <= 28); //20 bytes on my system
+    }
+
+    @Test
     public void getSizeString() {
         size = simulator.getSize(String.class, String.class, "Nice try!");
 
