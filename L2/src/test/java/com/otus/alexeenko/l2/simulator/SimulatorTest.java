@@ -101,7 +101,7 @@ public class SimulatorTest {
         System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
                 0 + " about " + size + " bytes\n");
 
-        assertTrue(size >= 20 && size <= 36); //28 bytes on my system
+        assertTrue(size >= 16 && size <= 32); //24 bytes on my system
 
     }
 
