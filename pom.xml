@@ -14,7 +14,6 @@
         </developer>
     </developers>
 
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -36,6 +35,15 @@
                     <target>1.8</target>
                     <meminitial>512m</meminitial>
                     <maxmem>512m</maxmem>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
