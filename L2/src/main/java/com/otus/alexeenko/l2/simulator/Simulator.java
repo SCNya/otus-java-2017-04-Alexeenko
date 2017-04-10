@@ -1,5 +1,6 @@
 package com.otus.alexeenko.l2.simulator;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.function.Supplier;
 
@@ -58,7 +59,6 @@ public class Simulator {
                     }
                 }
             };
-
         }
 
         System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Types: ");
@@ -86,8 +86,29 @@ public class Simulator {
             }
         };
 
-
         System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Type: Default");
+
+        return simulate();
+    }
+
+    public long getSize(Class<? extends Number> classType, int arrayLength) {
+
+        getItem = new Supplier<Object>() {
+            private final Class cType = classType;
+            private final int length = arrayLength;
+
+            @Override
+            public Object get() {
+                try {
+                    return Array.newInstance(cType, length);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        };
+
+        System.out.println("\nSizeOf... \nArray Type: " + classType + "\nLength: " + arrayLength);
 
         return simulate();
     }
