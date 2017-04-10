@@ -29,7 +29,7 @@ public class SimulatorTest {
 
         System.out.println("\nSize of Object about " + size + " bytes\n");
 
-        assertTrue(size >= 12 && size <= 28); //20 bytes on my system
+        assertTrue(size >= 8 && size <= 24); //16 bytes on my system
     }
 
     @Test
@@ -38,7 +38,7 @@ public class SimulatorTest {
 
         System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
-        assertTrue(size >= 60 && size <= 76); //68 bytes on my system
+        assertTrue(size >= 56 && size <= 72); //64 bytes on my system
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SimulatorTest {
 
         System.out.println("\nEmpty String about " + size + " bytes\n");
 
-        assertTrue(size >= 20 && size <= 36); //28 bytes on my system
+        assertTrue(size >= 16 && size <= 32); //24 bytes on my system
     }
 
     @Test
@@ -56,7 +56,7 @@ public class SimulatorTest {
 
         System.out.println("\nSize of Integer about " + size + " bytes\n");
 
-        assertTrue(size >= 12 && size <= 28); //20 bytes on my system
+        assertTrue(size >= 8 && size <= 24); //16 bytes on my system
     }
 
     //Capacity not transmitted in new the Collection
@@ -69,11 +69,11 @@ public class SimulatorTest {
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
 
-        System.out.println("\nSize of ArrayList with start capacity and filling (Double * " + numberOfItems
+        System.out.println("\nSize of ArrayList with start capacity and filling (Double * " + numberOfItems * 2
                 + ") about " + size + " bytes\n");
 
         assertTrue(size >= (INT * numberOfItems) &&
-                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //444 bytes on my system
+                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //440 bytes on my system
     }
 
     @Test
@@ -89,7 +89,7 @@ public class SimulatorTest {
                 + ") about " + size + " bytes\n");
 
         assertTrue(size >= (INT * numberOfItems) &&
-                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //444 bytes on my system
+                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //440 bytes on my system
     }
 
     @Test
@@ -115,7 +115,7 @@ public class SimulatorTest {
                 numberOfItems + " per list about " + size + " bytes\n");
 
         assertTrue(size >= (INT * numberOfItems) &&
-                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //444 bytes on my system
+                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //440 bytes on my system
     }
 
     @Test
@@ -126,7 +126,7 @@ public class SimulatorTest {
                 numberOfItems + "] and two fields on stack about " + size + " bytes\n");
 
         assertTrue(size >= (INT * MyTestClass.arraySize) &&
-                size <= (INT * MyTestClass.arraySize + (INT * MyTestClass.arraySize / 4))); //244 bytes on my system
+                size <= (INT * MyTestClass.arraySize + (INT * MyTestClass.arraySize / 4))); //240 bytes on my system
     }
 
     @Test
@@ -137,7 +137,7 @@ public class SimulatorTest {
                 numberOfItems + "] about " + size + " bytes\n");
 
         assertTrue(size >= (BYTE * numberOfItems) &&
-                size <= (BYTE * numberOfItems + (BYTE * numberOfItems / 4))); //124 bytes on my system
+                size <= (BYTE * numberOfItems + (BYTE * numberOfItems / 4))); //120 bytes on my system
     }
 
 }

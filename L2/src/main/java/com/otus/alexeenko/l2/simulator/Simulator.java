@@ -132,10 +132,11 @@ public class Simulator {
     }
 
     private void test() {
-        System.gc();
-        long memoryBeforeTest = runtime.freeMemory();
 
         this.store = new Object[numberOfItems];
+
+        System.gc();
+        long memoryBeforeTest = runtime.totalMemory() - runtime.freeMemory();
 
         for (int i = 0; i < numberOfItems; i++) {
             store[i] = getItem.get(); //initialize store
@@ -143,6 +144,7 @@ public class Simulator {
 
         System.gc();
 
-        memoryConsumption = memoryConsumption.add(BigInteger.valueOf(memoryBeforeTest - runtime.freeMemory()));
+        memoryConsumption = memoryConsumption.add(BigInteger.valueOf
+                (runtime.totalMemory() - runtime.freeMemory() - memoryBeforeTest));
     }
 }
