@@ -77,8 +77,11 @@ public class Simulator {
         System.gc();
         long memoryBeforeTest = runtime.totalMemory() - runtime.freeMemory();
 
-        for (int i = 0; i < numberOfItems; i++) {
-            store[i] = getItem.get(); //initialize store
+        try {
+            for (int i = 0; i < numberOfItems; i++)
+                store[i] = getItem.get(); //initialize store
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         System.gc();

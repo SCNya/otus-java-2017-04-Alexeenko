@@ -1,12 +1,11 @@
 package com.otus.alexeenko.l2.simulator;
 
 import java.lang.reflect.Array;
-import java.util.function.Supplier;
 
 /**
  * Created by Vsevolod on 11/04/2017.
  */
-abstract class MySupplier implements Supplier {
+abstract class MySupplier {
     protected final Class cType;
     protected final Class[] pType;
     protected final Object[] objects;
@@ -21,8 +20,7 @@ abstract class MySupplier implements Supplier {
         this(classType, null, null);
     }
 
-    @Override
-    public abstract Object get();
+    public abstract Object get() throws Exception;
 }
 
 final class ObjGetter extends MySupplier {
@@ -33,13 +31,8 @@ final class ObjGetter extends MySupplier {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object get() {
-        try {
+    public Object get() throws Exception {
             return cType.getDeclaredConstructor(pType).newInstance(objects); //initialize store by obj
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
 
@@ -51,13 +44,8 @@ final class StringGetter extends MySupplier {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object get() {
-        try {
+    public Object get() throws Exception {
             return cType.getDeclaredConstructor(pType[0]).newInstance("".concat(((String) objects[0]))); //initialize store by String
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
 
@@ -68,13 +56,8 @@ final class SimpleObjGetter extends MySupplier {
     }
 
     @Override
-    public Object get() {
-        try {
+    public Object get() throws Exception {
             return cType.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
 
@@ -88,11 +71,6 @@ final class ArrayGetter extends MySupplier {
 
     @Override
     public Object get() {
-        try {
-            return Array.newInstance(cType, length);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return Array.newInstance(cType, length);
     }
 }
