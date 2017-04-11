@@ -1,8 +1,6 @@
 package com.otus.alexeenko.l2.simulator;
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.function.Supplier;
 
 /**
  * Created by Vsevolod on 08/04/2017.
@@ -14,7 +12,7 @@ public class Simulator {
     private final Runtime runtime;
     private BigInteger memoryConsumption;
     private Object[] store;
-    private Supplier getItem;
+    private MySupplier getItem;
 
     public Simulator() {
         runtime = Runtime.getRuntime();
@@ -27,64 +25,21 @@ public class Simulator {
     @SuppressWarnings("unchecked")
     public long getSize(Class classType, Class[] parameterTypes, Object[] objs) {
 
-        if (classType != String.class || parameterTypes[0] != String.class || objs[0].getClass() != String.class) {
-            getItem = new Supplier<Object>() {
-                private final Class cType = classType;
-                private final Class[] pType = parameterTypes;
-                private final Object[] object = objs;
-
-                @Override
-                public Object get() {
-                    try {
-                        return cType.getDeclaredConstructor(pType).newInstance(object); //initialize store by obj
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-            };
-        } else {
-            getItem = new Supplier<Object>() {
-                private final Class cType = classType;
-                private final Class[] pType = parameterTypes;
-                private final Object[] object = objs;
-
-                @Override
-                public Object get() {
-                    try {
-                        return cType.getDeclaredConstructor(pType[0]).newInstance("".concat(((String) object[0]))); //initialize store by String
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-            };
-        }
+        if (classType != String.class || parameterTypes[0] != String.class || objs[0].getClass() != String.class)
+            getItem = new ObjGetter(classType, parameterTypes, objs);
+        else
+            getItem = new StringGetter(classType, parameterTypes, objs);
 
         System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Types: ");
 
         for (Class parameterType : parameterTypes)
             System.out.println(parameterType);
 
-
         return simulate();
     }
 
     public long getSize(Class classType) {
-
-        getItem = new Supplier<Object>() {
-            private final Class cType = classType;
-
-            @Override
-            public Object get() {
-                try {
-                    return cType.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-        };
+        getItem = new SimpleObjGetter(classType);
 
         System.out.println("\nSizeOf... \nObj Type: " + classType + "\nConstructor Type: Default");
 
@@ -92,21 +47,7 @@ public class Simulator {
     }
 
     public long getSize(Class<? extends Number> classType, int arrayLength) {
-
-        getItem = new Supplier<Object>() {
-            private final Class cType = classType;
-            private final int length = arrayLength;
-
-            @Override
-            public Object get() {
-                try {
-                    return Array.newInstance(cType, length);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-        };
+        getItem = new ArrayGetter(classType, arrayLength);
 
         System.out.println("\nSizeOf... \nArray Type: " + classType + "\nLength: " + arrayLength);
 
@@ -114,7 +55,6 @@ public class Simulator {
     }
 
     private long simulate() {
-
         memoryConsumption = BigInteger.valueOf(0);
 
         for (int i = 0; i < numberOfTests; i++) {
@@ -132,7 +72,6 @@ public class Simulator {
     }
 
     private void test() {
-
         this.store = new Object[numberOfItems];
 
         System.gc();
