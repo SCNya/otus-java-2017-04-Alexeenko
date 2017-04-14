@@ -16,6 +16,7 @@ public class Simulator {
 
     public Simulator() {
         runtime = Runtime.getRuntime();
+        this.store = new Object[numberOfItems];
     }
 
     public long getSize(Class classType, Class parameterType, Object obj) {
@@ -67,13 +68,9 @@ public class Simulator {
     private void clean() {
         for (int i = 0; i < numberOfItems; i++)
             store[i] = null;
-
-        this.store = null;
     }
 
     private void test() {
-        this.store = new Object[numberOfItems];
-
         System.gc();
         long memoryBeforeTest = runtime.totalMemory() - runtime.freeMemory();
 
