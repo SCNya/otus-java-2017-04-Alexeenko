@@ -30,7 +30,7 @@ public class L2 {
 
         List<Double> list = new ArrayList<>(numberOfItems);
 
-        for (int i = 0; i < numberOfItems; i++)
+        for (int i = 1; i <= numberOfItems; i++)
             list.add(i / Math.PI);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);

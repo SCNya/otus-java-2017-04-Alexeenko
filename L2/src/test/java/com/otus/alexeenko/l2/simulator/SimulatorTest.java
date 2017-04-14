@@ -64,7 +64,7 @@ public class SimulatorTest {
     public void getSizeArrayListOfDoubleWithStartCapacity() {
         List<Double> list = new ArrayList<>(numberOfItems * 2);
 
-        for (int i = 0; i < numberOfItems; i++)
+        for (int i = 1; i <= numberOfItems; i++)
             list.add(i / Math.PI);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
@@ -80,7 +80,7 @@ public class SimulatorTest {
     public void getSizeArrayListOfDouble() {
         List<Double> list = new ArrayList<>();
 
-        for (int i = 0; i < numberOfItems; i++)
+        for (int i = 1; i <= numberOfItems; i++)
             list.add(i / Math.PI);
 
         size = simulator.getSize(ArrayList.class, Collection.class, list);
