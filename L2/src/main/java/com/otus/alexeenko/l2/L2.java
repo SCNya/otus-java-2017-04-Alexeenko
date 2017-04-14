@@ -4,8 +4,8 @@ import com.otus.alexeenko.l2.simulator.Simulator;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 //VM options -Xmx512m -Xms512m
 public class L2 {
@@ -17,23 +17,26 @@ public class L2 {
 
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
 
-        Simulator simulator = new Simulator();
-
-        size = simulator.getSize(String.class, String.class, "Nice try!");
+        size = Simulator.getSize(() -> new String("Nice try!".toCharArray()));
         System.out.println("Size is " + size + " bytes");
 
-        size = simulator.getSize(Integer.class, int.class, 1);
+        size = Simulator.getSize(() -> new Integer(1));
         System.out.println("Size is " + size + " bytes");
 
-        size = simulator.getSize(String.class);
+        size = Simulator.getSize(String::new);
         System.out.println("Size is " + size + " bytes");
 
-        List<Double> list = new ArrayList<>(numberOfItems);
+        size = Simulator.getSize(() -> {
+            ArrayList<Double> list = (ArrayList<Double>) DoubleStream
+                    .iterate(1, n -> n + 1)
+                    .map((n) -> n / Math.PI)
+                    .limit(100)
+                    .boxed()
+                    .collect(Collectors.toList());
+            list.trimToSize();
+            return list;
+        });
 
-        for (int i = 0; i < numberOfItems; i++)
-            list.add(i / Math.PI);
-
-        size = simulator.getSize(ArrayList.class, Collection.class, list);
         System.out.println("Size is " + size + " bytes");
     }
 }

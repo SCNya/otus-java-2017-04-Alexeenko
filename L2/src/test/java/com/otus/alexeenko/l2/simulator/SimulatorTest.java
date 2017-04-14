@@ -3,29 +3,26 @@ package com.otus.alexeenko.l2.simulator;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Vsevolod on 09/04/2017.
  */
+
+//VM options -Xmx512m -Xms512m
 public class SimulatorTest {
 
     private static final int numberOfItems = 100;
     private static final byte INT = 4;  //int = INT byte
     private static final byte BYTE = 1;  //byte = 1 byte
-    private final Simulator simulator;
     private long size;
-
-    public SimulatorTest() {
-        simulator = new Simulator();
-    }
 
     @Test
     public void getSizeObject() {
-        size = simulator.getSize(Object.class);
+        size = Simulator.getSize(Object::new);
 
         System.out.println("\nSize of Object about " + size + " bytes\n");
 
@@ -34,7 +31,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeString() {
-        size = simulator.getSize(String.class, String.class, "Nice try!");
+        size = Simulator.getSize(() -> new String("Nice try!".toCharArray()));
 
         System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
@@ -43,7 +40,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeEmptyString() {
-        size = simulator.getSize(String.class);
+        size = Simulator.getSize(String::new);
 
         System.out.println("\nEmpty String about " + size + " bytes\n");
 
@@ -52,7 +49,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeInteger() {
-        size = simulator.getSize(Integer.class, int.class, 101010); //any int
+        size = Simulator.getSize(() -> new Integer(101010)); //any int
 
         System.out.println("\nSize of Integer about " + size + " bytes\n");
 
@@ -61,42 +58,47 @@ public class SimulatorTest {
 
     //Capacity not transmitted in new the Collection
     @Test
-    public void getSizeArrayListOfDoubleWithStartCapacity() {
-        List<Double> list = new ArrayList<>(numberOfItems * 2);
+    public void getSizeArrayListOfDoubleWithTrim() {
 
-        for (int i = 0; i < numberOfItems; i++)
-            list.add(i / Math.PI);
+        size = Simulator.getSize(() -> {
+            ArrayList<Double> list = (ArrayList<Double>) DoubleStream
+                    .iterate(1, n -> n + 1)
+                    .map((n) -> n / Math.PI)
+                    .limit(numberOfItems)
+                    .boxed()
+                    .collect(Collectors.toList());
+            list.trimToSize();
+            return list;
+        });
 
-        size = simulator.getSize(ArrayList.class, Collection.class, list);
-
-        System.out.println("\nSize of ArrayList with start capacity and filling (Double * " + numberOfItems * 2
+        System.out.println("\nSize of ArrayList with filling and trim (Double * " + numberOfItems
                 + ") about " + size + " bytes\n");
 
-        assertTrue(size >= (INT * numberOfItems) &&
-                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //440 bytes on my system
+        assertTrue(size >= 2800 &&
+                size <= 3000); //2842 bytes on my system
     }
 
     @Test
-    public void getSizeArrayListOfDouble() {
-        List<Double> list = new ArrayList<>();
+    public void getSizeArrayListOfDoubleWithoutTrim() {
 
-        for (int i = 0; i < numberOfItems; i++)
-            list.add(i / Math.PI);
+        size = Simulator.getSize(() -> DoubleStream
+                .iterate(1, n -> n + 1)
+                .map((n) -> n / Math.PI)
+                .limit(numberOfItems)
+                .boxed()
+                .collect(Collectors.toList()));
 
-        size = simulator.getSize(ArrayList.class, Collection.class, list);
-
-        System.out.println("\nSize of ArrayList without capacity and filling (Double * " + numberOfItems
+        System.out.println("\nSize of ArrayList without trim. Filled (Double * " + numberOfItems
                 + ") about " + size + " bytes\n");
 
-        assertTrue(size >= (INT * numberOfItems) &&
-                size <= (INT * numberOfItems + (INT * numberOfItems / 4))); //440 bytes on my system
+        assertTrue(size >= 2800 &&
+                size <= 3000); //2880 bytes on my system
     }
 
     @Test
     public void getSizeEmptyArrayListOfIntegerWithoutCapacity() {
-        List<Integer> list = new ArrayList<>(0);
 
-        size = simulator.getSize(ArrayList.class, Collection.class, list);
+        size = Simulator.getSize(ArrayList::new);
 
         System.out.println("\nSize of ArrayList (Integer empty) " + "with capacity " +
                 0 + " about " + size + " bytes\n");
@@ -107,9 +109,8 @@ public class SimulatorTest {
 
     @Test
     public void getSizeEmptyArrayListOfIntegerWithCapacity() {
-        List<Integer> list = new ArrayList<>(numberOfItems);
 
-        size = simulator.getSize(ArrayList.class, int.class, numberOfItems);
+        size = Simulator.getSize(() -> new ArrayList<>(numberOfItems));
 
         System.out.println("\nSize of ArrayList (Integer empty) " + "with manual capacity " +
                 numberOfItems + " per list about " + size + " bytes\n");
@@ -120,7 +121,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeMyTestClassWithTwoArguments() {
-        size = simulator.getSize(MyTestClass.class, new Class[]{int.class, float.class}, new Object[]{1, 0.1f});
+        size = Simulator.getSize(() -> new MyTestClass(1, 0.1f));
 
         System.out.println("\nSize of MyTestClass " + "with int array[" +
                 numberOfItems + "] and two fields on stack about " + size + " bytes\n");
@@ -131,7 +132,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeArrayOfByte() {
-        size = simulator.getSize(byte.class, numberOfItems);
+        size = Simulator.getSize(() -> (new byte[numberOfItems]));
 
         System.out.println("\nSize of byte Array " + "[" +
                 numberOfItems + "] about " + size + " bytes\n");
@@ -139,5 +140,4 @@ public class SimulatorTest {
         assertTrue(size >= (BYTE * numberOfItems) &&
                 size <= (BYTE * numberOfItems + (BYTE * numberOfItems / 4))); //120 bytes on my system
     }
-
 }
