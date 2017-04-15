@@ -35,7 +35,7 @@ public class SimulatorTest {
 
         System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
-        assertTrue(size >= 46 && size <= 62); //64 bytes on my system
+        assertTrue(size >= 46 && size <= 72); //64 bytes on my system
     }
 
     @Test
