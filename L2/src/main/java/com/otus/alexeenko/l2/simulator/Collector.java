@@ -57,7 +57,7 @@ public class Collector {
 
             for (GarbageCollectorMXBean gcMxBean : gcbeans) {
                 gcName = gcMxBean.getName();
-//break;
+                break;
             }
 
             emitter.addNotificationListener(listener, null, null);
