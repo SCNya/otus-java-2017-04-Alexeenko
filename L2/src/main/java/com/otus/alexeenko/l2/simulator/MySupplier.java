@@ -55,6 +55,7 @@ final class SimpleObjGetter extends MySupplier {
         super(classType);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object get() throws Exception {
             return cType.getDeclaredConstructor().newInstance();
