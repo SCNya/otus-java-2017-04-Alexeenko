@@ -20,7 +20,7 @@ public class L2 {
         size = Simulator.getSize(() -> new String("Nice try!".toCharArray()));
         System.out.println("Size is " + size + " bytes");
 
-        size = Simulator.getSize(() -> new Integer(1));
+        size = Simulator.getSize(() -> Integer.valueOf(1));
         System.out.println("Size is " + size + " bytes");
 
         size = Simulator.getSize(String::new);

@@ -49,7 +49,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeInteger() {
-        size = Simulator.getSize(() -> new Integer(101010)); //any int
+        size = Simulator.getSize(() -> Integer.valueOf(101010)); //any int
 
         System.out.println("\nSize of Integer about " + size + " bytes\n");
 
