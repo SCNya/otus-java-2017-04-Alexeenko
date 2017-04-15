@@ -21,10 +21,10 @@ public class Collector {
     }
 
     public static void collect() {
-        if(lock == null)
+        if (lock == null)
             installLock();
 
-        if(gcName.equals("G1 Young Generation") || gcName.equals("G1 Old Generation"))  //Java9 or not
+        if (gcName.equals("G1 Young Generation") || gcName.equals("G1 Old Generation"))  //Java9 or not
             lock = new CountDownLatch(1); //for G1
         else
             lock = new CountDownLatch(2); //for nonG1
@@ -57,7 +57,7 @@ public class Collector {
 
             for (GarbageCollectorMXBean gcMxBean : gcbeans) {
                 gcName = gcMxBean.getName();
-                //break;
+//break;
             }
 
             emitter.addNotificationListener(listener, null, null);
