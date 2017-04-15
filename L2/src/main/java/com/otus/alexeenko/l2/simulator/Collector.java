@@ -22,7 +22,7 @@ public class Collector {
         if(lock == null)
             installLock();
 
-        lock = new CountDownLatch(2);
+        lock = new CountDownLatch(1);
         gc();
     }
 

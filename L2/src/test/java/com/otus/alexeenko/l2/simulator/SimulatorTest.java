@@ -31,11 +31,11 @@ public class SimulatorTest {
 
     @Test
     public void getSizeString() {
-        size = Simulator.getSize(() -> new String("Nice try!".toCharArray()));
+        size = Simulator.getSize(() -> "".concat("Nice try!"));
 
         System.out.println("\nSize of \"Nice try!\" String about " + size + " bytes\n");
 
-        assertTrue(size >= 56 && size <= 72); //64 bytes on my system
+        assertTrue(size >= 46 && size <= 62); //64 bytes on my system
     }
 
     @Test
@@ -49,7 +49,7 @@ public class SimulatorTest {
 
     @Test
     public void getSizeInteger() {
-        size = Simulator.getSize(() -> Integer.valueOf(101010)); //any int
+        size = Simulator.getSize(() -> new Integer(101010)); //any int
 
         System.out.println("\nSize of Integer about " + size + " bytes\n");
 

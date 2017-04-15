@@ -17,10 +17,10 @@ public class L2 {
 
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
 
-        size = Simulator.getSize(() -> new String("Nice try!".toCharArray()));
+        size = Simulator.getSize(() -> "".concat("Nice try!"));
         System.out.println("Size is " + size + " bytes");
 
-        size = Simulator.getSize(() -> Integer.valueOf(1));
+        size = Simulator.getSize(() -> new Integer(1));
         System.out.println("Size is " + size + " bytes");
 
         size = Simulator.getSize(String::new);
