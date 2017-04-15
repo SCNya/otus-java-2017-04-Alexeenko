@@ -6,6 +6,7 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
 import javax.management.openmbean.CompositeData;
 import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Collector {
     private static CountDownLatch lock;
+    private static String gcName;
 
     private Collector() {
     }
@@ -22,7 +24,7 @@ public class Collector {
         if(lock == null)
             installLock();
 
-        if("9".equals(System.getProperty("java.specification.version")))  //Java9 or not
+        if(gcName.equals("GC1"))  //Java9 or not
             lock = new CountDownLatch(1); //for G1
         else
             lock = new CountDownLatch(2); //for nonG1
@@ -39,7 +41,7 @@ public class Collector {
     }
 
     private static void installLock() {
-        List<GarbageCollectorMXBean> gcbeans = java.lang.management.ManagementFactory.getGarbageCollectorMXBeans();
+        List<GarbageCollectorMXBean> gcbeans = ManagementFactory.getGarbageCollectorMXBeans();
 
         for (GarbageCollectorMXBean gcbean : gcbeans) {
             NotificationEmitter emitter = (NotificationEmitter) gcbean;
@@ -53,8 +55,12 @@ public class Collector {
                 }
             };
 
+            for (GarbageCollectorMXBean gcMxBean : gcbeans) {
+                gcName = gcMxBean.getName();
+                break;
+            }
+
             emitter.addNotificationListener(listener, null, null);
         }
     }
-
 }
