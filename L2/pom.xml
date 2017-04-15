@@ -55,8 +55,8 @@
                 <version>3.6.1</version>
                 <configuration>
                     <fork>true</fork>
-                    <source>1.9</source>
-                    <target>1.9</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <meminitial>512m</meminitial>
                     <maxmem>512m</maxmem>
                 </configuration>

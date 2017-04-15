@@ -23,9 +23,9 @@ public class Collector {
             installLock();
 
         if("9".equals(System.getProperty("java.specification.version")))  //Java9 or not
-            lock = new CountDownLatch(1);
+            lock = new CountDownLatch(1); //for G1
         else
-            lock = new CountDownLatch(2);
+            lock = new CountDownLatch(2); //for nonG1
         gc();
     }
 
