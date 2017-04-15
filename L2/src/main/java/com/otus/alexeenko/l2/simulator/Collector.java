@@ -22,7 +22,10 @@ public class Collector {
         if(lock == null)
             installLock();
 
-        lock = new CountDownLatch(1);
+        if("9".equals(System.getProperty("java.specification.version")))  //Java9 or not
+            lock = new CountDownLatch(1);
+        else
+            lock = new CountDownLatch(2);
         gc();
     }
 
