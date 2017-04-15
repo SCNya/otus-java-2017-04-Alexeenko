@@ -57,7 +57,7 @@ final class SimpleObjGetter extends MySupplier {
 
     @Override
     public Object get() throws Exception {
-            return cType.newInstance();
+            return cType.getDeclaredConstructor().newInstance();
     }
 }
 
