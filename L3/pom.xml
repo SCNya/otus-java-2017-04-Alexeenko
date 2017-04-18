@@ -29,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.otus.alexeenko.l2.L2</mainClass>
+                            <mainClass>com.otus.alexeenko.l3.L3</mainClass>
                         </manifest>
                     </archive>
                     <finalName>${project.name}_${java.version}_${os.name}</finalName>
