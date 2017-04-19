@@ -55,9 +55,7 @@ public class MyArrayListTest {
         for (int i = 0; i < size; ++i)
             assertTrue(dest.get(i) == anotherTestList.get(i));
 
-        testList.clear();
-        for (int i = 0; i < size; ++i)
-            testList.add(i);
+        Collections.shuffle(testList);
         Collections.copy(testList, dest);
 
         for (int i = 0; i < size; ++i)
