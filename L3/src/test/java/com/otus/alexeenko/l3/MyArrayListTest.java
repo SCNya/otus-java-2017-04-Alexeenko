@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +37,7 @@ public class MyArrayListTest {
         Collections.addAll(testList,101, 111, 100);
 
         for (int i = 0; i < size + 3; ++i)
-            assertTrue(src.get(i) == testList.get(i));
+            assertTrue(Objects.equals(src.get(i), testList.get(i)));
     }
 
     @Test
@@ -53,13 +54,13 @@ public class MyArrayListTest {
         Collections.copy(dest, testList);
 
         for (int i = 0; i < size; ++i)
-            assertTrue(dest.get(i) == anotherTestList.get(i));
+            assertTrue(Objects.equals(dest.get(i), anotherTestList.get(i)));
 
         Collections.shuffle(testList);
         Collections.copy(testList, dest);
 
         for (int i = 0; i < size; ++i)
-            assertTrue(dest.get(i) == dest.get(i));
+            assertTrue(Objects.equals(dest.get(i), dest.get(i)));
         
     }
 
@@ -77,6 +78,6 @@ public class MyArrayListTest {
         Collections.sort(testList);
 
         for (int i = 0; i < size; ++i)
-            assertTrue(dest.get(i) == testList.get(i));
+            assertTrue(Objects.equals(dest.get(i), testList.get(i)));
     }
 }
