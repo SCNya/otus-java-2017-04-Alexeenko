@@ -56,6 +56,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T1> T1[] toArray(T1[] a) {
         if (a.length < size)
             // Make a new array of a's runtime type, but my contents:
@@ -187,11 +188,11 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
     @Override
     public int lastIndexOf(Object o) {
         if (o != null) {
-            for (int i = size-1; i >= 0; --i)
+            for (int i = size - 1; i >= 0; --i)
                 if (o.equals(array[i]))
                     return i;
         } else {
-            for (int i = size-1; i >= 0; --i)
+            for (int i = size - 1; i >= 0; --i)
                 if (null == array[i])
                     return i;
         }
@@ -225,6 +226,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public T next() {
             int i = cursor;
             if (i >= size)
@@ -333,7 +335,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
     public int hashCode() {
         int hashCode = 1;
         for (T e : this)
-            hashCode = 31*hashCode + (e == null ? 0 : e.hashCode());
+            hashCode = 31 * hashCode + (e == null ? 0 : e.hashCode());
         return hashCode;
     }
 
@@ -355,6 +357,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
             throw new IndexOutOfBoundsException("Index: " + index);
     }
 
+    @SuppressWarnings("unchecked")
     private T getElement(int index) {
         return (T) array[index];
     }

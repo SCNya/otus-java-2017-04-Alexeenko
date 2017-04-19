@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Vsevolod on 19/04/2017.
  */
 public class MyArrayListTest {
-    private static final int size = 9;
+    private static final int size = 99;
     
     private List<Integer> testList;
     private List<Integer> src;
