@@ -1,5 +1,6 @@
 package com.otus.alexeenko.l3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 //VM options -Xmx512m -Xms512m
@@ -7,7 +8,7 @@ public class L3 {
     private static final int MEASURE_COUNT = 100;
 
     public static void main(String... args) {
-        Collection<Integer> example = new MyArrayList<>();
+        Collection<Integer> example = new ArrayList<>();
         int min = 0;
         int max = 9_999_999;
         for (int i = min; i < max + 1; i++) {

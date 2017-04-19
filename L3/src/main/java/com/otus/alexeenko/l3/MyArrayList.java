@@ -8,9 +8,9 @@ import java.util.*;
 
 public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io.Serializable {
 
-    private static final int DEFAULT_SIZE = 16;
+    private static final long serialVersionUID = -3056234432889222545L;
 
-    private static final long serialVersionUID = -3946628703285321431L;
+    private static final int DEFAULT_SIZE = 16;
 
     private int size;
 
@@ -314,6 +314,27 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
             capacity = newSize - size;
             reCreate(newSize);
         }
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            MyArrayList<?> v = (MyArrayList<?>) super.clone();
+            v.array = Arrays.copyOf(array, size);
+            v.capacity = 0;
+            return v;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError(e);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        for (T e : this)
+            hashCode = 31*hashCode + (e == null ? 0 : e.hashCode());
+        return hashCode;
     }
 
     private void reCreate(int newSize) {
