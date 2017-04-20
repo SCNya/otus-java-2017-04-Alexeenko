@@ -8,7 +8,7 @@ import java.util.*;
 
 public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io.Serializable {
 
-    private static final long serialVersionUID = -3056234432889222545L;
+    private static final long serialVersionUID = -1284613836096340960L;
 
     private static final int DEFAULT_SIZE = 16;
 
@@ -134,6 +134,20 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
         size = 0;
 
         array = new Object[DEFAULT_SIZE];
+
+        for (int i = 0; i < size; i++)
+            array[i] = null;
+
+        capacity += size;
+        size = 0;
+    }
+
+    public void clearWithoutResize() {
+        for (int i = 0; i < size; i++)
+            array[i] = null;
+
+        capacity += size;
+        size = 0;
     }
 
     @Override
