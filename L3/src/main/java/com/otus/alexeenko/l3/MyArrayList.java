@@ -94,7 +94,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
     public boolean addAll(Collection<? extends T> c) {
         Object[] a = c.toArray();
         int numNew = a.length;
-        checkCapacity(size + numNew);  // Increments modCount
+        checkCapacity(size + numNew);  // Change capacity
         System.arraycopy(a, 0, array, size, numNew);
         size += numNew;
         return numNew != 0;
@@ -106,7 +106,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
 
         Object[] a = c.toArray();
         int numNew = a.length;
-        checkCapacity(size + numNew);  // Increments modCount
+        checkCapacity(size + numNew);  // Change capacity
 
         int different = size - index;
         if (different > 0)
@@ -130,7 +130,7 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
 
     @Override
     public void clear() {
-        capacity = capacity + size;
+        capacity = DEFAULT_SIZE;
         size = 0;
 
         array = new Object[DEFAULT_SIZE];
