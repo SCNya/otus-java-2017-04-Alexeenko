@@ -6,7 +6,7 @@
 target/
 out/
 logs/
-dumps/
+dumps/*
 
 # Package Files #
 *.jar
