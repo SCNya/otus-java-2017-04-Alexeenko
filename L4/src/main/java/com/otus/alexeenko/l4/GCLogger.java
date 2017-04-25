@@ -89,7 +89,7 @@ public class GCLogger {
             @Override
             public void run() {
                 locker.lock();
-                logger.info("\n of calls Young GC - " + young + " duration - " + youngTime + " ms" +
+                logger.info("\nNumber of calls Young GC - " + young + " duration - " + youngTime + " ms" +
                         "\nNumber of calls Old GC - " + old + " duration - " + oldTime + " ms");
                 young = 0;
                 youngTime = 0;
