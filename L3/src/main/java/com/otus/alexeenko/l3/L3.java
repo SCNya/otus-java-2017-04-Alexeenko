@@ -1,6 +1,5 @@
 package com.otus.alexeenko.l3;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 //VM options -Xmx512m -Xms512m
