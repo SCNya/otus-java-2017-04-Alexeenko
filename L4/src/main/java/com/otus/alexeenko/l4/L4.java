@@ -5,29 +5,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class L4 {
-    private static final int size = 1;
+    private static final long size = 100000L;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
-        Thread.sleep(10000);
-        memoryLeak();
+        try {
+            GCLogger.run();
+            memoryLeak();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            System.exit(-1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void memoryLeak() throws InterruptedException {
-        long a = 100000;
-        long b = 100000;
-        long fibSize = 0;
-        List<Object[]> list;
+    private static void memoryLeak() throws OutOfMemoryError, InterruptedException {
+        long a = size;
+        long b = size;
+        long newSize = 0;
+        List<Object> list;
 
-        while(true) {
+        while (true) {
             Thread.sleep(3000);
-            fibSize = a + b;
-            a = b;
-            b = fibSize;
+            newSize = a + b;
+            a = b / 5L;
+            b = newSize;
             list = new ArrayList<>();
 
-            for (long i = 0L; i < fibSize/100L; ++i)
-                list.add(new Object[size]);
+            for (long i = 0L; i < newSize; ++i)
+                list.add(new Object());
         }
     }
 }
