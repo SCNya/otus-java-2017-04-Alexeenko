@@ -14,14 +14,12 @@ LOG_JAVA_8="-verbose:gc -Xloggc:./logs/gc_pid_%p.log -XX:+PrintGCDateStamps -XX:
 LOG_JAVA_9="-Xlog:gc:file=./logs/gc_pid_%p.log:uptimemillis:filecount=2,filesize=1m"
 
 if [[ $JAVA_VERSION =~ 9 ]]
-then {
-     echo "Java" $JAVA_VERSION;
-     GC_LOG=$LOG_JAVA_9;
-     }
-  else {
-    echo "Java" $JAVA_VERSION;
-    GC_LOG=$LOG_JAVA_8;
-    }
+then
+     echo "Java" $JAVA_VERSION
+     GC_LOG=$LOG_JAVA_9
+  else
+    echo "Java" $JAVA_VERSION
+    GC_LOG=$LOG_JAVA_8
   fi
 
 
