@@ -8,7 +8,22 @@ GC4="-XX:+UseG1GC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyF
 
 LOGGER="-Djava.util.logging.SimpleFormatter.format="%1$tc %n%4$s: %5$s%6$s%n""
 
-GC_LOG="-verbose:gc -Xloggc:./logs/gc_pid_%p.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=10M"
+JAVA_VERSION="$(java -version 2>&1 | grep -i version | cut -d'"' -f2 | cut -d'.' -f1-2)"
+
+LOG_JAVA_8="-verbose:gc -Xloggc:./logs/gc_pid_%p.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=10M"
+LOG_JAVA_9="-Xlog:gc:file=./logs/gc_pid_%p.log:uptimemillis:filecount=2,filesize=1m"
+
+if [[ $JAVA_VERSION =~ 9 ]]
+then {
+     echo "Java" $JAVA_VERSION;
+     GC_LOG=$LOG_JAVA_9;
+     }
+  else {
+    echo "Java" $JAVA_VERSION;
+    GC_LOG=$LOG_JAVA_8;
+    }
+  fi
+
 
 DUMP="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./dumps/"
 
@@ -18,6 +33,6 @@ rm -f -r ./dumps
 mkdir ./dumps
 
 java $MEMORY $GC1 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #ParNew
-java $MEMORY $GC2 $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #ParallelOld
-java $MEMORY $GC3 $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #Serial
-java $MEMORY $GC4 $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #G1
+java $MEMORY $GC2 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #ParallelOld
+java $MEMORY $GC3 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #Serial
+java $MEMORY $GC4 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #G1

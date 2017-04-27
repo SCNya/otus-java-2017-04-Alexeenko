@@ -76,7 +76,7 @@ public class GCLogger {
         }
     }
 
-    public static boolean isYoungGC(String name) {
+    private static boolean isYoungGC(String name) {
         Pattern p = Pattern.compile("Scavenge|Young|ParNew|Copy");
         Matcher m = p.matcher(name);
         return m.find();
