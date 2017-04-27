@@ -15,9 +15,9 @@ import static org.junit.Assert.assertTrue;
 public class MyArrayListTest {
     private static final int size = 9999;
     
-    private List<Integer> testList;
-    private List<Integer> src;
-    private List<Integer> dest;
+    private final List<Integer> testList;
+    private final List<Integer> src;
+    private final List<Integer> dest;
 
     public MyArrayListTest() {
         testList = new ArrayList<>();

@@ -134,12 +134,6 @@ public class MyArrayList<T> implements List<T>, RandomAccess, Cloneable, java.io
         size = 0;
 
         array = new Object[DEFAULT_SIZE];
-
-        for (int i = 0; i < size; i++)
-            array[i] = null;
-
-        capacity += size;
-        size = 0;
     }
 
     public void clearWithoutResize() {
