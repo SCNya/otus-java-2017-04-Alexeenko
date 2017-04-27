@@ -10,7 +10,7 @@ LOGGER="-Djava.util.logging.SimpleFormatter.format="%1$tc %n%4$s: %5$s%6$s%n""
 
 JAVA_VERSION="$(java -version 2>&1 | grep -i version | cut -d'"' -f2 | cut -d'.' -f1-2)"
 
-LOG_JAVA_8="-verbose:gc -Xloggc:./logs/gc_pid_%p.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=10M"
+LOG_JAVA_8="-verbose:gc -Xloggc:./logs/gc_pid_%p.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=1M"
 LOG_JAVA_9="-Xlog:gc:file=./logs/gc_pid_%p.log:uptimemillis:filecount=2,filesize=1m"
 
 if [[ $JAVA_VERSION =~ 9 ]]
