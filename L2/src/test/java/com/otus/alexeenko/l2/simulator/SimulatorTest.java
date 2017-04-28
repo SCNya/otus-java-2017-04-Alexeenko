@@ -17,12 +17,8 @@ public class SimulatorTest {
     private static final int numberOfItems = 100;
     private static final byte INT = 4;  //int = INT byte
     private static final byte BYTE = 1;  //byte = 1 byte
-    private final Simulator simulator;
+    private final Simulator simulator = new Simulator();
     private long size;
-
-    public SimulatorTest() {
-        simulator = new Simulator();
-    }
 
     @Test
     public void getSizeObject() {
