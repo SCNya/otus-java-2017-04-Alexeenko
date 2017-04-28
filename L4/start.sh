@@ -30,7 +30,7 @@ mkdir ./logs
 rm -f -r ./dumps
 mkdir ./dumps
 
-java $MEMORY $GC1 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #ParNew
-java $MEMORY $GC2 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #ParallelOld
-java $MEMORY $GC3 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #Serial
-java $MEMORY $GC4 $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out  #G1
+for GC in $GC1 $GC2 $GC3 $GC4
+do
+  java $MEMORY $GC $LOGGER $GC_LOG $DUMP -XX:OnOutOfMemoryError="kill -3 %p" -jar target/L4.jar > jvm.out
+done
