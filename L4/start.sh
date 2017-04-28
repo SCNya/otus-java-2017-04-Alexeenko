@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 MEMORY="-Xms2G -Xmx2G -XX:MaxMetaspaceSize=256m"
 
+#ParNew
 GC1="-XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=10 -XX:+ScavengeBeforeFullGC -XX:+CMSScavengeBeforeRemark -XX:+UseParNewGC"
+#ParallelOld
 GC2="-XX:+UseParallelGC -XX:+UseParallelOldGC -XX:+UseAdaptiveSizePolicy -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=10"
+#Serial
 GC3="-XX:+UseSerialGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=10"
+#G1
 GC4="-XX:+UseG1GC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=10"
 
 LOGGER="-Djava.util.logging.SimpleFormatter.format="%1$tc %n%4$s: %5$s%6$s%n""
