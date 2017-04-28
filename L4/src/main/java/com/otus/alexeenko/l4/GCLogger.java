@@ -61,14 +61,17 @@ public class GCLogger {
                 if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
                     GarbageCollectionNotificationInfo info = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
                     locker.lock();
-                    if (isYoungGC(info.getGcName())) {
-                        young++;
-                        youngTime += info.getGcInfo().getDuration();
-                    } else {
-                        old++;
-                        oldTime += info.getGcInfo().getDuration();
+                    try {
+                        if (isYoungGC(info.getGcName())) {
+                            young++;
+                            youngTime += info.getGcInfo().getDuration();
+                        } else {
+                            old++;
+                            oldTime += info.getGcInfo().getDuration();
+                        }
+                    } finally {
+                        locker.unlock();
                     }
-                    locker.unlock();
                 }
             };
 
@@ -89,13 +92,16 @@ public class GCLogger {
             @Override
             public void run() {
                 locker.lock();
-                logger.info("\nNumber of calls Young GC - " + young + " duration - " + youngTime + " ms" +
-                        "\nNumber of calls Old GC - " + old + " duration - " + oldTime + " ms");
-                young = 0;
-                youngTime = 0;
-                old = 0;
-                oldTime = 0;
-                locker.unlock();
+                try {
+                    logger.info("\nNumber of calls Young GC - " + young + " duration - " + youngTime + " ms" +
+                            "\nNumber of calls Old GC - " + old + " duration - " + oldTime + " ms");
+                    young = 0;
+                    youngTime = 0;
+                    old = 0;
+                    oldTime = 0;
+                } finally {
+                    locker.unlock();
+                }
             }
         }, 60000, 60000); // one minute
     }
