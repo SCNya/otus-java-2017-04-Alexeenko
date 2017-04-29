@@ -33,7 +33,7 @@ public class MyArrayListTest {
         Collections.addAll(src,101, 111, 100);
         Collections.addAll(dest,101, 111, 100);
 
-        for (int i = size; i < size + 3; ++i)
+        for (int i = size; i < src.size(); ++i)
             assertEquals(src.get(i), dest.get(i));
     }
 
