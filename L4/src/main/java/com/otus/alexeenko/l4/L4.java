@@ -23,7 +23,7 @@ public class L4 {
     private static void memoryLeak() throws OutOfMemoryError, InterruptedException {
         long a = size;
         long b = size;
-        long newSize = 0;
+        long newSize;
         List<Object> list;
 
         while (true) {
