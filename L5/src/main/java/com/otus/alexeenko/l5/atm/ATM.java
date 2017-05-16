@@ -1,9 +1,9 @@
-package com.otus.alexeenko.l5.ATM;
+package com.otus.alexeenko.l5.atm;
 
-import com.otus.alexeenko.l5.ATM.money.CreditVolume1;
-import com.otus.alexeenko.l5.ATM.money.CreditVolume2;
-import com.otus.alexeenko.l5.ATM.money.CreditVolume5;
-import com.otus.alexeenko.l5.ATM.money.Money;
+import com.otus.alexeenko.l5.atm.money.CreditVolume1;
+import com.otus.alexeenko.l5.atm.money.CreditVolume2;
+import com.otus.alexeenko.l5.atm.money.CreditVolume5;
+import com.otus.alexeenko.l5.atm.money.Money;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,9 +13,9 @@ import java.util.stream.Stream;
  * Created by Vsevolod on 16/05/2017.
  */
 public class ATM {
-    private List<Money> creditsVol5;
-    private List<Money> creditsVol2;
-    private List<Money> creditsVol1;
+    private final List<Money> creditsVol5;
+    private final List<Money> creditsVol2;
+    private final List<Money> creditsVol1;
 
     public ATM(int creditsVol1, int creditsVol2, int creditsVol5) {
         this.creditsVol1 = Stream
@@ -51,38 +51,67 @@ public class ATM {
                 .collect(Collectors.toList()));
     }
 
-    public void cashOut(long cashOutSize) {
+    public void cashOut(final long cashOutSize) {
 
-        if (cashOutSize <= getBalance()) {
+        if (cashOutSize > 0) {
 
-            if (cashOutSize > 0) {
-                cashOutSize = cashOut(creditsVol5, Money.VOL_SIZE_5, cashOutSize);
+            if (cashOutSize <= getBalance()) {
 
-                cashOutSize = cashOut(creditsVol2, Money.VOL_SIZE_2, cashOutSize);
+                long checkSize = cashOutSize;
 
-                cashOutSize = cashOut(creditsVol1, Money.VOL_SIZE_1, cashOutSize);
-            }
+                checkSize = check(creditsVol5, Money.VOL_SIZE_5, checkSize);
 
-            if (cashOutSize > 0)
-                System.out.println("\nSorry!\nYou can't take all money (not enough the Credit Volumes)");
+                checkSize = check(creditsVol2, Money.VOL_SIZE_2, checkSize);
+
+                checkSize = check(creditsVol1, Money.VOL_SIZE_1, checkSize);
+
+                if (checkSize > 0)
+                    System.out.println("\nSorry!\nYou can't take all money (not enough the Credit Volumes)");
+                else getCashOut(cashOutSize);
+            } else
+                System.out.println("On You balance not enough money!");
         } else
-            System.out.println("On You balance not enough money!");
+            System.out.println("Get a zero credits?");
     }
 
-    private long cashOut(List<Money> creditsVol, int volSize, long cashOutSize) {
+    private long check(List<Money> credits, int volSize, long checkSize) {
+        int dec;
+        int size;
+
+        dec = (int) checkSize / volSize;
+        size = credits.size();
+
+        if (dec >= size)
+            checkSize -= size * volSize;
+        else
+            checkSize -= dec * volSize;
+        return checkSize;
+    }
+
+    private void getCashOut(long cashOutSize) {
+
+        cashOutSize = getCash(creditsVol5, Money.VOL_SIZE_5, cashOutSize);
+
+        cashOutSize = getCash(creditsVol2, Money.VOL_SIZE_2, cashOutSize);
+
+        getCash(creditsVol1, Money.VOL_SIZE_1, cashOutSize);
+    }
+
+    private long getCash(List<Money> credits, int volSize, long cashOutSize) {
         int dec;
         int size;
 
         dec = (int) cashOutSize / volSize;
-        size = creditsVol.size();
+        size = credits.size();
 
         if (dec >= size) {
             cashOutSize -= size * volSize;
-            decrease(creditsVol, size);
+            decrease(credits, size);
         } else {
             cashOutSize -= dec * volSize;
-            decrease(creditsVol, dec);
+            decrease(credits, dec);
         }
+
         return cashOutSize;
     }
 

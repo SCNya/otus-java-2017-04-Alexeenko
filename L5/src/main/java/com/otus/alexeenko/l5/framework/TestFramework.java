@@ -68,11 +68,18 @@ public class TestFramework {
 
                 callMethod(testObj, testMethod);
                 info = new Info(testMethod.getName(), true, null);
+
                 for (Method afterMethod : targetClass.getAfterList())
                     callMethod(testObj, afterMethod);
 
             } catch (Exception e) {
-                info = new Info(testMethod.getName(), false, e);
+                Test testAnnotation = testMethod.getAnnotation(Test.class);
+
+                if ((testAnnotation.expected().getName()).equals(e.getCause().toString()))
+                    info = new Info(testMethod.getName(), true, null);
+
+                if (info == null)
+                    info = new Info(testMethod.getName(), false, e);
             } finally {
                 result.add(info);
             }

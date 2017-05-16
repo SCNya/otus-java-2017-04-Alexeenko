@@ -11,4 +11,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Test {
+
+    /**
+     * Default empty exception
+     */
+    class None extends Throwable {
+        private static final long serialVersionUID = 1L;
+
+        private None() {
+        }
+    }
+
+    Class<? extends Throwable> expected() default None.class;
 }
