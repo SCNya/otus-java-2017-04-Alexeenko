@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by vsevolod on 13/05/2017.
+ * Created by Vsevolod on 13/05/2017.
  */
-public class ReflectionHelper {
+class ReflectionHelper {
 
     private ReflectionHelper() {
     }
 
-    public static <T> T instantiate(Class<T> type, Object... args) {
+    static <T> T instantiate(Class<T> type, Object... args) {
         try {
             if (args.length == 0) {
                 return type.newInstance();
@@ -51,7 +51,7 @@ public class ReflectionHelper {
         return null;
     }
 
-    public static void setFieldValue(Object object, String name, Object value) {
+    static void setFieldValue(Object object, String name, Object value) {
         Field field = null;
         boolean isAccessible = true;
 
@@ -73,7 +73,7 @@ public class ReflectionHelper {
         }
     }
 
-    public static Object callMethod(Object object, String name, Object... args) {
+    static Object callMethod(Object object, String name, Object... args) {
         Method method = null;
         boolean isAccessible = true;
 
@@ -96,7 +96,7 @@ public class ReflectionHelper {
         return null;
     }
 
-    public static Object callMethod(Object object, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
+    static Object callMethod(Object object, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
         boolean isAccessible = method.isAccessible();
         Object obj;
 

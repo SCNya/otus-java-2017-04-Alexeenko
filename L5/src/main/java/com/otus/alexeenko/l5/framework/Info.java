@@ -4,20 +4,20 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Created by vsevolod on 15/05/2017.
+ * Created by Vsevolod on 15/05/2017.
  */
-public class Info {
+class Info {
     private final String testName;
     private final boolean testResult;
     private final Exception exception;
 
-    public Info(String testName, boolean testResult, Exception exception) {
+    Info(String testName, boolean testResult, Exception exception) {
         this.testName = testName;
         this.testResult = testResult;
         this.exception = exception;
     }
 
-    public void view() {
+    void view() {
         if (exception != null) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter writer = new PrintWriter(stringWriter);

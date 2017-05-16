@@ -7,7 +7,7 @@ import com.otus.alexeenko.l5.framework.annotations.Test;
 import static com.otus.alexeenko.l5.framework.Assert.fail;
 
 /**
- * Created by vsevolod on 13/05/2017.
+ * Created by Vsevolod on 13/05/2017.
  */
 public class L5Test {
     private static String str;

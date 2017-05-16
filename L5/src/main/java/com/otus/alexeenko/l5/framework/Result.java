@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by vsevolod on 15/05/2017.
+ * Created by Vsevolod on 15/05/2017.
  */
 public class Result {
     private final List<Info> results;
 
-    public Result() {
+    Result() {
         this.results = new ArrayList<>();
     }
 
-    public void add(Info testInfo) {
+    void add(Info testInfo) {
         results.add(testInfo);
     }
 
