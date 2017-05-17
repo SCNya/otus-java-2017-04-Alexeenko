@@ -26,7 +26,7 @@ public class L5Test {
 
     @Test
     public void cashIn() {
-        atm.cashIn(50, 5,20);
+        atm.cashIn(50, 5, 20);
         assertTrue(atm.getBalance() == 240);
     }
 
@@ -36,8 +36,14 @@ public class L5Test {
         fail();
     }
 
+    @Test
+    public void create() {
+        atm = new ATM(55, 55, 100);
+        assertNotNull(atm);
+    }
+
     @After
     public void afterL5Test() {
-        assertNotNull(atm);
+        atm = null;
     }
 }
