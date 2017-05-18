@@ -35,6 +35,7 @@ public class ATM {
     }
 
     public void cashIn(int creditsVol1, int creditsVol2, int creditsVol5) {
+
         this.creditsVol1.addAll(Stream
                 .generate(CreditVolume1::new)
                 .limit(creditsVol1)
@@ -57,47 +58,27 @@ public class ATM {
 
             if (cashOutSize <= getBalance()) {
 
-                long checkSize = cashOutSize;
-
-                checkSize = check(creditsVol5, Money.VOL_SIZE_5, checkSize);
-
-                checkSize = check(creditsVol2, Money.VOL_SIZE_2, checkSize);
-
-                checkSize = check(creditsVol1, Money.VOL_SIZE_1, checkSize);
+                long checkSize = getCashOut(cashOutSize, false);
 
                 if (checkSize > 0)
                     System.out.println("\nSorry!\nYou can't take all money (not enough the Credit Volumes)");
-                else getCashOut(cashOutSize);
+                else getCashOut(cashOutSize, true);
             } else
                 System.out.println("On You balance not enough money!");
         } else
             System.out.println("Get a zero credits?");
     }
 
-    private long check(List<Money> credits, int volSize, long checkSize) {
-        int dec;
-        int size;
+    private long getCashOut(long cashOutSize, boolean forReal) {
 
-        dec = (int) checkSize / volSize;
-        size = credits.size();
+        cashOutSize = getCash(creditsVol5, Money.VOL_SIZE_5, cashOutSize, forReal);
 
-        if (dec >= size)
-            checkSize -= size * volSize;
-        else
-            checkSize -= dec * volSize;
-        return checkSize;
+        cashOutSize = getCash(creditsVol2, Money.VOL_SIZE_2, cashOutSize, forReal);
+
+        return getCash(creditsVol1, Money.VOL_SIZE_1, cashOutSize, forReal);
     }
 
-    private void getCashOut(long cashOutSize) {
-
-        cashOutSize = getCash(creditsVol5, Money.VOL_SIZE_5, cashOutSize);
-
-        cashOutSize = getCash(creditsVol2, Money.VOL_SIZE_2, cashOutSize);
-
-        getCash(creditsVol1, Money.VOL_SIZE_1, cashOutSize);
-    }
-
-    private long getCash(List<Money> credits, int volSize, long cashOutSize) {
+    private long getCash(List<Money> credits, int volSize, long cashOutSize, boolean forReal) {
         int dec;
         int size;
 
@@ -106,9 +87,11 @@ public class ATM {
 
         if (dec >= size) {
             cashOutSize -= size * volSize;
+            if (forReal)
             decrease(credits, size);
         } else {
             cashOutSize -= dec * volSize;
+            if (forReal)
             decrease(credits, dec);
         }
 
