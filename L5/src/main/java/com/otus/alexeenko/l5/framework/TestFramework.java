@@ -61,22 +61,32 @@ public class TestFramework {
         for (Method testMethod : targetClass.getTestList()) {
             Object testObj = instantiate(targetClass.getClasz());
             Info info = null;
+            boolean expectedException = false;
+            Test testAnnotation;
 
             try {
                 for (Method beforeMethod : targetClass.getBeforeList())
                     callMethod(testObj, beforeMethod);
 
+                testAnnotation = testMethod.getAnnotation(Test.class);
+                if ((testAnnotation.expected()).equals(Test.None.class))
+                    expectedException = true;
+
                 callMethod(testObj, testMethod);
-                info = new Info(testMethod.getName(), true, null);
+
+                if (expectedException)
+                    info = new Info(testMethod.getName(), true);
+                else
+                    info = new Info(testMethod.getName(), false, instantiate(testAnnotation.expected()));
 
                 for (Method afterMethod : targetClass.getAfterList())
                     callMethod(testObj, afterMethod);
 
             } catch (Exception e) {
-                Test testAnnotation = testMethod.getAnnotation(Test.class);
+                testAnnotation = testMethod.getAnnotation(Test.class);
 
                 if ((testAnnotation.expected().getName()).equals(e.getCause().toString()))
-                    info = new Info(testMethod.getName(), true, null);
+                    info = new Info(testMethod.getName(), true);
 
                 if (info == null)
                     info = new Info(testMethod.getName(), false, e);

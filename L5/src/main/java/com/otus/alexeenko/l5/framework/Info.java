@@ -9,12 +9,16 @@ import java.io.StringWriter;
 class Info {
     private final String testName;
     private final boolean testResult;
-    private final Exception exception;
+    private final Throwable exception;
 
-    Info(String testName, boolean testResult, Exception exception) {
+    Info(String testName, boolean testResult, Throwable exception) {
         this.testName = testName;
         this.testResult = testResult;
         this.exception = exception;
+    }
+
+    Info(String testName, boolean testResult) {
+        this(testName, testResult, null);
     }
 
     void view() {

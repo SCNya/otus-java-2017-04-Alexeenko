@@ -37,7 +37,7 @@ public class MyArrayListTest {
             assertEquals(src.get(i), dest.get(i));
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void copy() {
         Collections.copy(src, dest);
         for (int i = 0; i < size; ++i)
