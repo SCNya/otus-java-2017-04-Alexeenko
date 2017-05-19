@@ -1,6 +1,9 @@
 package com.otus.alexeenko.l5.test;
 
 import com.otus.alexeenko.l5.atm.ATM;
+import com.otus.alexeenko.l5.atm.pack.PackVol1;
+import com.otus.alexeenko.l5.atm.pack.PackVol2;
+import com.otus.alexeenko.l5.atm.pack.PackVol5;
 import com.otus.alexeenko.l5.framework.AssertionError;
 import com.otus.alexeenko.l5.framework.annotations.After;
 import com.otus.alexeenko.l5.framework.annotations.Before;
@@ -16,7 +19,8 @@ public class L5Test {
 
     @Before
     public void beforeL5Test() {
-        atm = new ATM(10, 10, 10);
+        atm = new ATM(new PackVol1(10), new PackVol2(10),
+                new PackVol5(10));
     }
 
     @Test
@@ -26,19 +30,21 @@ public class L5Test {
 
     @Test
     public void cashIn() {
-        atm.cashIn(50, 5, 20);
+        atm.cashIn(new PackVol1(50), new PackVol2(5),
+                new PackVol5(20));
         assertTrue(atm.getBalance() == 240);
     }
 
     @Test(expected = AssertionError.class)
     public void cashOut() {
-        atm.cashOut(55);
+        atm.cashOut(57);
         fail();
     }
 
     @Test
     public void create() {
-        atm = new ATM(55, 55, 100);
+        atm = new ATM(new PackVol1(55), new PackVol2(55),
+                new PackVol5(100));
         assertNotNull(atm);
     }
 
