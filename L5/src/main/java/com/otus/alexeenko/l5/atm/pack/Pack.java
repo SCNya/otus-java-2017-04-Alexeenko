@@ -26,13 +26,32 @@ public abstract class Pack implements Comparable<Pack> {
         return creditsVol.size();
     }
 
-    public void decrease(int numberOfVol) {
+    private void decrease(int numberOfVol) {
         int i = 0;
 
         while (i < numberOfVol) {
             creditsVol.remove(creditsVol.size() - 1);
             i++;
         }
+    }
+
+    public long getCash(long cashOutSize, boolean forReal) {
+        int dec = (int) cashOutSize / VOL_SIZE;
+        int numberOfCredits = getNumberOfCredits();
+        int decreaseSize;
+
+        if (dec >= numberOfCredits) {
+            cashOutSize -= numberOfCredits * VOL_SIZE;
+            decreaseSize = numberOfCredits;
+        } else {
+            cashOutSize -= dec * VOL_SIZE;
+            decreaseSize = dec;
+        }
+
+        if (forReal)
+            decrease(decreaseSize);
+
+        return cashOutSize;
     }
 
     private int compare(int x, int y) {

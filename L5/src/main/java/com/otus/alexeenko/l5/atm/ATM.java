@@ -43,26 +43,7 @@ public class ATM {
 
     private long getCashOut(long cashOutSize, boolean forReal) {
         for (Pack pack : packs)
-            cashOutSize = getCash(pack, cashOutSize, forReal);
-
-        return cashOutSize;
-    }
-
-    private long getCash(Pack packVol, long cashOutSize, boolean forReal) {
-        int dec = (int) cashOutSize / packVol.VOL_SIZE;
-        int numberOfCredits = packVol.getNumberOfCredits();
-        int decreaseSize;
-
-        if (dec >= numberOfCredits) {
-            cashOutSize -= numberOfCredits * packVol.VOL_SIZE;
-            decreaseSize = numberOfCredits;
-        } else {
-            cashOutSize -= dec * packVol.VOL_SIZE;
-            decreaseSize = dec;
-        }
-
-        if (forReal)
-            packVol.decrease(decreaseSize);
+            cashOutSize = pack.getCash(cashOutSize, forReal);
 
         return cashOutSize;
     }
