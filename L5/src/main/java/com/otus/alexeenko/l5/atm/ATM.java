@@ -18,9 +18,9 @@ public class ATM {
     }
 
     public void cashIn(Pack... additionalPacks) {
-        boolean find = false;
-
         for (Pack additionalPack : additionalPacks) {
+            boolean find = false;
+
             for (Pack existPack : packs)
                 if (additionalPack.VOL_SIZE == existPack.VOL_SIZE) {
                     existPack.cashIn(additionalPack);
