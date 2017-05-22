@@ -32,12 +32,14 @@ public class L5Test {
     public void cashIn() {
         atm.cashIn(new PackVol1(50), new PackVol2(5),
                 new PackVol5(20));
+
         assertTrue(atm.getBalance() == 240);
     }
 
     @Test(expected = AssertionError.class)
     public void cashOut() {
         atm.cashOut(57);
+
         fail();
     }
 
@@ -45,7 +47,18 @@ public class L5Test {
     public void create() {
         atm = new ATM(new PackVol1(55), new PackVol2(55),
                 new PackVol5(100));
+
         assertNotNull(atm);
+    }
+
+    @Test
+    public void cashIn2() {
+        atm = new ATM(new PackVol1(10), new PackVol2(10));
+        atm.cashIn(new PackVol5(5));
+        atm.cashOut(50);
+
+        assertTrue(atm.getBalance() == 5);
+
     }
 
     @After

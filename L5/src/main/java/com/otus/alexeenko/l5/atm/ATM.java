@@ -17,12 +17,22 @@ public class ATM {
         Collections.sort(packs);
     }
 
-    public void cashIn(Pack... creditPacks) {
-        for (Pack pack : creditPacks)
-            packs.forEach((n) -> {
-                if (pack.VOL_SIZE == n.VOL_SIZE)
-                    n.cashIn(pack);
-            });
+    public void cashIn(Pack... additionalPacks) {
+        boolean find = false;
+
+        for (Pack additionalPack : additionalPacks) {
+            for (Pack existPack : packs)
+                if (additionalPack.VOL_SIZE == existPack.VOL_SIZE) {
+                    existPack.cashIn(additionalPack);
+                    find = true;
+                    break;
+                }
+
+            if (!find) {
+                packs.add(additionalPack);
+                Collections.sort(packs);
+            }
+        }
     }
 
     public void cashOut(final long cashOutSize) {
