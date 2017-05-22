@@ -32,7 +32,7 @@
                             <mainClass>com.otus.alexeenko.l5.L5</mainClass>
                         </manifest>
                     </archive>
-                    <finalName>L4</finalName>
+                    <finalName>L5</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
