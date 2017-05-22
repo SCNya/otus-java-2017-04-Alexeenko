@@ -18,7 +18,7 @@ class ReflectionHelper {
     static <T> T instantiate(Class<T> type, Object... args) {
         try {
             if (args.length == 0) {
-                return type.newInstance();
+                return type.getDeclaredConstructor().newInstance();
             } else {
                 return type.getConstructor(toClasses(args)).newInstance(args);
             }
