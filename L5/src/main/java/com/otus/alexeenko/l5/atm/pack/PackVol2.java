@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  */
 public class PackVol2 extends Pack {
 
-    public static final int VOL_SIZE = 2;
+    private static final int VOL_SIZE = 2;
 
     public PackVol2(int creditsVol2) {
         super(VOL_SIZE, Stream
