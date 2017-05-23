@@ -22,16 +22,19 @@ public class ATMDepartment {
 
     public void add(ATM... atms) {
         for (ATM atm : atms) {
-            this.atms.add(atm);
-            this.states.add(atm.getState());
+            adding(atm);
         }
     }
 
     public void add(List<ATM> atms) {
         for (ATM atm : atms) {
-            this.atms.add(atm);
-            this.states.add(atm.getState());
+            adding(atm);
         }
+    }
+
+    private void adding(ATM atm) {
+        this.atms.add(atm);
+        this.states.add(atm.getState());
     }
 
     public void restoreATMs() {
