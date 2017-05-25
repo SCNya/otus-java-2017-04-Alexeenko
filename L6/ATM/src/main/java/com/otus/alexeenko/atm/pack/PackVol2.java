@@ -12,10 +12,10 @@ public class PackVol2 extends Pack {
 
     private static final int VOL_SIZE = 2;
 
-    public PackVol2(Integer creditsVol2) {
+    public PackVol2(Integer creditsVol) {
         super(VOL_SIZE, Stream
                 .generate(CreditVolume2::new)
-                .limit(creditsVol2)
+                .limit(creditsVol)
                 .collect(Collectors.toList()));
     }
 }
