@@ -18,8 +18,8 @@ public abstract class Pack implements Comparable<Pack> {
         this.creditsVol = creditsVol;
     }
 
-    public void cashIn(Pack creditPack) {
-        creditsVol.addAll(creditPack.creditsVol);
+    public void cashIn(Pack additionalPack) {
+        creditsVol.addAll(additionalPack.creditsVol);
     }
 
     public int getNumberOfCredits() {
