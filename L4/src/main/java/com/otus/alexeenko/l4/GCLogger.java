@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
  * Created by Vsevolod on 25/04/2017.
  */
 public class GCLogger {
+    private static final Pattern pattern = Pattern.compile("Scavenge|Young|ParNew|Copy");
     private static final Logger logger = Logger.getLogger("Log");
     private static final Timer timer = new Timer();
     private static final ReentrantLock locker = new ReentrantLock();
@@ -80,9 +81,7 @@ public class GCLogger {
     }
 
     private static boolean isYoungGC(String name) {
-        Pattern p = Pattern.compile("Scavenge|Young|ParNew|Copy");
-        Matcher m = p.matcher(name);
-        return m.find();
+        return pattern.matcher(name).find();
     }
 
     public static void run() throws Exception {
