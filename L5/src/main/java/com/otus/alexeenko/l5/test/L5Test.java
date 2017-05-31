@@ -15,7 +15,7 @@ import static com.otus.alexeenko.l5.framework.Assert.*;
  * Created by Vsevolod on 13/05/2017.
  */
 public class L5Test {
-    private static ATM atm;
+    private ATM atm;
 
     @Before
     public void beforeL5Test() {
