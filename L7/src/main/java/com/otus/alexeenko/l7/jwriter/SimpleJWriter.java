@@ -14,11 +14,8 @@ import static com.otus.alexeenko.l7.jwriter.TypeAdapter.*;
  */
 public class SimpleJWriter implements JWriter {
     private final Map<Class<?>, TypeAdapter<?>> adapters;
-    private final JsonObjectBuilder result;
 
     public SimpleJWriter() {
-        result = Json.createObjectBuilder();
-
         Map<Class<?>, TypeAdapter<?>> adapters = new HashMap<>();
         adapters.put(Integer.class, INTEGER);
         adapters.put(BigInteger.class, BIG_INTEGER);
@@ -37,7 +34,7 @@ public class SimpleJWriter implements JWriter {
     }
 
     public String toJson(Object obj) {
-        return findValues(result, obj).build().toString();
+        return findValues(Json.createObjectBuilder(), obj).build().toString();
     }
 
     private <T> T findValues(T builder, Object obj) {
