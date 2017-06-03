@@ -90,7 +90,7 @@ public class SimpleJWriter implements JWriter {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
             for (int j = 0; j < Array.getLength(value); ++j) {
-                write(arrayBuilder, name, Array.get(value, j));
+                write(arrayBuilder, null, Array.get(value, j));
             }
             writeArray(builder, name, arrayBuilder);
 
@@ -111,14 +111,14 @@ public class SimpleJWriter implements JWriter {
     }
 
     private <T> void writeObject(T builder, String name, JsonObjectBuilder objectBuilder) {
-        if (builder instanceof JsonObjectBuilder)
+        if (name != null)
             ((JsonObjectBuilder) builder).add(name, objectBuilder);
         else
             ((JsonArrayBuilder) builder).add(objectBuilder);
     }
 
     private <T> void writeArray(T builder, String name, JsonArrayBuilder arrayBuilder) {
-        if (builder instanceof JsonObjectBuilder)
+        if (name != null)
             ((JsonObjectBuilder) builder).add(name, arrayBuilder);
         else
             ((JsonArrayBuilder) builder).add(arrayBuilder);
