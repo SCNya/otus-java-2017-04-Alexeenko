@@ -107,13 +107,7 @@ public class SimpleJWriter implements JWriter {
         }
     }
 
-    private boolean isCollection(Object value) {
-        return value instanceof Collection;
-    }
 
-    private boolean isMap(Object value) {
-        return value instanceof Map;
-    }
 
     private <T> void writeObject(T builder, String name, JsonObjectBuilder objectBuilder) {
         if (builder instanceof JsonObjectBuilder)
@@ -129,13 +123,21 @@ public class SimpleJWriter implements JWriter {
             ((JsonArrayBuilder) builder).add(arrayBuilder);
     }
 
+    @SuppressWarnings("unchecked")
+    private <T> void write(TypeAdapter adapter, T builder, String name, Object value) {
+        adapter.write(builder, name, value);
+    }
+
     private boolean isArray(Object value) {
         return value.getClass().isArray();
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> void write(TypeAdapter adapter, T builder, String name, Object value) {
-        adapter.write(builder, name, value);
+    private boolean isCollection(Object value) {
+        return value instanceof Collection;
+    }
+
+    private boolean isMap(Object value) {
+        return value instanceof Map;
     }
 
     private static boolean isStatic(Field field) {
