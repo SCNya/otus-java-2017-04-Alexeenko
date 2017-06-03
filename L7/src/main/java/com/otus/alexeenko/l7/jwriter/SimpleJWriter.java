@@ -126,7 +126,10 @@ public class SimpleJWriter implements JWriter {
 
     @SuppressWarnings("unchecked")
     private <T> void write(TypeAdapter adapter, T builder, String name, Object value) {
-        adapter.write(builder, name, value);
+        if (name != null)
+            adapter.write(((JsonObjectBuilder) builder), name, value);
+        else
+            adapter.write(((JsonArrayBuilder) builder), value);
     }
 
     private boolean isArray(Object value) {

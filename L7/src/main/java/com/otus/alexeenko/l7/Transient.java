@@ -10,7 +10,7 @@ public class Transient implements Serializable {
 
     private static final long serialVersionUID = -5841495242249536497L;
 
-    transient char[] chars = {'q','w','e','r'};
+    private final transient char[] chars = {'q','w','e','r'};
 
     @Override
     public boolean equals(Object o) {
