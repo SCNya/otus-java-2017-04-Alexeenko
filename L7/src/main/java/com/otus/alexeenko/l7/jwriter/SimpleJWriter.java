@@ -13,24 +13,27 @@ import static com.otus.alexeenko.l7.jwriter.TypeAdapter.*;
  * Created by Vsevolod on 30/05/2017.
  */
 public class SimpleJWriter implements JWriter {
-    private final Map<Class<?>, TypeAdapter<?>> adapters;
+    private static final Map<Class<?>, TypeAdapter<?>> adapters;
+
+    static {
+        Map<Class<?>, TypeAdapter<?>> typeAdapterMap = new HashMap<>();
+        typeAdapterMap.put(Integer.class, INTEGER);
+        typeAdapterMap.put(BigInteger.class, BIG_INTEGER);
+        typeAdapterMap.put(BigDecimal.class, BIG_DECIMAL);
+        typeAdapterMap.put(JsonValue.class, JSON_VALUE);
+        typeAdapterMap.put(Long.class, LONG);
+        typeAdapterMap.put(Double.class, DOUBLE);
+        typeAdapterMap.put(Float.class, FLOAT);
+        typeAdapterMap.put(Boolean.class, BOOLEAN);
+        typeAdapterMap.put(Byte.class, BYTE);
+        typeAdapterMap.put(Short.class, SHORT);
+        typeAdapterMap.put(Character.class, CHARACTER);
+        typeAdapterMap.put(String.class, STRING);
+
+        adapters = Collections.unmodifiableMap(typeAdapterMap);
+    }
 
     public SimpleJWriter() {
-        Map<Class<?>, TypeAdapter<?>> adapters = new HashMap<>();
-        adapters.put(Integer.class, INTEGER);
-        adapters.put(BigInteger.class, BIG_INTEGER);
-        adapters.put(BigDecimal.class, BIG_DECIMAL);
-        adapters.put(JsonValue.class, JSON_VALUE);
-        adapters.put(Long.class, LONG);
-        adapters.put(Double.class, DOUBLE);
-        adapters.put(Float.class, FLOAT);
-        adapters.put(Boolean.class, BOOLEAN);
-        adapters.put(Byte.class, BYTE);
-        adapters.put(Short.class, SHORT);
-        adapters.put(Character.class, CHARACTER);
-        adapters.put(String.class, STRING);
-
-        this.adapters = Collections.unmodifiableMap(adapters);
     }
 
     public String toJson(Object obj) {
@@ -107,8 +110,6 @@ public class SimpleJWriter implements JWriter {
         }
     }
 
-
-
     private <T> void writeObject(T builder, String name, JsonObjectBuilder objectBuilder) {
         if (builder instanceof JsonObjectBuilder)
             ((JsonObjectBuilder) builder).add(name, objectBuilder);
@@ -140,11 +141,11 @@ public class SimpleJWriter implements JWriter {
         return value instanceof Map;
     }
 
-    private static boolean isStatic(Field field) {
+    private boolean isStatic(Field field) {
         return java.lang.reflect.Modifier.isStatic(field.getModifiers());
     }
 
-    private static boolean isTransient(Field field) {
+    private boolean isTransient(Field field) {
         return java.lang.reflect.Modifier.isTransient(field.getModifiers());
     }
 }
