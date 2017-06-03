@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class JWriterTest {
     private final Gson gson = new Gson();
-    private final JWriter jWriter = new JWriter();
+    private final JWriter jWriter = new SimpleJWriter();
 
     @Test
     public void toJson() {
@@ -27,8 +27,8 @@ public class JWriterTest {
         String json1 = gson.toJson(new PrimitiveClass());
         String json2 = jWriter.toJson(new PrimitiveClass());
 
-        PrimitiveClass obj1 =  gson.fromJson(json1, PrimitiveClass.class);
-        PrimitiveClass obj2 =  gson.fromJson(json2, PrimitiveClass.class);
+        PrimitiveClass obj1 = gson.fromJson(json1, PrimitiveClass.class);
+        PrimitiveClass obj2 = gson.fromJson(json2, PrimitiveClass.class);
 
         assertEquals(obj1, obj2);
     }
@@ -46,8 +46,8 @@ public class JWriterTest {
 
         assertEquals(json1, json2);
 
-        primitive1 =  gson.fromJson(json1, PrimitiveClass.class);
-        primitive2 =  gson.fromJson(json2, PrimitiveClass.class);
+        primitive1 = gson.fromJson(json1, PrimitiveClass.class);
+        primitive2 = gson.fromJson(json2, PrimitiveClass.class);
 
         assertEquals(primitive1, primitive2);
     }
@@ -65,8 +65,8 @@ public class JWriterTest {
 
         assertNotEquals(json1, json2);
 
-        primitive1 =  gson.fromJson(json1, PrimitiveClass.class);
-        primitive2 =  gson.fromJson(json2, PrimitiveClass.class);
+        primitive1 = gson.fromJson(json1, PrimitiveClass.class);
+        primitive2 = gson.fromJson(json2, PrimitiveClass.class);
 
         assertNotEquals(primitive1, primitive2);
     }

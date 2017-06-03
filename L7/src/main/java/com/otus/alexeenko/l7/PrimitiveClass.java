@@ -2,39 +2,49 @@ package com.otus.alexeenko.l7;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 /**
  * Created by Vsevolod on 30/05/2017.
  */
 
 public class PrimitiveClass implements Serializable {
-    private static final long serialVersionUID = 4253118941810649752L;
+
+    private static final long serialVersionUID = -8925273805778027764L;
 
     private int one = 1;
-    private BigInteger bigInteger = BigInteger.valueOf(100500);
-    private float pi = 3.14f;
+    private final BigInteger bigInteger = BigInteger.valueOf(100500);
+    private final double pi = Math.PI;
     private char c = 'c';
-    private String str = "str";
+    private final String str = "str";
     private Integer integer = 111;
     private boolean is = true;
-    private AtomicInteger atomicInteger = new AtomicInteger(101010);
+    private final Collection<Integer> list = new ArrayList<>();
+    private final Object[] objects1 = {"hola", new Transient(), ""};
+    private final Object[] objects2 = {new Transient(), new Transient(), new Transient()};
+    private final Transient trObj = new Transient();
+    private final int[] primitives = {1, 2, 3};
+    private final Object nullNull = null;
+    private transient String trString = "transient";
+    private final Map<Integer, String> map = new HashMap<>();
+
+
+    public PrimitiveClass() {
+        list.add(9);
+        list.add(9);
+        list.add(9);
+
+        map.put(1, "S1");
+        map.put(2, "S2");
+        map.put(3, "S3");
+    }
 
     public void setOne(int one) {
         this.one = one;
     }
 
-    public void setPi(float pi) {
-        this.pi = pi;
-    }
-
     public void setC(char c) {
         this.c = c;
-    }
-
-    public void setStr(String str) {
-        this.str = str;
     }
 
     public void setInteger(Integer integer) {
@@ -45,8 +55,8 @@ public class PrimitiveClass implements Serializable {
         this.is = is;
     }
 
-    public void setAtomicInteger(AtomicInteger atomicInteger) {
-        this.atomicInteger = atomicInteger;
+    public void setTrString(String trString) {
+        this.trString = trString;
     }
 
     @Override
@@ -55,13 +65,20 @@ public class PrimitiveClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         PrimitiveClass that = (PrimitiveClass) o;
         return one == that.one &&
-                Float.compare(that.pi, pi) == 0 &&
+                Double.compare(that.pi, pi) == 0 &&
                 c == that.c &&
                 is == that.is &&
                 Objects.equals(bigInteger, that.bigInteger) &&
                 Objects.equals(str, that.str) &&
                 Objects.equals(integer, that.integer) &&
-                atomicInteger.compareAndSet(that.atomicInteger.get(), atomicInteger.get());
+                Objects.equals(list, that.list) &&
+                Arrays.equals(objects1, that.objects1) &&
+                Arrays.equals(objects2, that.objects2) &&
+                Objects.equals(trObj, that.trObj) &&
+                Arrays.equals(primitives, that.primitives) &&
+                Objects.equals(nullNull, that.nullNull) &&
+                Objects.equals(trString, that.trString) &&
+                Objects.equals(map, that.map);
     }
 
     @Override
@@ -74,7 +91,14 @@ public class PrimitiveClass implements Serializable {
                 ", str='" + str + '\'' +
                 ", integer=" + integer +
                 ", is=" + is +
-                ", atomicInteger=" + atomicInteger +
+                ", list=" + list +
+                ", objects1=" + Arrays.toString(objects1) +
+                ", objects2=" + Arrays.toString(objects2) +
+                ", trObj=" + trObj +
+                ", primitives=" + Arrays.toString(primitives) +
+                ", nullNull=" + nullNull +
+                ", trString='" + trString + '\'' +
+                ", map=" + map +
                 '}';
     }
 }
