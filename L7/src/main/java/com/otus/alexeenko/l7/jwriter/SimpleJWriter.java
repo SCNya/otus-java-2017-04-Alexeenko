@@ -137,7 +137,7 @@ public class SimpleJWriter implements JWriter {
         }
     }
 
-    private Object buildCollection(Object value) {
+    private Object[] buildCollection(Object value) {
         return ((Collection) value).toArray();
     }
 
