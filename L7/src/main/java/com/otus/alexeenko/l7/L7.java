@@ -11,10 +11,11 @@ public class L7 {
     public static void main(String[] args) {
         Gson gson = new Gson();
         String json = gson.toJson(new PrimitiveClass());
+        System.out.println("Gson:");
         System.out.println(json);
 
 
-
+        System.out.println("JWriter:");
         JWriter jWriter = new SimpleJWriter();
         json = jWriter.toJson(new PrimitiveClass());
         System.out.println(json);
