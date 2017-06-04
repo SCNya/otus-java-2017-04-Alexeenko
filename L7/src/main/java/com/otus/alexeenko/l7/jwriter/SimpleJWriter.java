@@ -165,12 +165,12 @@ public class SimpleJWriter implements JWriter {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> void write(TypeAdapter adapter, JsonObjectBuilder builder, String name, Object value) {
+    private void write(TypeAdapter adapter, JsonObjectBuilder builder, String name, Object value) {
             adapter.write(builder, name, value);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> void write(TypeAdapter adapter, JsonArrayBuilder builder, Object value) {
+    private void write(TypeAdapter adapter, JsonArrayBuilder builder, Object value) {
             adapter.write(builder, value);
     }
 
