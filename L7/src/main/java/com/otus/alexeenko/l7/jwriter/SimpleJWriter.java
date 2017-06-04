@@ -75,7 +75,6 @@ public class SimpleJWriter implements JWriter {
         return builder;
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void write(JsonObjectBuilder builder, String name, Object value) {
         TypeAdapter adapter = adapters.get(value.getClass());
 
@@ -98,7 +97,7 @@ public class SimpleJWriter implements JWriter {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
             if (isMap(value)) {
-                buildMap((Map) value, objectBuilder);
+                buildMap(value, objectBuilder);
             } else {
                 findValues(objectBuilder, value);
             }
@@ -106,7 +105,6 @@ public class SimpleJWriter implements JWriter {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void write(JsonArrayBuilder builder, Object value) {
         TypeAdapter adapter = adapters.get(value.getClass());
 
@@ -129,7 +127,7 @@ public class SimpleJWriter implements JWriter {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
             if (isMap(value)) {
-                buildMap((Map) value, objectBuilder);
+                buildMap(value, objectBuilder);
             } else {
                 findValues(objectBuilder, value);
             }
@@ -141,9 +139,10 @@ public class SimpleJWriter implements JWriter {
         return ((Collection) value).toArray();
     }
 
-    private void buildMap(Map value, JsonObjectBuilder objectBuilder) {
-        Object[] keys = value.keySet().toArray();
-        Object[] values = value.values().toArray();
+    private void buildMap(Object value, JsonObjectBuilder objectBuilder) {
+        Map map = (Map) value;
+        Object[] keys = map.keySet().toArray();
+        Object[] values = map.values().toArray();
 
         for (int j = 0; j < Array.getLength(keys); ++j)
             write(objectBuilder, Array.get(keys, j).toString(), Array.get(values, j));
