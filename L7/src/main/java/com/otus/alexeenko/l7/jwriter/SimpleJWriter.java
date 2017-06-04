@@ -1,11 +1,17 @@
 package com.otus.alexeenko.l7.jwriter;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.otus.alexeenko.l7.jwriter.TypeAdapter.*;
 
@@ -78,65 +84,61 @@ public class SimpleJWriter implements JWriter {
     private void write(JsonObjectBuilder builder, String name, Object value) {
         TypeAdapter adapter = adapters.get(value.getClass());
 
-        if (isCollection(value)) {
-            value = buildCollection(value);
-        }
-
         if (adapter != null) {
             write(adapter, builder, name, value);
 
-        } else if (isArray(value)) {
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-
-            for (int j = 0; j < Array.getLength(value); ++j) {
-                write(arrayBuilder, Array.get(value, j));
-            }
-            writeArray(builder, name, arrayBuilder);
-
         } else {
-            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            if (isCollection(value))
+                value = buildCollection(value);
 
-            if (isMap(value)) {
-                buildMap(value, objectBuilder);
-            } else {
-                findValues(objectBuilder, value);
-            }
-            writeObject(builder, name, objectBuilder);
+            if (isArray(value))
+                writeArray(builder, name, value);
+            else
+                writeObject(builder, name, value);
         }
     }
 
     private void write(JsonArrayBuilder builder, Object value) {
         TypeAdapter adapter = adapters.get(value.getClass());
 
-        if (isCollection(value)) {
-            value = buildCollection(value);
-        }
-
         if (adapter != null) {
             write(adapter, builder, value);
 
-        } else if (isArray(value)) {
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-
-            for (int j = 0; j < Array.getLength(value); ++j) {
-                write(arrayBuilder, Array.get(value, j));
-            }
-            writeArray(builder, arrayBuilder);
-
         } else {
-            JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            if (isCollection(value))
+                value = buildCollection(value);
 
-            if (isMap(value)) {
-                buildMap(value, objectBuilder);
-            } else {
-                findValues(objectBuilder, value);
-            }
-            writeObject(builder, objectBuilder);
+            if (isArray(value))
+                writeArray(builder, value);
+            else
+                writeObject(builder, value);
         }
     }
 
     private Object[] buildCollection(Object value) {
         return ((Collection) value).toArray();
+    }
+
+    private void writeObject(JsonObjectBuilder builder, String name, Object value) {
+        JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+
+        if (isMap(value))
+            buildMap(value, objectBuilder);
+        else
+            findValues(objectBuilder, value);
+
+        builder.add(name, objectBuilder); //{"" : ...}
+    }
+
+    private void writeObject(JsonArrayBuilder builder, Object value) {
+        JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+
+        if (isMap(value))
+            buildMap(value, objectBuilder);
+        else
+            findValues(objectBuilder, value);
+
+        builder.add(objectBuilder); //[{},{}]
     }
 
     private void buildMap(Object value, JsonObjectBuilder objectBuilder) {
@@ -148,30 +150,32 @@ public class SimpleJWriter implements JWriter {
             write(objectBuilder, Array.get(keys, j).toString(), Array.get(values, j));
     }
 
-    private void writeObject(JsonObjectBuilder builder, String name, JsonObjectBuilder objectBuilder) {
-            builder.add(name, objectBuilder); //{"" : ...}
+    private void writeArray(JsonObjectBuilder builder, String name, Object value) {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        for (int j = 0; j < Array.getLength(value); ++j) {
+            write(arrayBuilder, Array.get(value, j));
+        }
+        builder.add(name, arrayBuilder);  //{"":[]}
     }
 
-    private void writeObject(JsonArrayBuilder builder, JsonObjectBuilder objectBuilder) {
-            builder.add(objectBuilder); //[{},{}]
-    }
+    private void writeArray(JsonArrayBuilder builder, Object value) {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-    private void writeArray(JsonObjectBuilder builder, String name, JsonArrayBuilder arrayBuilder) {
-            builder.add(name, arrayBuilder);  //{"":[]}
-    }
-
-    private void writeArray(JsonArrayBuilder builder, JsonArrayBuilder arrayBuilder) {
-            builder.add(arrayBuilder);  //[[],[]]
+        for (int j = 0; j < Array.getLength(value); ++j) {
+            write(arrayBuilder, Array.get(value, j));
+        }
+        builder.add(arrayBuilder);  //[[],[]]
     }
 
     @SuppressWarnings("unchecked")
     private void write(TypeAdapter adapter, JsonObjectBuilder builder, String name, Object value) {
-            adapter.write(builder, name, value);
+        adapter.write(builder, name, value);
     }
 
     @SuppressWarnings("unchecked")
     private void write(TypeAdapter adapter, JsonArrayBuilder builder, Object value) {
-            adapter.write(builder, value);
+        adapter.write(builder, value);
     }
 
     private boolean isArray(Object value) {
