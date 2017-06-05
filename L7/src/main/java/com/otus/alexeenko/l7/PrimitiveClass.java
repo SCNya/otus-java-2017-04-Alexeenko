@@ -9,13 +9,12 @@ import java.util.*;
  */
 
 public class PrimitiveClass implements Serializable {
+    private static final long serialVersionUID = 134297236593318752L;
 
-    private static final long serialVersionUID = -8925273805778027764L;
-
-    private int one = 1;
+    private final int one = 1;
     private final BigInteger bigInteger = BigInteger.valueOf(100500);
     private final double pi = Math.PI;
-    private char c = 'c';
+    private final char c = 'c';
     private final String str = "str";
     private Integer integer = 111;
     private boolean is = true;
@@ -25,7 +24,7 @@ public class PrimitiveClass implements Serializable {
     private final Transient trObj = new Transient();
     private final int[] primitives = {1, 2, 3};
     private final Object nullNull = null;
-    private transient String trString = "transient";
+    private final transient String trString = "transient";
     private final Map<Integer, String> map = new HashMap<>();
 
 
@@ -39,24 +38,12 @@ public class PrimitiveClass implements Serializable {
         map.put(3, "S3");
     }
 
-    public void setOne(int one) {
-        this.one = one;
-    }
-
-    public void setC(char c) {
-        this.c = c;
-    }
-
     public void setInteger(Integer integer) {
         this.integer = integer;
     }
 
     public void setIs(boolean is) {
         this.is = is;
-    }
-
-    public void setTrString(String trString) {
-        this.trString = trString;
     }
 
     @Override

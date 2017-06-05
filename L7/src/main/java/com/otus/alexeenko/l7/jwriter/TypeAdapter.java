@@ -3,6 +3,7 @@ package com.otus.alexeenko.l7.jwriter;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import javax.json.stream.JsonGenerator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -10,18 +11,27 @@ import java.math.BigInteger;
  * Created by Vsevolod on 01/06/2017.
  */
 public abstract class TypeAdapter<T> {
+
     public abstract void write(JsonObjectBuilder out, String name, T value);
+
     public abstract void write(JsonArrayBuilder out, T value);
+
+    public abstract void write(JsonGenerator out, T value);
 
     public static final TypeAdapter<Integer> INTEGER = new TypeAdapter<Integer>() {
         @Override
         public void write(JsonObjectBuilder out, String name, Integer value) {
-                out.add(name, value);
+            out.add(name, value);
         }
 
         @Override
         public void write(JsonArrayBuilder out, Integer value) {
-               out.add(value);
+            out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, Integer value) {
+            out.write(value);
         }
     };
 
@@ -35,6 +45,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, Long value) {
             out.add(value);
         }
+
+        @Override
+        public void write(JsonGenerator out, Long value) {
+            out.write(value);
+        }
     };
 
     public static final TypeAdapter<Byte> BYTE = new TypeAdapter<Byte>() {
@@ -46,6 +61,11 @@ public abstract class TypeAdapter<T> {
         @Override
         public void write(JsonArrayBuilder out, Byte value) {
             out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, Byte value) {
+            out.write(value);
         }
     };
 
@@ -59,6 +79,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, Short value) {
             out.add(value);
         }
+
+        @Override
+        public void write(JsonGenerator out, Short value) {
+            out.write(value);
+        }
     };
 
     public static final TypeAdapter<Double> DOUBLE = new TypeAdapter<Double>() {
@@ -70,6 +95,11 @@ public abstract class TypeAdapter<T> {
         @Override
         public void write(JsonArrayBuilder out, Double value) {
             out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, Double value) {
+            out.write(value);
         }
     };
 
@@ -83,6 +113,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, Float value) {
             out.add(value);
         }
+
+        @Override
+        public void write(JsonGenerator out, Float value) {
+            out.write(value);
+        }
     };
 
     public static final TypeAdapter<BigInteger> BIG_INTEGER = new TypeAdapter<BigInteger>() {
@@ -94,6 +129,11 @@ public abstract class TypeAdapter<T> {
         @Override
         public void write(JsonArrayBuilder out, BigInteger value) {
             out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, BigInteger value) {
+            out.write(value);
         }
     };
 
@@ -107,6 +147,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, BigDecimal value) {
             out.add(value);
         }
+
+        @Override
+        public void write(JsonGenerator out, BigDecimal value) {
+            out.write(value);
+        }
     };
 
     public static final TypeAdapter<JsonValue> JSON_VALUE = new TypeAdapter<JsonValue>() {
@@ -118,6 +163,11 @@ public abstract class TypeAdapter<T> {
         @Override
         public void write(JsonArrayBuilder out, JsonValue value) {
             out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, JsonValue value) {
+            out.write(value);
         }
     };
 
@@ -131,6 +181,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, Boolean value) {
             out.add(value);
         }
+
+        @Override
+        public void write(JsonGenerator out, Boolean value) {
+            out.write(value);
+        }
     };
 
     public static final TypeAdapter<Character> CHARACTER = new TypeAdapter<Character>() {
@@ -143,6 +198,11 @@ public abstract class TypeAdapter<T> {
         public void write(JsonArrayBuilder out, Character value) {
             out.add(String.valueOf(value));
         }
+
+        @Override
+        public void write(JsonGenerator out, Character value) {
+            out.write(String.valueOf(value));
+        }
     };
 
     public static final TypeAdapter<String> STRING = new TypeAdapter<String>() {
@@ -154,6 +214,11 @@ public abstract class TypeAdapter<T> {
         @Override
         public void write(JsonArrayBuilder out, String value) {
             out.add(value);
+        }
+
+        @Override
+        public void write(JsonGenerator out, String value) {
+            out.write(value);
         }
     };
 }

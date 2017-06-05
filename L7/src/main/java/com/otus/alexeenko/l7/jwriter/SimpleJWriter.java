@@ -4,6 +4,8 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import javax.json.stream.JsonGenerator;
+import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ import static com.otus.alexeenko.l7.jwriter.TypeAdapter.*;
  */
 public class SimpleJWriter implements JWriter {
     private static final Map<Class<?>, TypeAdapter<?>> adapters;
+    private final StringWriter result;
 
     static {
         Map<Class<?>, TypeAdapter<?>> typeAdaptersMap = new HashMap<>();
@@ -40,13 +43,34 @@ public class SimpleJWriter implements JWriter {
     }
 
     public SimpleJWriter() {
+        result = new StringWriter();
     }
 
     public String toJson(Object obj) {
-        return findValues(Json.createObjectBuilder(), obj).build().toString();
+        TypeAdapter adapter = adapters.get(obj.getClass());
+        JsonGenerator jGenerator = Json.createGenerator(result);
+
+        if (adapter != null) {
+            write(adapter, jGenerator, obj);
+            jGenerator.close();
+            return result.toString();
+        } else {
+            if (isCollection(obj))
+                obj = buildCollection(obj);
+
+            if (isArray(obj)) {
+                writeArray(jGenerator, obj);
+                jGenerator.close();
+                return result.toString();
+            } else {
+                writeObject(jGenerator, obj);
+                jGenerator.close();
+                return result.toString();
+            }
+        }
     }
 
-    private JsonObjectBuilder findValues(JsonObjectBuilder builder, Object obj) {
+    private void findValues(JsonObjectBuilder builder, Object obj) {
         Field[] fields = null;
         boolean[] accesses = null;
 
@@ -78,7 +102,6 @@ public class SimpleJWriter implements JWriter {
                         fields[i].setAccessible(false);
             }
         }
-        return builder;
     }
 
     private void write(JsonObjectBuilder builder, String name, Object value) {
@@ -115,10 +138,6 @@ public class SimpleJWriter implements JWriter {
         }
     }
 
-    private Object[] buildCollection(Object value) {
-        return ((Collection) value).toArray();
-    }
-
     private void writeObject(JsonObjectBuilder builder, String name, Object value) {
         JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
@@ -139,6 +158,17 @@ public class SimpleJWriter implements JWriter {
             findValues(objectBuilder, value);
 
         builder.add(objectBuilder); //[{},{}]
+    }
+
+    private void writeObject(JsonGenerator builder, Object value) {
+        JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+
+        if (isMap(value))
+            buildMap(value, objectBuilder);
+        else
+            findValues(objectBuilder, value);
+
+        builder.write(objectBuilder.build()); //[{},{}]
     }
 
     private void buildMap(Object value, JsonObjectBuilder objectBuilder) {
@@ -168,6 +198,15 @@ public class SimpleJWriter implements JWriter {
         builder.add(arrayBuilder);  //[[],[]]
     }
 
+    private void writeArray(JsonGenerator builder, Object value) {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        for (int j = 0; j < Array.getLength(value); ++j) {
+            write(arrayBuilder, Array.get(value, j));
+        }
+        builder.write(arrayBuilder.build());  //[[],[]]
+    }
+
     @SuppressWarnings("unchecked")
     private void write(TypeAdapter adapter, JsonObjectBuilder builder, String name, Object value) {
         adapter.write(builder, name, value);
@@ -176,6 +215,15 @@ public class SimpleJWriter implements JWriter {
     @SuppressWarnings("unchecked")
     private void write(TypeAdapter adapter, JsonArrayBuilder builder, Object value) {
         adapter.write(builder, value);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void write(TypeAdapter adapter, JsonGenerator builder, Object value) {
+        adapter.write(builder, value);
+    }
+
+    private Object[] buildCollection(Object value) {
+        return ((Collection) value).toArray();
     }
 
     private boolean isArray(Object value) {
