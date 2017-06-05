@@ -28,10 +28,10 @@ public class GCLogger {
     private static final Logger logger = Logger.getLogger("Log");
     private static final Timer timer = new Timer();
     private static final ReentrantLock locker = new ReentrantLock();
-    private volatile static int young;
-    private volatile static int youngTime;
-    private volatile static int old;
-    private volatile static int oldTime;
+    private static int young;
+    private static int youngTime;
+    private static int old;
+    private static int oldTime;
 
 
     private static void initLog() throws Exception {
