@@ -110,4 +110,12 @@ public class JWriterTest {
 
         assertEquals(json1, json2);
     }
+
+    @Test
+    public void nullTest() {
+        String json1 = gson.toJson(null);
+        String json2 = jWriter.toJson(null);
+
+        assertEquals(json1, json2);
+    }
 }

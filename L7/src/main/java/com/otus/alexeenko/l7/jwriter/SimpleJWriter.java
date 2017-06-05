@@ -47,26 +47,33 @@ public class SimpleJWriter implements JWriter {
     }
 
     public String toJson(Object obj) {
-        TypeAdapter adapter = adapters.get(obj.getClass());
         JsonGenerator jGenerator = Json.createGenerator(result);
 
-        if (adapter != null) {
-            write(adapter, jGenerator, obj);
-            jGenerator.close();
-            return result.toString();
-        } else {
-            if (isCollection(obj))
-                obj = buildCollection(obj);
+        if (obj != null) {
+            TypeAdapter adapter = adapters.get(obj.getClass());
 
-            if (isArray(obj)) {
-                writeArray(jGenerator, obj);
+            if (adapter != null) {
+                write(adapter, jGenerator, obj);
                 jGenerator.close();
                 return result.toString();
             } else {
-                writeObject(jGenerator, obj);
-                jGenerator.close();
-                return result.toString();
+                if (isCollection(obj))
+                    obj = buildCollection(obj);
+
+                if (isArray(obj)) {
+                    writeArray(jGenerator, obj);
+                    jGenerator.close();
+                    return result.toString();
+                } else {
+                    writeObject(jGenerator, obj);
+                    jGenerator.close();
+                    return result.toString();
+                }
             }
+        } else {
+            jGenerator.writeNull();
+            jGenerator.close();
+            return result.toString();
         }
     }
 
