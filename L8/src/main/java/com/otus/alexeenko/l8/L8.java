@@ -7,7 +7,6 @@ import com.otus.alexeenko.l8.services.datasets.PhoneDataSet;
 import com.otus.alexeenko.l8.services.datasets.UserDataSet;
 
 import javax.naming.NamingException;
-import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +22,12 @@ public class L8 {
 
         DataBaseService db = new CustomService();
 
-        UserDataSet dataSet = new UserDataSet(BigInteger.ONE, "First", 22,
-                phones, new AddressDataSet("Sandyway", 200));
+        UserDataSet dataSet = new UserDataSet(1, "First", 22,
+                phones, new AddressDataSet(1, "King''s Row", 200));
 
         db.save(dataSet);
 
-        UserDataSet result = db.load(BigInteger.ONE, UserDataSet.class);
+        UserDataSet result = db.load(1, UserDataSet.class);
 
         System.out.println(result.toString());
     }

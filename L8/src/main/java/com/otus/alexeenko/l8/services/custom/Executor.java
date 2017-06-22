@@ -17,7 +17,7 @@ public class Executor {
         this.connection = connection;
     }
 
-    public <T> void execUpdate(String query) {
+    public void execUpdate(String query) {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(query);
         }
@@ -28,8 +28,7 @@ public class Executor {
 
     public <T> T execQuery(String query, ResultHandler<T> handler) {
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);
-            try (ResultSet result = stmt.getResultSet()){
+            try (ResultSet result = stmt.executeQuery(query)){
                 return handler.handle(result);
             }
         }

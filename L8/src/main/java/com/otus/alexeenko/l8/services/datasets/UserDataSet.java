@@ -1,7 +1,6 @@
 package com.otus.alexeenko.l8.services.datasets;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.List;
 
 @Entity
@@ -11,7 +10,7 @@ public class UserDataSet extends BaseDataSet {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "age", columnDefinition = "int default 0")
+    @Column(name = "age")
     private int age;
 
     @OneToMany
@@ -21,14 +20,13 @@ public class UserDataSet extends BaseDataSet {
     private List<PhoneDataSet> phones;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @Column(name = "address")
     private AddressDataSet address;
 
     //Important for Hibernate
     public UserDataSet() {
     }
 
-    public UserDataSet(BigInteger id, String name, int age, List<PhoneDataSet> phones, AddressDataSet address) {
+    public UserDataSet(long id, String name, int age, List<PhoneDataSet> phones, AddressDataSet address) {
         super.setId(id);
         this.name = name;
         this.age = age;

@@ -1,20 +1,19 @@
 package com.otus.alexeenko.l8.services.datasets;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @MappedSuperclass
 public abstract class BaseDataSet {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private long id;
 
-    public BigInteger getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 

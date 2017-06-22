@@ -9,7 +9,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "Address")
+@Table(name = "addresses")
 public class AddressDataSet extends BaseDataSet {
 
     @Column(name = "street")
@@ -21,7 +21,8 @@ public class AddressDataSet extends BaseDataSet {
     public AddressDataSet() {
     }
 
-    public AddressDataSet(String street, int index) {
+    public AddressDataSet(long id, String street, int index) {
+        super.setId(id);
         this.street = street;
         this.index = index;
     }

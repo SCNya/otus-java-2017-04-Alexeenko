@@ -7,7 +7,6 @@ import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.Server;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -71,7 +70,7 @@ public class CustomService implements DataBaseService {
     }
 
     @Override
-    public <T extends BaseDataSet> T load(BigInteger id, Class<T> clazz) {
+    public <T extends BaseDataSet> T load(long id, Class<T> clazz) {
         try (Connection connection = connections.getConnection()) {
             UserDAO dao = new UserDAO(connection);
             return dao.load(id, clazz);
