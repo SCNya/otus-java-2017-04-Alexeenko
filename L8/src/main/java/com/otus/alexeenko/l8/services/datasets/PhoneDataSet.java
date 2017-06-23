@@ -3,6 +3,7 @@ package com.otus.alexeenko.l8.services.datasets;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "phones")
@@ -22,6 +23,12 @@ public class PhoneDataSet extends BaseDataSet {
         this.number = number;
     }
 
+    public PhoneDataSet(long id, int code, String number) {
+        super.setId(id);
+        this.code = code;
+        this.number = number;
+    }
+
     public int getCode() {
         return code;
     }
@@ -31,10 +38,19 @@ public class PhoneDataSet extends BaseDataSet {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneDataSet that = (PhoneDataSet) o;
+        return code == that.code &&
+                Objects.equals(number, that.number);
+    }
+
+    @Override
     public String toString() {
         return "PhoneDataSet{" +
                 "code=" + code +
                 ", number='" + number + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

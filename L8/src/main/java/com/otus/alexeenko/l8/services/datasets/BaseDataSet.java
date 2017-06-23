@@ -9,6 +9,9 @@ public abstract class BaseDataSet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    public BaseDataSet() {
+    }
+
     public long getId() {
         return id;
     }

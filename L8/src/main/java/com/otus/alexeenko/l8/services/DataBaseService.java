@@ -8,4 +8,5 @@ import com.otus.alexeenko.l8.services.datasets.BaseDataSet;
 public interface DataBaseService {
     <T extends BaseDataSet> void save(T dataSet);
     <T extends BaseDataSet> T load(long id, Class<T> clazz);
+    void dispose();
 }

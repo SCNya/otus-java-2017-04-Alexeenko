@@ -3,6 +3,7 @@ package com.otus.alexeenko.l8.services.datasets;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * Created by Vsevolod on 13/06/2017.
@@ -36,10 +37,24 @@ public class AddressDataSet extends BaseDataSet {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressDataSet that = (AddressDataSet) o;
+        return index == that.index &&
+                Objects.equals(street, that.street);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return "AddressDataSet{" +
                 "street='" + street + '\'' +
                 ", index=" + index +
-                '}';
+                "} " + super.toString();
     }
 }

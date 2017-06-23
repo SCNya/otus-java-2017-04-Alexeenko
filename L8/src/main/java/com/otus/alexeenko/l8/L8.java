@@ -6,8 +6,6 @@ import com.otus.alexeenko.l8.services.datasets.AddressDataSet;
 import com.otus.alexeenko.l8.services.datasets.PhoneDataSet;
 import com.otus.alexeenko.l8.services.datasets.UserDataSet;
 
-import javax.naming.NamingException;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,19 +14,27 @@ import java.util.List;
  */
 public class L8 {
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, NamingException {
+    public static void main(String[] args) throws InterruptedException {
+        org.apache.log4j.BasicConfigurator.configure();
 
         List<PhoneDataSet> phones = Arrays.asList(new PhoneDataSet(911, "1"), new PhoneDataSet(921, "2"));
 
         DataBaseService db = new CustomService();
 
-        UserDataSet dataSet = new UserDataSet(1, "First", 22,
-                phones, new AddressDataSet(1, "King''s Row", 200));
+        UserDataSet dataSet = new UserDataSet(1L, "First", 22,
+                phones, new AddressDataSet(1L, "Kings Row", 200));
 
         db.save(dataSet);
 
-        UserDataSet result = db.load(1, UserDataSet.class);
+        UserDataSet result = null;
+
+        for (int i = 0; i < 10; ++i) {
+            result = db.load(1L, UserDataSet.class);
+            Thread.sleep(2000);
+        }
 
         System.out.println(result.toString());
+
+        db.dispose();
     }
 }

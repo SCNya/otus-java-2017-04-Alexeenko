@@ -44,7 +44,7 @@ public class Loader {
                         if (isOneToMany(field))
                             if (isCollection(field.getType())) {
                                 createOneToMany(dataSetObject, field);
-                        }
+                            }
                         if (isOneToOne(field))
                             createOneToOne(dataSetObject, field);
                     }
