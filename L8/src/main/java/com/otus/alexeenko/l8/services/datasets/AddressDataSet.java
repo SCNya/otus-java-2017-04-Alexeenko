@@ -28,6 +28,14 @@ public class AddressDataSet extends BaseDataSet {
         this.index = index;
     }
 
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public String getStreet() {
         return street;
     }

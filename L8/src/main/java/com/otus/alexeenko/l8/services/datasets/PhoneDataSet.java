@@ -18,11 +18,6 @@ public class PhoneDataSet extends BaseDataSet {
     public PhoneDataSet() {
     }
 
-    public PhoneDataSet(int code, String number) {
-        this.code = code;
-        this.number = number;
-    }
-
     public PhoneDataSet(long id, int code, String number) {
         super.setId(id);
         this.code = code;

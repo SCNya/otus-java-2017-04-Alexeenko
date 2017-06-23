@@ -74,27 +74,35 @@ public class InsertCreator implements Creator {
 
     private void buildOneToManyInsert(Object currentDataSet, Field field) {
         Object value = getValue(currentDataSet, field);
-        Object[] array = buildCollection(value);
 
-        for (int i = 0; i < Array.getLength(array); ++i) {
-            InsertQueryBuilder oneToManyInsert = createInsertBuilder(getGenericClass(field));
-            queries.add(oneToManyInsert);
+        if (value != null) {
+            Object[] array = buildCollection(value);
 
-            oneToManyInsert.addValue(getJoinColumnName(field, getTableName(currentDataSet.getClass())),
-                    getID(currentDataSet));
-            buildInsert(oneToManyInsert, Array.get(array, i));
+            for (int i = 0; i < Array.getLength(array); ++i) {
+                InsertQueryBuilder oneToManyInsert = createInsertBuilder(getGenericClass(field));
+                queries.add(oneToManyInsert);
+
+                oneToManyInsert.addValue(getJoinColumnName(field, getTableName(currentDataSet.getClass())),
+                        getID(currentDataSet));
+                buildInsert(oneToManyInsert, Array.get(array, i));
+            }
         }
     }
 
     private void buildOneToOneInsert(InsertQueryBuilder query, Object currentDataSet, Field field) {
-        String id = getID(currentDataSet);
-        query.addValue(getJoinColumnName(field, field.getName()), id);
+        Object value = getValue(currentDataSet, field);
 
-        InsertQueryBuilder oneToOneInsert = createInsertBuilder(field.getType());
-        queries.add(oneToOneInsert);
+        if (value != null) {
+            String id = getID(currentDataSet);
+            query.addValue(getJoinColumnName(field, field.getName()), id);
 
-        oneToOneInsert.addValue(getInverseJoinColumnName(field), id);
-        buildInsert(oneToOneInsert, getValue(currentDataSet, field));
+            InsertQueryBuilder oneToOneInsert = createInsertBuilder(field.getType());
+            queries.add(oneToOneInsert);
+
+            oneToOneInsert.addValue(getInverseJoinColumnName(field), id);
+
+            buildInsert(oneToOneInsert, value);
+        }
     }
 
     private String getID(Object currentDataSet) {

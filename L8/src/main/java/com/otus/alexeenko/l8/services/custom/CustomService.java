@@ -27,19 +27,19 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class CustomService implements DataBaseService {
     private static final String DB_NAME = "otus";
-    private static final Logger LOGGER = getLogger(CustomService.class);
+    private static final Logger LOGGER = getLogger("Cache");
 
     private final Server server;
     private final JdbcConnectionPool connections;
     private final CacheManager cacheManager;
-    private final Cache<Class, Object> cache;
+    private final Cache<Key, Object> cache;
 
     public CustomService() {
         check();
 
         cacheManager = getCacheManager();
 
-        cache = cacheManager.getCache("userCache", Class.class, Object.class);
+        cache = cacheManager.getCache("userCache", Key.class, Object.class);
 
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
@@ -60,7 +60,7 @@ public class CustomService implements DataBaseService {
 
         cacheManager = getCacheManager();
 
-        cache = cacheManager.getCache("userCache", Class.class, Object.class);
+        cache = cacheManager.getCache("userCache", Key.class, Object.class);
 
         connections = JdbcConnectionPool.create(dataSource);
     }
@@ -68,7 +68,7 @@ public class CustomService implements DataBaseService {
     private CacheManager getCacheManager() {
         return CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("userCache",
-                        CacheConfigurationBuilder.newCacheConfigurationBuilder(Class.class, Object.class,
+                        CacheConfigurationBuilder.newCacheConfigurationBuilder(Key.class, Object.class,
                                 ResourcePoolsBuilder.newResourcePoolsBuilder()
                                         .heap(1, MemoryUnit.MB))
                                 .withSizeOfMaxObjectGraph(100)
@@ -77,15 +77,15 @@ public class CustomService implements DataBaseService {
     }
 
     private Server startLocalServer() {
-        Server TCPServer = null;
+        Server TcpServer = null;
 
         try {
-            TCPServer = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
+            TcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return TCPServer;
+        return TcpServer;
     }
 
     private void check() {
@@ -111,14 +111,15 @@ public class CustomService implements DataBaseService {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends BaseDataSet> T load(long id, Class<T> clazz) {
-        T value = (T) cache.get(clazz);
+        Key key = new Key(id, clazz);
+        T value = (T) cache.get(key);
 
         if (value == null) {
             LOGGER.info("Cache miss!");
             try (Connection connection = connections.getConnection()) {
                 UserDAO dao = new UserDAO(connection);
                 value = dao.load(id, clazz);
-                cache.put(clazz, value);
+                cache.put(key, value);
 
                 return value;
             } catch (SQLException e) {
@@ -135,8 +136,9 @@ public class CustomService implements DataBaseService {
     public void dispose() {
         connections.dispose();
 
-        if (server != null)
+        if (server != null) {
             server.stop();
+        }
 
         cacheManager.close();
     }

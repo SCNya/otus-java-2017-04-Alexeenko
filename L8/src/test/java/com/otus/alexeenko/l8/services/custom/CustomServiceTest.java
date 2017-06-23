@@ -4,8 +4,7 @@ import com.otus.alexeenko.l8.services.DataBaseService;
 import com.otus.alexeenko.l8.services.datasets.AddressDataSet;
 import com.otus.alexeenko.l8.services.datasets.PhoneDataSet;
 import com.otus.alexeenko.l8.services.datasets.UserDataSet;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,40 +17,70 @@ import static org.junit.Assert.assertEquals;
  * Created by Vsevolod on 23/06/2017.
  */
 public class CustomServiceTest {
-    private final long id = 1L;
-    private final DataBaseService db = new CustomService();
-    private final UserDataSet dataSet = new UserDataSet();
+    private final static long ID_1 = 1L;
+    private final static long ID_2 = 2L;
 
-    @BeforeClass
-    public static void turnOnLogger() {
+    static {
         org.apache.log4j.BasicConfigurator.configure();
     }
 
-    @Before
-    public void beforeCustomServiceTest() {
-        AddressDataSet address = new AddressDataSet(id, "Kings Row", 200);
-        List<PhoneDataSet> phones = new ArrayList<>();
-        phones.add(new PhoneDataSet(id, 911, "1"));
-        phones.add(new PhoneDataSet(id + 1L, 921, "2"));
+    private final static DataBaseService db = new CustomService();
+    private final static UserDataSet dataSet = new UserDataSet();
+    private final static AddressDataSet address = new AddressDataSet();
+    private final static List<PhoneDataSet> phones = new ArrayList<>();
 
-        dataSet.setId(id);
+    @BeforeClass
+    public static void initDB() {
+        address.setId(ID_1);
+        address.setStreet("Kings Row");
+        address.setIndex(90);
+
+        phones.add(new PhoneDataSet(ID_1, 911, "1"));
+        phones.add(new PhoneDataSet(ID_2, 921, "2"));
+
+        dataSet.setId(ID_1);
         dataSet.setName("First");
         dataSet.setAge(22);
         dataSet.setAddress(address);
         dataSet.setPhones(phones);
+
+        db.save(dataSet);
     }
 
     @Test
-    public void saveAndLoad() {
-        db.save(dataSet);
+    public void Save1() {
+        UserDataSet userDataSet2 = new UserDataSet(2L, "Second", 17,
+                phones, new AddressDataSet(2L, "Dorado", 200));
 
-        UserDataSet userDataSet = db.load(id, UserDataSet.class);
+        db.save(userDataSet2);
+    }
+
+
+    @Test
+    public void Load1() {
+        UserDataSet userDataSet = db.load(ID_1, UserDataSet.class);
 
         assertEquals(dataSet, userDataSet);
     }
 
-    @After
-    public void dispose() {
+    @Test
+    public void Load2() {
+        PhoneDataSet phoneDataSet1 = db.load(ID_1, PhoneDataSet.class);
+        PhoneDataSet phoneDataSet2 = db.load(ID_2, PhoneDataSet.class);
+
+        assertEquals(phoneDataSet1, phones.get((int) ID_1 - 1));
+        assertEquals(phoneDataSet2, phones.get((int) ID_2 - 1));
+    }
+
+    @Test
+    public void Load3() {
+        AddressDataSet addressDataSet = db.load(ID_1, AddressDataSet.class);
+
+        assertEquals(addressDataSet, address);
+    }
+
+    @AfterClass
+    public static void dispose() {
         db.dispose();
     }
 }
