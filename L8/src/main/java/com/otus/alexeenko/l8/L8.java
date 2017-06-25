@@ -33,7 +33,7 @@ public class L8 {
             db.save(dataSet2);
 
             for (int i = 0; i < 10; ++i) {
-                if (i % 2 == 0)
+                if (i % 5 == 3)
                     db.load(2L, UserDataSet.class);
                 else
                     db.load(1L, UserDataSet.class);
