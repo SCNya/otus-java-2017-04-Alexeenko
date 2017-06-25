@@ -29,16 +29,18 @@
     </dependencies>
 
     <build>
+        <finalName>L6</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <mainClass>com.otus.alexeenko.l6.L6</mainClass>
                         </manifest>
                     </archive>
-                    <finalName>L6</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
