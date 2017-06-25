@@ -27,7 +27,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class CustomService implements DataBaseService {
     private static final String DB_NAME = "otus";
-    private static final Logger LOGGER = getLogger("Cache");
+    private static final Logger CACHE_LOGGER = getLogger("Cache");
 
     private final Server server;
     private final JdbcConnectionPool connections;
@@ -115,7 +115,7 @@ public class CustomService implements DataBaseService {
         T value = (T) cache.get(key);
 
         if (value == null) {
-            LOGGER.info("Cache miss!");
+            CACHE_LOGGER.info("Cache miss!");
             try (Connection connection = connections.getConnection()) {
                 UserDAO dao = new UserDAO(connection);
                 value = dao.load(id, clazz);
@@ -127,7 +127,7 @@ public class CustomService implements DataBaseService {
                 return null;
             }
         } else {
-            LOGGER.info("Cache hit!");
+            CACHE_LOGGER.info("Cache hit!");
             return value;
         }
     }

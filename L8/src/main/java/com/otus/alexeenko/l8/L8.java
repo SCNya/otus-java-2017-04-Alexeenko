@@ -32,16 +32,15 @@ public class L8 {
 
             db.save(dataSet2);
 
-            UserDataSet result = null;
-
             for (int i = 0; i < 10; ++i) {
-                result = db.load(2L, UserDataSet.class);
+                if (i % 2 == 0)
+                    db.load(2L, UserDataSet.class);
+                else
+                    db.load(1L, UserDataSet.class);
                 Thread.sleep(2000);
             }
 
-            System.out.println(result.toString());
-
-            result = db.load(1L, UserDataSet.class);
+            UserDataSet result = db.load(1L, UserDataSet.class);
 
             System.out.println(result.toString());
         } catch (Exception e) {
