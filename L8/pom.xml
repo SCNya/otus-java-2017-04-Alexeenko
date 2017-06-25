@@ -47,16 +47,18 @@
     </dependencies>
 
     <build>
+        <finalName>L8</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <mainClass>com.otus.alexeenko.l8.L8</mainClass>
                         </manifest>
                     </archive>
-                    <finalName>L8</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
