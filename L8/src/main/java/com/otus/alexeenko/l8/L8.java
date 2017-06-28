@@ -17,7 +17,8 @@ public class L8 {
     public static void main(String[] args) {
         org.apache.log4j.BasicConfigurator.configure();
 
-        List<PhoneDataSet> phones = Arrays.asList(new PhoneDataSet(1L, 911, "1"), new PhoneDataSet(2L, 921, "2"));
+        List<PhoneDataSet> phones = Arrays.asList(new PhoneDataSet(1L, 911, "1"),
+                new PhoneDataSet(2L, 921, "2"));
 
         UserDataSet dataSet1 = new UserDataSet(1L, "First", 22,
                 phones, new AddressDataSet(1L, "Kings Row", 90));
