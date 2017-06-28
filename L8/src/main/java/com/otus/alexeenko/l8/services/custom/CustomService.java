@@ -3,19 +3,23 @@ package com.otus.alexeenko.l8.services.custom;
 import com.otus.alexeenko.l8.services.DataBaseService;
 import com.otus.alexeenko.l8.services.custom.dao.UserDAO;
 import com.otus.alexeenko.l8.services.datasets.BaseDataSet;
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
+import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.units.MemoryUnit;
-import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
+import org.ehcache.jsr107.Eh107Configuration;
+import org.ehcache.jsr107.config.ConfigurationElementState;
+import org.ehcache.jsr107.config.Jsr107CacheConfiguration;
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.Configuration;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
@@ -37,9 +41,8 @@ public class CustomService implements DataBaseService {
     public CustomService() {
         check();
 
-        cacheManager = getCacheManager();
-
-        cache = cacheManager.getCache("userCache", Key.class, Object.class);
+        cacheManager = Caching.getCachingProvider().getCacheManager();
+        cache = cacheManager.createCache("userCache", createConfiguration(Key.class, Object.class));
 
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
@@ -47,8 +50,6 @@ public class CustomService implements DataBaseService {
         dataSource.setPassword("");
 
         server = startLocalServer();
-
-
         connections = JdbcConnectionPool.create(dataSource);
     }
 
@@ -57,23 +58,21 @@ public class CustomService implements DataBaseService {
         check();
 
         server = null;
-
-        cacheManager = getCacheManager();
-
-        cache = cacheManager.getCache("userCache", Key.class, Object.class);
+        cacheManager = Caching.getCachingProvider().getCacheManager();
+        cache = cacheManager.createCache("userCache", createConfiguration(Key.class, Object.class));
 
         connections = JdbcConnectionPool.create(dataSource);
     }
 
-    private CacheManager getCacheManager() {
-        return CacheManagerBuilder.newCacheManagerBuilder()
-                .withCache("userCache",
-                        CacheConfigurationBuilder.newCacheConfigurationBuilder(Key.class, Object.class,
-                                ResourcePoolsBuilder.newResourcePoolsBuilder()
-                                        .heap(1, MemoryUnit.MB))
-                                .withSizeOfMaxObjectGraph(100)
-                                .withExpiry(Expirations.timeToLiveExpiration(new Duration(10, TimeUnit.SECONDS))))
-                .build(true);
+    private <K, V> Configuration<K, V> createConfiguration(Class<K> keyClass, Class<V> valueClass) {
+        CacheConfiguration<K, V> cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(keyClass, valueClass,
+                ResourcePoolsBuilder.newResourcePoolsBuilder()
+                        .heap(1, MemoryUnit.MB))
+                .withExpiry(Expirations.timeToLiveExpiration(org.ehcache.expiry.Duration.of(10, TimeUnit.SECONDS)))
+                .add(new Jsr107CacheConfiguration(ConfigurationElementState.ENABLED, ConfigurationElementState.ENABLED))
+                .build();
+
+        return Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration);
     }
 
     private Server startLocalServer() {
