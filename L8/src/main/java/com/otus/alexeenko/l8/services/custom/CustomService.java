@@ -22,6 +22,7 @@ import javax.cache.Caching;
 import javax.cache.configuration.Configuration;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -30,6 +31,30 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by Vsevolod on 11/06/2017.
  */
 public class CustomService implements DataBaseService {
+    private static class Key {
+        private final long id;
+        private final Class clazz;
+
+        public Key(long id, Class clazz) {
+            this.id = id;
+            this.clazz = clazz;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Key key = (Key) o;
+            return id == key.id &&
+                    Objects.equals(clazz, key.clazz);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, clazz);
+        }
+    }
+
     private static final String DB_NAME = "otus";
     private static final Logger CACHE_LOGGER = getLogger("Cache");
 
