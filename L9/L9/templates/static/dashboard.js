@@ -41,41 +41,43 @@ var transforms = {
 	};
 
 function init() {
-$.getJSON('/statistics.json', function(data) {
- $('#infoTable').json2html(data, transforms.statistics);
+    $.getJSON('/statistics.json', function (data) {
+        $('#infoTable').json2html(data, transforms.statistics);
 
- $.getJSON('/management.json', function(data) {
- $('#infoTable').json2html(data, transforms.management);
+        $.getJSON('/management.json', function (data) {
+            $('#infoTable').json2html(data, transforms.management);
 
- $('#policySelect').val(data.policy);
+            $('#policySelect').val(data.policy);
 
- $('#apply').click(function(e) {
-   $.ajax({
-       url: '/management.json',
-       type: "POST",
-       dataType: "json",
-       data: JSON.stringify({
-                               policy:$('#policySelect').val(),
-                               time:parseInt($('#time').val())
-                               }),
-       contentType: "application/json; charset=UTF-8"
-   });
- });
+            $('#apply').click(function (e) {
+                $.ajax({
+                    url: '/management.json',
+                    type: "POST",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        policy: $('#policySelect').val(),
+                        time: parseInt($('#time').val())
+                    }),
+                    contentType: "application/json; charset=UTF-8"
+                });
+            });
 
-});
+        });
 
-});
+    });
 }
 
 function update() {
-$.getJSON('/statistics.json', function(data) {
-var table = document.getElementById('infoTable');
+    $.getJSON('/statistics.json', function (data) {
+            var table = document.getElementById('infoTable');
 
-for(var i = 1; i < data.length; i += 1){
-table.rows[i].cells.item(1).innerHTML = data[i].value;
-  }
-})
-.fail(function(jqXHR, textStatus, errorThrown) { clearInterval(updater); });
+            for (var i = 1; i < data.length; i += 1) {
+                table.rows[i].cells.item(1).innerHTML = data[i].value;
+            }
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            clearInterval(updater);
+        });
 }
 
 init();
