@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Created by Vsevolod on 29/06/2017.
  */
-public class Statistics extends HttpServlet implements MyServlet {
+public class Statistics extends HttpServlet implements MyJsonServlet {
     private final Set<String> sessions;
     private final CacheStatisticsMBean statisticsMBean;
 

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Vsevolod on 29/06/2017.
  */
-public class Management extends HttpServlet implements MyServlet {
+public class Management extends HttpServlet implements MyJsonServlet {
     private final Set<String> sessions;
     private final CacheConfigurationMBean configurationMBean;
 

@@ -58,7 +58,7 @@ $.getJSON('/statistics.json', function(data) {
                                policy:$('#policySelect').val(),
                                time:parseInt($('#time').val())
                                }),
-       contentType: "application/json"
+       contentType: "application/json; charset=UTF-8"
    });
  });
 
