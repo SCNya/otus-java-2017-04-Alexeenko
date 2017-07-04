@@ -55,7 +55,7 @@ public class MyServer {
         Management managementServlet = new Management(sessions, cacheConfigurationMBean);
 
         ServletHolder staticServletHolder = new ServletHolder("static", DefaultServlet.class);
-        staticServletHolder.setInitParameter("resourceBase", "L9/templates/static");
+        staticServletHolder.setInitParameter("resourceBase", "templates/static");
 
         server = new Server(PORT);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);

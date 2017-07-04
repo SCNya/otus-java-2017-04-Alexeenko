@@ -17,7 +17,7 @@ public class L9 {
     private static MyServer server;
 
     public static void main(String[] args) throws Exception {
-        org.apache.log4j.BasicConfigurator.configure();
+        initLog();
         db = new CustomService();
         server = new MyServer();
 
@@ -33,6 +33,10 @@ public class L9 {
                 phones, new AddressDataSet(2L, "Dorado", 200));
 
         work(dataSet1, dataSet2);
+    }
+
+    private static void initLog() {
+        org.apache.log4j.BasicConfigurator.configure();
     }
 
     private static void work(UserDataSet dataSet1, UserDataSet dataSet2) throws Exception {
