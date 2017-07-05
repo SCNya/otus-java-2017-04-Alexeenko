@@ -68,7 +68,7 @@ public class CustomService implements DataBaseService {
         createCache(CACHE_NAME);
         cache = cacheManager.getCache(CACHE_NAME);
 
-        registerMBean();
+        registerMBeans();
 
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
@@ -79,7 +79,7 @@ public class CustomService implements DataBaseService {
         connections = JdbcConnectionPool.create(dataSource);
     }
 
-    private void registerMBean() {
+    private void registerMBeans() {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ManagementService.registerMBeans(cacheManager, mBeanServer, false, false,
                 true, true);
@@ -94,7 +94,7 @@ public class CustomService implements DataBaseService {
         createCache(CACHE_NAME);
         cache = cacheManager.getCache(CACHE_NAME);
 
-        registerMBean();
+        registerMBeans();
 
         connections = JdbcConnectionPool.create(dataSource);
     }
