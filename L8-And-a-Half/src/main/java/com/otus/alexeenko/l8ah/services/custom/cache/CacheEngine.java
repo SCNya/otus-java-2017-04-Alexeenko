@@ -44,12 +44,12 @@ public class CacheEngine implements Cache {
     private final ScheduledExecutorService executorService;
     private final ReentrantLock lock;
 
-    public CacheEngine(String name, MemoryStoreEvictionPolicy policy, Duration expire, int maxEntries) {
+    public CacheEngine(String name, MemoryStoreEvictionPolicy policy, Duration timeToLiveSeconds, int maxEntriesLocalHeap) {
         this.lock = new ReentrantLock();
         this.name = name;
         this.policy = policy;
-        this.expiry = expire;
-        this.maxEntries = maxEntries;
+        this.expiry = timeToLiveSeconds;
+        this.maxEntries = maxEntriesLocalHeap;
         this.cache = new LinkedHashMap<>();
         this.executorService = Executors.newSingleThreadScheduledExecutor();
 
