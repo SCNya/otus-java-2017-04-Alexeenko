@@ -68,9 +68,7 @@ public class CacheEngine implements Cache {
         Value value = cache.get(key);
 
         if (value != null) {
-            if (isExpiryTimeStamp(value.getTimeStamp())) {
-                cache.remove(key);
-            } else {
+            if (!isExpiryTimeStamp(value.getTimeStamp())) {
                 value.usageCounter++;
                 lock.unlock();
                 return value.getValue();
@@ -118,13 +116,13 @@ public class CacheEngine implements Cache {
     }
 
     private void removeLeastRecentlyUsed() {
-        long max = 0;
+        long max;
         long current;
         Iterator<Value> maxIt;
         Iterator<Value> it = cache.values().iterator();
 
         if (it.hasNext()) {
-            it.next();
+            max = it.next().usageCounter;
             maxIt = it;
 
             while (it.hasNext()) {
@@ -141,7 +139,9 @@ public class CacheEngine implements Cache {
 
     private void check() {
         lock.lock();
-        for (Iterator<Value> it = cache.values().iterator(); it.hasNext(); ) {
+        Iterator<Value> it = cache.values().iterator();
+
+        while(it.hasNext()) {
             if (isExpiryTimeStamp(it.next().getTimeStamp()))
                 it.remove();
             else
