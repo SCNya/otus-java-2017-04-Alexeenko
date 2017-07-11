@@ -13,15 +13,15 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by Vsevolod on 06/07/2017.
  */
-public class CacheEngine implements Cache {
+public class CacheEngine<K, V> implements Cache<K, V> {
     private static final int DURATION_OF_MAINTENANCE = 2; //S
 
     private class Value {
         private final long timeStamp;
-        private final SoftReference<Object> value;
+        private final SoftReference<V> value;
         private long usageCounter;
 
-        public Value(long timeStamp, Object obj) {
+        public Value(long timeStamp, V obj) {
             this.usageCounter = 0;
             this.timeStamp = timeStamp;
             this.value = new SoftReference<>(obj);
@@ -31,7 +31,7 @@ public class CacheEngine implements Cache {
             return timeStamp;
         }
 
-        public Object getValue() {
+        public V getValue() {
             return value.get();
         }
     }
@@ -63,45 +63,54 @@ public class CacheEngine implements Cache {
     }
 
     @Override
-    public Object get(Object key) {
+    public V get(K key) {
         lock.lock();
-        Value value = cache.get(key);
+        try {
+            Value value = cache.get(key);
 
-        if (value != null) {
-            if (!isExpiryTimeStamp(value.getTimeStamp())) {
-                value.usageCounter++;
-                lock.unlock();
-                return value.getValue();
+            if (value != null) {
+                if (!isExpiryTimeStamp(value.getTimeStamp())) {
+                    value.usageCounter++;
+                    lock.unlock();
+                    return value.getValue();
+                }
             }
-        }
 
-        lock.unlock();
+        } finally {
+            lock.unlock();
+        }
         return null;
     }
 
     @Override
-    public void put(Object key, Object value) {
+    public void put(K key, V value) {
         lock.lock();
-        if (cache.size() >= maxEntries && !cache.containsKey(key)) {
-            if (policy == MemoryStoreEvictionPolicy.FIFO)
-                removeFirst();
-            else
-                removeLeastRecentlyUsed();
-        }
+        try {
+            if (cache.size() >= maxEntries && !cache.containsKey(key)) {
+                if (policy == MemoryStoreEvictionPolicy.FIFO)
+                    removeFirst();
+                else
+                    removeLeastRecentlyUsed();
+            }
 
-        cache.put(key, new Value(System.currentTimeMillis(), value));
-        lock.unlock();
+            cache.put(key, new Value(System.currentTimeMillis(), value));
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void clear() {
         lock.lock();
-        cache.clear();
-        lock.unlock();
+        try {
+            cache.clear();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
-    public void dispose() {
+    public synchronized void dispose() {
         if (executorService != null) {
             executorService.shutdown();
         }
@@ -139,15 +148,18 @@ public class CacheEngine implements Cache {
 
     private void check() {
         lock.lock();
-        Iterator<Value> it = cache.values().iterator();
+        try {
+            Iterator<Value> it = cache.values().iterator();
 
-        while(it.hasNext()) {
-            if (isExpiryTimeStamp(it.next().getTimeStamp()))
-                it.remove();
-            else
-                break;
+            while (it.hasNext()) {
+                if (isExpiryTimeStamp(it.next().getTimeStamp()))
+                    it.remove();
+                else
+                    break;
+            }
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 
     private boolean isExpiryTimeStamp(long timeStamp) {

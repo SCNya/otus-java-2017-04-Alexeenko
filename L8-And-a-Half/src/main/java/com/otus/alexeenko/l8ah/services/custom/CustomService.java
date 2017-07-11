@@ -51,12 +51,12 @@ public class CustomService implements DataBaseService {
 
     private final Server server;
     private final JdbcConnectionPool connections;
-    private final Cache cache;
+    private final Cache<Key, Object> cache;
 
     public CustomService() {
         check();
 
-        cache = new CacheEngine("userCache", MemoryStoreEvictionPolicy.FIFO, Duration.ofSeconds(10), 100);
+        cache = new CacheEngine<>("userCache", MemoryStoreEvictionPolicy.FIFO, Duration.ofSeconds(10), 100);
 
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
@@ -72,7 +72,7 @@ public class CustomService implements DataBaseService {
         check();
 
         server = null;
-        cache = new CacheEngine("userCache", MemoryStoreEvictionPolicy.FIFO, Duration.ofSeconds(10), 100);
+        cache = new CacheEngine<>("userCache", MemoryStoreEvictionPolicy.FIFO, Duration.ofSeconds(10), 100);
 
         connections = JdbcConnectionPool.create(dataSource);
     }
