@@ -17,7 +17,7 @@ public interface MyServlet {
     String DASHBOARD = "dashboard.html";
     String INDEX = "index.html";
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
+    ApplicationContext context = new ClassPathXmlApplicationContext("L10Beans.xml");
     Set<String> sessions = new HashSet<>();
 
     default void setOK(HttpServletResponse response) {

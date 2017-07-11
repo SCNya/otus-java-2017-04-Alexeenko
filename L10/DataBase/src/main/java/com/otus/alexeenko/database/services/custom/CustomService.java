@@ -1,22 +1,18 @@
 package com.otus.alexeenko.database.services.custom;
 
 import com.otus.alexeenko.database.services.DataBaseService;
+import com.otus.alexeenko.database.services.custom.cache.MyCache;
 import com.otus.alexeenko.database.services.custom.dao.UserDAO;
 import com.otus.alexeenko.database.services.datasets.BaseDataSet;
 import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.MemoryUnit;
-import net.sf.ehcache.management.ManagementService;
-import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.management.MBeanServer;
-import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -54,21 +50,20 @@ public class CustomService implements DataBaseService {
     private static final String DB_NAME = "otus";
     private static final String CACHE_NAME = "userCache";
     private static final Logger CACHE_LOGGER = getLogger("Cache");
-    private static final int LIFE_TIME_SEC = 10;
 
+    private final ApplicationContext context;
     private final Server server;
     private final JdbcConnectionPool connections;
-    private final CacheManager cacheManager;
+    private final MyCache myCache;
     private final Cache cache;
 
     public CustomService() {
         check();
+        context = new ClassPathXmlApplicationContext("DataBaseBeans.xml");
+        myCache = ((MyCache) context.getBean("cache"));
+        cache = myCache.getCache(CACHE_NAME);
 
-        cacheManager = new CacheManager();
-        createCache(CACHE_NAME);
-        cache = cacheManager.getCache(CACHE_NAME);
-
-        registerMBeans();
+        myCache.registerMBeans();
 
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
@@ -79,34 +74,17 @@ public class CustomService implements DataBaseService {
         connections = JdbcConnectionPool.create(dataSource);
     }
 
-    private void registerMBeans() {
-        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        ManagementService.registerMBeans(cacheManager, mBeanServer, false, false,
-                true, true);
-    }
-
     //For connect to own exist DataBase
     public CustomService(JdbcDataSource dataSource) {
         check();
-
         server = null;
-        cacheManager = new CacheManager();
-        createCache(CACHE_NAME);
-        cache = cacheManager.getCache(CACHE_NAME);
+        context = new ClassPathXmlApplicationContext("DataBaseBeans.xml");
+        myCache = ((MyCache) context.getBean("cache"));
+        cache = myCache.getCache(CACHE_NAME);
 
-        registerMBeans();
+        myCache.registerMBeans();
 
         connections = JdbcConnectionPool.create(dataSource);
-    }
-
-    private void createCache(String name) {
-        CacheConfiguration configuration = new CacheConfiguration();
-        configuration.name(name)
-                .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.FIFO)
-                .timeToLiveSeconds(LIFE_TIME_SEC)
-                .maxBytesLocalHeap(1, MemoryUnit.MEGABYTES);
-
-        cacheManager.addCache(new Cache(configuration));
     }
 
     private Server startLocalServer() {
@@ -174,6 +152,6 @@ public class CustomService implements DataBaseService {
             server.stop();
         }
 
-        cacheManager.shutdown();
+        myCache.shutdown();
     }
 }
