@@ -34,7 +34,7 @@ public class DB {
     private static DB instance;
     private final DataBaseService db;
     private final MBeanServer mbs;
-    private ExecutorService thread;
+    private final ExecutorService thread;
 
     private DB() {
         this.db = new CustomService();
