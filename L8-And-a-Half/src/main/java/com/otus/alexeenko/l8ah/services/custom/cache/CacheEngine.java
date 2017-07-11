@@ -71,11 +71,9 @@ public class CacheEngine<K, V> implements Cache<K, V> {
             if (value != null) {
                 if (!isExpiryTimeStamp(value.getTimeStamp())) {
                     value.usageCounter++;
-                    lock.unlock();
                     return value.getValue();
                 }
             }
-
         } finally {
             lock.unlock();
         }
