@@ -80,11 +80,10 @@ public class DB {
                     Thread.sleep(2000);
                 }
             }
-
+        } catch (InterruptedException interrupt) {
+            //Just Exit
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            db.dispose();
         }
     }
 
@@ -115,5 +114,10 @@ public class DB {
             e.printStackTrace();
         }
         return cacheConfigurationMBean;
+    }
+
+    public void dispose() {
+        thread.shutdownNow();
+        db.dispose();
     }
 }

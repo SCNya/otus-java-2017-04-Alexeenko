@@ -1,7 +1,8 @@
 package com.otus.alexeenko.l10.servlets;
 
-import com.otus.alexeenko.l10.db.DB;
 import net.sf.ehcache.management.CacheStatisticsMBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by Vsevolod on 29/06/2017.
@@ -18,11 +20,14 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/statistics.json"})
 public class Statistics extends HttpServlet implements MyJsonServlet {
+    @Autowired
+    private Set<String> sessions;
+    @Autowired
     private CacheStatisticsMBean statisticsMBean;
 
     @Override
     public void init() {
-        this.statisticsMBean = ((DB) context.getBean("dataBase")).getCacheCacheStatisticsMBean();
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     @Override

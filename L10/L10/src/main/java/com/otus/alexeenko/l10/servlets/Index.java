@@ -1,6 +1,8 @@
 package com.otus.alexeenko.l10.servlets;
 
 import com.otus.alexeenko.l10.templater.PageGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Vsevolod on 26/06/2017.
@@ -17,6 +20,13 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = {"/index.html"})
 public class Index extends HttpServlet implements MyServlet {
+    @Autowired
+    private Set<String> sessions;
+
+    @Override
+    public void init() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     @Override
     public void doGet(HttpServletRequest request,

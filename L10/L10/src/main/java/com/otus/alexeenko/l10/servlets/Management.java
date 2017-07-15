@@ -1,7 +1,8 @@
 package com.otus.alexeenko.l10.servlets;
 
-import com.otus.alexeenko.l10.db.DB;
 import net.sf.ehcache.management.CacheConfigurationMBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -22,11 +24,14 @@ import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/management.json"})
 public class Management extends HttpServlet implements MyJsonServlet {
+    @Autowired
+    private Set<String> sessions;
+    @Autowired
     private CacheConfigurationMBean configurationMBean;
 
     @Override
     public void init() {
-        this.configurationMBean = ((DB) context.getBean("dataBase")).getCacheConfigurationMBean();
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     @Override

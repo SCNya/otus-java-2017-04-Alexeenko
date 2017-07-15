@@ -26,7 +26,7 @@ public class PageGenerator {
         cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_DIR);
     }
 
-    public static PageGenerator instance() throws IOException {
+    public static PageGenerator instance() {
         if (pageGenerator == null)
             pageGenerator = new PageGenerator();
 
