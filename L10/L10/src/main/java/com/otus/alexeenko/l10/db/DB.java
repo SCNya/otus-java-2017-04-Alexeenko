@@ -116,7 +116,7 @@ public class DB {
         return cacheConfigurationMBean;
     }
 
-    public void dispose() {
+    public synchronized void dispose() {
         thread.shutdownNow();
         db.dispose();
     }

@@ -145,7 +145,7 @@ public class CustomService implements DataBaseService {
     }
 
     @Override
-    public void dispose() {
+    public synchronized void dispose() {
         connections.dispose();
 
         if (server != null) {
