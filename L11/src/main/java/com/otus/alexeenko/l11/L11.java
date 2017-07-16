@@ -14,8 +14,8 @@ public class L11 {
     }
 
     private static void view(int[] array) {
-        for (int i = 0; i < array.length; i++)
-            System.out.print(array[i]);
+        for (int anArray : array)
+            System.out.print(anArray);
 
         System.out.println("\n");
     }

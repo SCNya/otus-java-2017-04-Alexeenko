@@ -1,32 +1,32 @@
 package com.otus.alexeenko.l11;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by Vsevolod on 17/07/2017.
  */
 public class BubblesSorter {
-    private int[] array;
-    private int availableThreads;
-    private Thread[] threads;
+    private final int[] array;
+    private final int availableThreads;
+    private final ExecutorService executor;
 
     public BubblesSorter(int[] array) {
         this.array = array;
-        availableThreads = Runtime.getRuntime().availableProcessors();
-        threads = new Thread[availableThreads];
+        this.availableThreads = Runtime.getRuntime().availableProcessors();
+        this.executor = Executors.newFixedThreadPool(availableThreads);
     }
 
     public void sort() {
         int position = array.length - 1;
 
-        try {
             while (position > 0) {
                 int numberOfThreads = getThreads(position);
                 work(position, numberOfThreads);
 
                 position -= numberOfThreads;
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        executor.shutdown();
     }
 
     private int getThreads(int position) {
@@ -36,15 +36,10 @@ public class BubblesSorter {
             return position;
     }
 
-    private void work(int position, int numberOfThreads) throws InterruptedException {
+    private void work(int position, int numberOfThreads) {
         for (int i = 0; i < numberOfThreads; ++i) {
-            int bubblePosition = position - i;
-            threads[i] = new Thread(() -> bubbling(bubblePosition));
-            threads[i].start();
-        }
-
-        for (int i = 0; i < numberOfThreads; ++i) {
-            threads[i].join();
+            int currentPosition = position - i;
+            executor.submit(() -> bubbling(currentPosition));
         }
     }
 
