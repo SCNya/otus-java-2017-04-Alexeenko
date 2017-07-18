@@ -10,13 +10,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SimpleBubblesSorter implements BubbleSorter {
     private final int[] array;
     private final int availableProcessors;
-    private final Thread[] threads;
     private final AtomicInteger activeThreads;
 
     public SimpleBubblesSorter(int[] array) {
         this.array = array;
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
-        this.threads = new Thread[availableProcessors];
         this.activeThreads = new AtomicInteger(0);
     }
 
