@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -16,14 +17,17 @@ import java.util.Map;
  * Created by Vsevolod on 26/06/2017.
  */
 public class PageGenerator {
-    private static final String TEMPLATES_DIR = "/templates";
-
     private static PageGenerator pageGenerator;
+    private static ServletContext context;
     private final Configuration cfg;
 
     private PageGenerator() {
         cfg = new Configuration(Configuration.getVersion());
-        cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_DIR);
+        cfg.setServletContextForTemplateLoading(context, "/");
+    }
+
+    public static void setContext(ServletContext context) {
+        PageGenerator.context = context;
     }
 
     public static PageGenerator instance() {
@@ -50,7 +54,7 @@ public class PageGenerator {
         String page = "";
 
         try {
-            page = new String(Files.readAllBytes(Paths.get(this.getClass().getResource(TEMPLATES_DIR + File.separator + filename).getPath())));
+            page = new String(Files.readAllBytes(Paths.get(context.getRealPath(filename))));
         } catch (IOException e) {
             e.printStackTrace();
         }
