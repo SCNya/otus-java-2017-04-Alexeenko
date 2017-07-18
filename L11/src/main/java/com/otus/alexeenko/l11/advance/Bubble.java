@@ -46,7 +46,7 @@ public class Bubble {
         }
     }
 
-    private synchronized void check(int i) {
+    private void check(int i) {
         int j = i + 1;
 
         if (array[i] > array[j])
