@@ -32,11 +32,10 @@ public class Bubble {
     public synchronized void bubbling(int size) {
         for (int i = 0; i < size; ++i) {
             check(currentPosition);
+            ++currentPosition;
 
             if (next != null && currentPosition > 1)
                 executor.submit(() -> next.bubbling(1));
-
-            ++currentPosition;
         }
 
         if (currentPosition == length) {
