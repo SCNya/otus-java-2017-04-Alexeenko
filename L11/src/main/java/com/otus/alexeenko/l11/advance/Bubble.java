@@ -33,15 +33,13 @@ public class Bubble {
         for (int i = 0; i < size; ++i) {
             check(currentPosition);
 
-            if (next != null && currentPosition > 1)
+            if (next != null & currentPosition >= 1)
                 executor.submit(() -> next.bubbling(1));
 
             ++currentPosition;
         }
 
         if (currentPosition == length) {
-            if (next != null)
-                executor.submit(() -> next.bubbling(1));
             tasks.countDown();
         }
     }
