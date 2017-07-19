@@ -34,7 +34,7 @@ public class Bubble {
             check(currentPosition);
 
             if (next != null & currentPosition >= 1)
-                executor.submit(() -> next.bubbling(1));
+                executor.execute(() -> next.bubbling(1));
 
             ++currentPosition;
         }
