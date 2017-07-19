@@ -40,7 +40,6 @@ public class DB {
         this.db = new CustomService();
         this.mbs = ManagementFactory.getPlatformMBeanServer();
         this.thread = Executors.newSingleThreadExecutor();
-        this.thread.submit(this::run);
     }
 
     public synchronized static DB getInstance() {
@@ -51,7 +50,7 @@ public class DB {
         return instance;
     }
 
-    private void run() {
+    public void run() {
         List<PhoneDataSet> phones = Arrays.asList(new PhoneDataSet(1L, 911, "1"),
                 new PhoneDataSet(2L, 921, "2"));
 
@@ -61,7 +60,7 @@ public class DB {
         UserDataSet dataSet2 = new UserDataSet(2L, "Second", 17,
                 phones, new AddressDataSet(2L, "Dorado", 200));
 
-        work(dataSet1, dataSet2);
+        thread.execute(() -> work(dataSet1, dataSet2));
     }
 
     private void work(UserDataSet dataSet1, UserDataSet dataSet2) {

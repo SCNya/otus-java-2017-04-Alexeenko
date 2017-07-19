@@ -1,5 +1,6 @@
 package com.otus.alexeenko.l10.spring;
 
+import com.otus.alexeenko.l10.db.DB;
 import com.otus.alexeenko.l10.templater.PageGenerator;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -11,7 +12,6 @@ import javax.servlet.ServletContext;
  * Created by Vsevolod on 14/07/2017.
  */
 public class AppInitializer implements WebApplicationInitializer {
-
     @Override
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context
@@ -19,5 +19,7 @@ public class AppInitializer implements WebApplicationInitializer {
         context.setConfigLocation("com.otus.alexeenko.l10.spring.WebConfig");
         container.addListener(new ContextLoaderListener(context));
         PageGenerator.setContext(container);
+        DB db = DB.getInstance();
+        db.run();
     }
 }
