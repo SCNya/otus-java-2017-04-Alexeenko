@@ -17,7 +17,7 @@ public class AdvanceBubblesSorter implements BubbleSorter {
     public AdvanceBubblesSorter(int[] array) {
         this.array = array;
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
-        this.executor = Executors.newFixedThreadPool(availableProcessors);
+        this.executor = Executors.newFixedThreadPool(availableProcessors - 1); // -main
     }
 
     @Override
