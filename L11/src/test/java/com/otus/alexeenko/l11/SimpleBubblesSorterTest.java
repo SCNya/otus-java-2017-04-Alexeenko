@@ -4,6 +4,7 @@ import com.otus.alexeenko.l11.simple.SimpleBubblesSorter;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -11,12 +12,14 @@ import static org.junit.Assert.assertArrayEquals;
  * Created by Vsevolod on 17/07/2017.
  */
 public class SimpleBubblesSorterTest {
+    public static int TEEN_THOUSAND = 10_000;
+
     @Test
     public void sort1() {
         int[] array1 = {0, 9, 5, 6, 7, 1, 3, 8, 2, 4};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -29,7 +32,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {10, 9, 5, 6, 7, 1, 33, 8, 2, 4};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -42,7 +45,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -55,7 +58,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {1};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -68,7 +71,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {9, 9, 9};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -82,7 +85,7 @@ public class SimpleBubblesSorterTest {
                 9, 5, 6, 7, 1, 33, 8, 2, 4, 1, 9, 9, 9};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -95,7 +98,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -108,7 +111,7 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);
@@ -121,7 +124,25 @@ public class SimpleBubblesSorterTest {
         int[] array1 = {6, 9, 5, 6, 7, 1, 3, 8, 2, 4};
         int[] array2 = array1.clone();
 
-        BubbleSorter sorter = new SimpleBubblesSorter(array1);
+        Sorter sorter = new SimpleBubblesSorter(array1);
+
+        sorter.sort();
+        Arrays.sort(array2);
+
+        assertArrayEquals(array1, array2);
+    }
+
+    @Test
+    public void sort10() {
+        Random random = new Random();
+        int[] array1 = new int[TEEN_THOUSAND];
+
+        for (int i = 0; i < TEEN_THOUSAND; ++i)
+            array1[i] = (TEEN_THOUSAND - random.nextInt(TEEN_THOUSAND + 1));
+
+        int[] array2 = array1.clone();
+
+        Sorter sorter = new SimpleBubblesSorter(array1);
 
         sorter.sort();
         Arrays.sort(array2);

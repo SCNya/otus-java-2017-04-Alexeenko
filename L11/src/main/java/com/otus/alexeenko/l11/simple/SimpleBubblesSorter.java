@@ -1,13 +1,14 @@
 package com.otus.alexeenko.l11.simple;
 
-import com.otus.alexeenko.l11.BubbleSorter;
+import com.otus.alexeenko.l11.Sorter;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Vsevolod on 17/07/2017.
  */
-public class SimpleBubblesSorter implements BubbleSorter {
+public class SimpleBubblesSorter implements Sorter {
     private final int[] array;
     private final int availableProcessors;
     private final AtomicInteger activeThreads;
@@ -38,17 +39,18 @@ public class SimpleBubblesSorter implements BubbleSorter {
     }
 
     private void await() {
-        try {
-            while (true) {
-                if (activeThreads.get() < availableProcessors) {
-                    break;
-                } else {
-                    Thread.sleep(1);
+        if (activeThreads.get() == availableProcessors)
+            try {
+                while (true) {
+                    if (activeThreads.get() < availableProcessors) {
+                        break;
+                    } else {
+                        Thread.sleep(1);
+                    }
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void join() {
@@ -84,5 +86,10 @@ public class SimpleBubblesSorter implements BubbleSorter {
 
         array[j] = array[i];
         array[i] = temp;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(array);
     }
 }

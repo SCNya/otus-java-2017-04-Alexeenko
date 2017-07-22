@@ -1,7 +1,8 @@
 package com.otus.alexeenko.l11.advance;
 
-import com.otus.alexeenko.l11.BubbleSorter;
+import com.otus.alexeenko.l11.Sorter;
 
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by Vsevolod on 17/07/2017.
  */
-public class AdvanceBubblesSorter implements BubbleSorter {
+public class AdvanceBubblesSorter implements Sorter {
     private final int[] array;
     private final int availableProcessors;
     private final ExecutorService executor;
@@ -49,5 +50,10 @@ public class AdvanceBubblesSorter implements BubbleSorter {
             return availableProcessors;
         else
             return length;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(array);
     }
 }
