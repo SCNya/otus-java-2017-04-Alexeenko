@@ -12,7 +12,7 @@ import static org.junit.Assert.assertArrayEquals;
  * Created by Vsevolod on 17/07/2017.
  */
 public class SimpleBubblesSorterTest {
-    public static int TEEN_THOUSAND = 10_000;
+    private static int SIZE = 1_111_111;
 
     @Test
     public void sort1() {
@@ -135,10 +135,10 @@ public class SimpleBubblesSorterTest {
     @Test
     public void sort10() {
         Random random = new Random();
-        int[] array1 = new int[TEEN_THOUSAND];
+        int[] array1 = new int[SIZE];
 
-        for (int i = 0; i < TEEN_THOUSAND; ++i)
-            array1[i] = (TEEN_THOUSAND - random.nextInt(TEEN_THOUSAND + 1));
+        for (int i = 0; i < SIZE; ++i)
+            array1[i] = (SIZE - random.nextInt(SIZE + 1));
 
         int[] array2 = array1.clone();
 

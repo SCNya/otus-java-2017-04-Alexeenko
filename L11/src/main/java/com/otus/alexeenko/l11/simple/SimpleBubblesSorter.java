@@ -45,7 +45,7 @@ public class SimpleBubblesSorter implements Sorter {
                     if (activeThreads.get() < availableProcessors) {
                         break;
                     } else {
-                        Thread.sleep(1);
+                        Thread.sleep(0, ONE_μS);
                     }
                 }
             } catch (InterruptedException e) {
