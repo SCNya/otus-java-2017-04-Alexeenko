@@ -57,7 +57,7 @@ public class Bubble {
     }
 
     public Bubble add(Bubble bubble) {
-        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<Runnable>(
+        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(
                 100);
         executor = new ThreadPoolExecutor(1, 1, 0,
                 TimeUnit.SECONDS, linkedBlockingDeque,
