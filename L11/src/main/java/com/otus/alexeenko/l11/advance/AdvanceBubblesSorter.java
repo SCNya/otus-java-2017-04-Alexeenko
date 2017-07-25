@@ -13,36 +13,44 @@ import java.util.concurrent.Executors;
 public class AdvanceBubblesSorter implements Sorter {
     private final int[] array;
     private final int availableProcessors;
-    private final ExecutorService executor;
 
     public AdvanceBubblesSorter(int[] array) {
         this.array = array;
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
-        this.executor = Executors.newFixedThreadPool(availableProcessors - 1); // -main
     }
 
     @Override
     public void sort() {
         if (array.length > 0) {
             int length = array.length - 1;
-
-
-            Bubble first = new Bubble(array, executor);
-            Bubble bubble = first;
-
-            for (int i = 0; i < availableProcessors - 1; ++i) {
-                bubble = bubble.add(new Bubble(array, executor));
-            }
+            Bubble bubble = Init();
 
             while (length > 0) {
                 int size = getCurrentLength(length);
-                first.init(length, new CountDownLatch(size));
-                first.bubbling(length);
+                bubble.init(length, new CountDownLatch(size));
+                bubble.bubbling(length);
                 length -= size;
-                first.await();
+                bubble.await();
             }
+            shutdown(bubble);
         }
-        executor.shutdown();
+    }
+
+    private Bubble Init() {
+        Bubble first = new Bubble(array);
+        Bubble bubble = first;
+
+        for (int i = 0; i < availableProcessors - 1; ++i) {
+            bubble = bubble.add(new Bubble(array));
+        }
+        return first;
+    }
+
+    private void shutdown(Bubble bubble) {
+        while (bubble.hasNext()) {
+            bubble.shutdown();
+            bubble = bubble.next();
+        }
     }
 
     private int getCurrentLength(int length) {

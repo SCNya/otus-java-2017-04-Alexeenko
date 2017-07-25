@@ -1,22 +1,23 @@
 package com.otus.alexeenko.l11.advance;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Vsevolod on 17/07/2017.
  */
 public class Bubble {
     private final int[] array;
-    private final ExecutorService executor;
+    private ExecutorService executor;
     private CountDownLatch tasks;
     private int length;
     private int currentPosition;
     private Bubble next;
 
-    public Bubble(int[] array, ExecutorService executor) {
+    public Bubble(int[] array) {
         this.array = array;
-        this.executor = executor;
         this.next = null;
     }
 
@@ -29,7 +30,7 @@ public class Bubble {
         }
     }
 
-    public synchronized void bubbling(int size) {
+    public void bubbling(int size) {
         for (int i = 0; i < size; ++i) {
             check(currentPosition);
 
@@ -59,6 +60,7 @@ public class Bubble {
     }
 
     public Bubble add(Bubble bubble) {
+        executor = Executors.newSingleThreadExecutor();
         next = bubble;
         return next;
     }
@@ -69,5 +71,17 @@ public class Bubble {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public Bubble next() {
+        return next;
+    }
+
+    public void shutdown() {
+        executor.shutdown();
+    }
+
+    public boolean hasNext() {
+        return next != null;
     }
 }
