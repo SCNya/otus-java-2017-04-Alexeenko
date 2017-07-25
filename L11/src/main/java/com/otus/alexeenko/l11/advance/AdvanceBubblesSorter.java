@@ -4,8 +4,6 @@ import com.otus.alexeenko.l11.Sorter;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Vsevolod on 17/07/2017.
@@ -23,7 +21,7 @@ public class AdvanceBubblesSorter implements Sorter {
     public void sort() {
         if (array.length > 0) {
             int length = array.length - 1;
-            Bubble bubble = Init();
+            Bubble bubble = create();
 
             while (length > 0) {
                 int size = getCurrentLength(length);
@@ -36,7 +34,7 @@ public class AdvanceBubblesSorter implements Sorter {
         }
     }
 
-    private Bubble Init() {
+    private Bubble create() {
         Bubble first = new Bubble(array);
         Bubble bubble = first;
 
