@@ -57,10 +57,10 @@ public class Bubble {
     }
 
     public Bubble add(Bubble bubble) {
-        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(
-                100);
-        executor = new ThreadPoolExecutor(1, 1, 0,
-                TimeUnit.SECONDS, linkedBlockingDeque,
+        BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>(100);
+
+        executor = new ThreadPoolExecutor(1, 1, 0L,
+                TimeUnit.SECONDS, queue,
                 new ThreadPoolExecutor.CallerRunsPolicy());
         next = bubble;
         return next;
