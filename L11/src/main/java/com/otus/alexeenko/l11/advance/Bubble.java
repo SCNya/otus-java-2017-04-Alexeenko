@@ -1,8 +1,6 @@
 package com.otus.alexeenko.l11.advance;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by Vsevolod on 17/07/2017.
@@ -59,7 +57,11 @@ public class Bubble {
     }
 
     public Bubble add(Bubble bubble) {
-        executor = Executors.newSingleThreadExecutor();
+        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<Runnable>(
+                100);
+        executor = new ThreadPoolExecutor(1, 1, 0,
+                TimeUnit.SECONDS, linkedBlockingDeque,
+                new ThreadPoolExecutor.CallerRunsPolicy());
         next = bubble;
         return next;
     }
