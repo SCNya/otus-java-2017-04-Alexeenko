@@ -40,7 +40,7 @@ public class Bubble {
                         counter.incrementAndGet();
 
                     if (position >= 1) {
-                        int nextPosition = position - 1;
+                        Integer nextPosition = position - 1;
                         next.queue.add(nextPosition);
                     }
                 } else
