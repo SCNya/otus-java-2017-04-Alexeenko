@@ -32,9 +32,8 @@ public class Bubble {
     private void bubbling() {
         try {
             while (active) {
-                if (queue.size() > 0) {
-                    int position = queue.poll();
-
+                Integer position = queue.poll();
+                if (position != null) {
                     check(position);
 
                     if (position == 0)
@@ -44,7 +43,8 @@ public class Bubble {
                         int nextPosition = position - 1;
                         next.queue.add(nextPosition);
                     }
-                } else Thread.sleep(0, 100);
+                } else
+                    Thread.sleep(0, 1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

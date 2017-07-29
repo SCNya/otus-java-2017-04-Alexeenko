@@ -12,7 +12,7 @@ import static org.junit.Assert.assertArrayEquals;
  * Created by Vsevolod on 17/07/2017.
  */
 public class AdvanceBubblesSorter2Test {
-    private static final int SIZE = 5_111;
+    private static final int SIZE = 1_111_111;
 
     @Test
     public void sort1() {

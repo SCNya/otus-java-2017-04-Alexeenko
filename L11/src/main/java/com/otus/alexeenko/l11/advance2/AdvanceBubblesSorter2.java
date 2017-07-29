@@ -32,17 +32,15 @@ public class AdvanceBubblesSorter2 implements Sorter {
                 create();
                 work();
                 shutdown();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
     private void work() {
-        for (int i = 0; i < array.length - 1; ++i) {
+        for (int i = 0; i < array.length - 1; ++i)
             queue.add(i);
-        }
-
     }
 
     private void create() {
