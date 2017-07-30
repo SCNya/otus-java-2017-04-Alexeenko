@@ -1,6 +1,5 @@
 package com.otus.alexeenko.l11.advance2;
 
-import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,18 +9,23 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Bubble {
     private final int[] array;
-    private final Queue<Integer> queue;
-    private final AtomicInteger counter;
+    private final AtomicInteger queue;
+    private final AtomicInteger awaitCounter;
+    private final AtomicInteger length;
     private final ExecutorService executor;
-    private boolean active;
+    private int currentPosition;
+    private int currentLength;
     private Bubble next;
 
-    public Bubble(int[] array, Queue<Integer> queue, AtomicInteger counter) {
+    public Bubble(int[] array, AtomicInteger queue, AtomicInteger awaitCounter,
+                  AtomicInteger length) {
         this.array = array;
         this.queue = queue;
-        this.counter = counter;
+        this.awaitCounter = awaitCounter;
+        this.length = length;
         this.executor = Executors.newSingleThreadExecutor();
-        this.active = true;
+        this.currentPosition = 0;
+        this.currentLength = 0;
         this.next = null;
     }
 
@@ -31,24 +35,51 @@ public class Bubble {
 
     private void bubbling() {
         try {
-            while (active) {
-                Integer position = queue.poll();
-                if (position != null) {
-                    check(position);
+            while (true) {
+                if (queue.get() > 0) {
 
-                    if (position == 0)
-                        counter.incrementAndGet();
+                    if (isComplete()) break;
 
-                    if (position >= 1) {
-                        Integer nextPosition = position - 1;
-                        next.queue.add(nextPosition);
-                    }
+                    check(currentPosition);
+
+                    if (currentPosition >= 1)
+                        next.queue.incrementAndGet();
+
+                    checkAwaitCounter();
+                    updatePosition();
                 } else
-                    Thread.sleep(0, 1000);
+                    Thread.sleep(0, 100);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isComplete() {
+        if (currentLength == 0) {
+            currentLength = getNewLength();
+
+            if (currentLength == 0)
+                return true;
+            else
+                currentPosition = 0;
+        }
+        return false;
+    }
+
+    private void checkAwaitCounter() {
+        if (currentPosition == 0)
+            awaitCounter.incrementAndGet();
+    }
+
+    private void updatePosition() {
+        queue.decrementAndGet();
+        --currentLength;
+        ++currentPosition;
+    }
+
+    private int getNewLength() {
+        return length.decrementAndGet();
     }
 
     private void check(int i) {
@@ -75,7 +106,6 @@ public class Bubble {
     }
 
     public void shutdown() {
-        active = false;
         executor.shutdown();
     }
 }

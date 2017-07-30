@@ -3,8 +3,6 @@ package com.otus.alexeenko.l11.advance2;
 import com.otus.alexeenko.l11.Sorter;
 
 import java.util.Arrays;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -12,17 +10,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AdvanceBubblesSorter2 implements Sorter {
     private final int[] array;
-    private final Queue<Integer> queue;
-    private final AtomicInteger counter;
+    private final AtomicInteger length;
+    private final AtomicInteger queue;
+    private final AtomicInteger awaitCounter;
     private final int availableProcessors;
     private final Bubble first;
 
     public AdvanceBubblesSorter2(int[] array) {
         this.array = array;
-        this.queue = new ConcurrentLinkedQueue<>();
-        this.counter = new AtomicInteger(0);
+        this.length = new AtomicInteger(this.array.length);
+        this.queue = new AtomicInteger(0);
+        this.awaitCounter = new AtomicInteger(0);
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
-        this.first = new Bubble(this.array, queue, counter);
+        this.first = new Bubble(this.array, queue, awaitCounter, length);
     }
 
     @Override
@@ -39,8 +39,7 @@ public class AdvanceBubblesSorter2 implements Sorter {
     }
 
     private void work() {
-        for (int i = 0; i < array.length - 1; ++i)
-            queue.add(i);
+        queue.set(array.length - 1);
     }
 
     private void create() {
@@ -48,14 +47,15 @@ public class AdvanceBubblesSorter2 implements Sorter {
         bubble.start();
 
         for (int i = 0; i < availableProcessors - 1; ++i) {
-            bubble = bubble.add(new Bubble(array, new ConcurrentLinkedQueue<>(), counter));
+            bubble = bubble.add(new Bubble(array, new AtomicInteger(0),
+                    awaitCounter, length));
             bubble.start();
         }
         bubble.add(first);
     }
 
     private void shutdown() throws InterruptedException {
-        while (counter.get() != array.length - 1)
+        while (awaitCounter.get() != array.length - 1)
             Thread.sleep(10);
 
         Bubble bubble = first;
