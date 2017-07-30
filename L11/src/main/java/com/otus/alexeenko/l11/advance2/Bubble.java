@@ -8,6 +8,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Vsevolod on 29/07/2017.
  */
 public class Bubble {
+    private static final int ONE_μS = 1000;
+
     private final int[] array;
     private final AtomicInteger queue;
     private final AtomicInteger awaitCounter;
@@ -37,7 +39,6 @@ public class Bubble {
         try {
             while (true) {
                 if (queue.get() > 0) {
-
                     if (isComplete()) break;
 
                     check(currentPosition);
@@ -48,7 +49,7 @@ public class Bubble {
                     checkAwaitCounter();
                     updatePosition();
                 } else
-                    Thread.sleep(0, 1000);
+                    Thread.sleep(0, ONE_μS);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
