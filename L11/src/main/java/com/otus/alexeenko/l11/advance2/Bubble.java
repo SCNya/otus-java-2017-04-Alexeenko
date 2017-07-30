@@ -42,13 +42,11 @@ public class Bubble {
             while (active) {
                 if (queue.get() > 0) {
                     updateLength();
-
                     check(currentPosition);
 
                     if (currentPosition >= 1)
                         next.queue.incrementAndGet();
 
-                    checkAwaitCounter();
                     updatePosition();
                 } else
                     Thread.sleep(0, ONE_μS);
@@ -62,11 +60,12 @@ public class Bubble {
         if (currentLength == 0) {
             currentLength = getNewLength();
             currentPosition = 0;
+
+            checkAwaitCounter();
         }
     }
 
     private void checkAwaitCounter() {
-        if (currentPosition == 0)
             awaitCounter.incrementAndGet();
     }
 
