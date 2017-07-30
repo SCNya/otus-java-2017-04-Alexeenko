@@ -15,6 +15,7 @@ public class Bubble {
     private final AtomicInteger awaitCounter;
     private final AtomicInteger length;
     private final ExecutorService executor;
+    private boolean active;
     private int currentPosition;
     private int currentLength;
     private Bubble next;
@@ -26,6 +27,7 @@ public class Bubble {
         this.awaitCounter = awaitCounter;
         this.length = length;
         this.executor = Executors.newSingleThreadExecutor();
+        this.active = true;
         this.currentPosition = 0;
         this.currentLength = 0;
         this.next = null;
@@ -37,9 +39,9 @@ public class Bubble {
 
     private void bubbling() {
         try {
-            while (true) {
+            while (active) {
                 if (queue.get() > 0) {
-                    if (isComplete()) break;
+                    updateLength();
 
                     check(currentPosition);
 
@@ -56,16 +58,11 @@ public class Bubble {
         }
     }
 
-    private boolean isComplete() {
+    private void updateLength() {
         if (currentLength == 0) {
             currentLength = getNewLength();
-
-            if (currentLength == 0)
-                return true;
-            else
-                currentPosition = 0;
+            currentPosition = 0;
         }
-        return false;
     }
 
     private void checkAwaitCounter() {
@@ -107,6 +104,7 @@ public class Bubble {
     }
 
     public void shutdown() {
+        active = false;
         executor.shutdown();
     }
 }
