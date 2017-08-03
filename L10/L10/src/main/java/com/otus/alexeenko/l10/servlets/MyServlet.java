@@ -1,8 +1,10 @@
 package com.otus.alexeenko.l10.servlets;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by Vsevolod on 27/06/2017.
@@ -11,6 +13,16 @@ public interface MyServlet {
     String STATIC = "static";
     String DASHBOARD = "dashboard.html";
     String INDEX = "index.html";
+
+    default boolean findCookie(Set<String> sessions, Cookie[] cookies) {
+        if (cookies != null) {
+            for (Cookie cookie : cookies)
+                if (sessions.contains(cookie.getName()))
+                    return true;
+        }
+
+        return false;
+    }
 
     default void setOK(HttpServletResponse response) {
         response.setContentType("text/html;charset=utf-8");

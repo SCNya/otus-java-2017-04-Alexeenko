@@ -48,8 +48,9 @@ public class Management extends HttpServlet implements MyJsonServlet {
     @Override
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
+        boolean isFoundId = findCookie(sessions, request.getCookies());
 
-        if (sessions.contains(request.getSession().getId())) {
+        if (isFoundId) {
             StringReader requestData = new StringReader(request.getReader().lines().collect(Collectors.joining()));
 
             try (JsonReader jsonReader = Json.createReader(requestData)) {

@@ -29,8 +29,9 @@ public class Dashboard extends HttpServlet implements MyServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
+        boolean isFoundId = findCookie(sessions, request.getCookies());
 
-        if (sessions.contains(request.getSession().getId())) {
+        if (isFoundId) {
             response.getWriter().println(PageGenerator.instance().getPage(DASHBOARD));
         } else {
             redirect(request, response, INDEX);

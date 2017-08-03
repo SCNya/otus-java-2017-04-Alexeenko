@@ -6,10 +6,12 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,9 @@ public class Index extends HttpServlet implements MyServlet {
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> pageVariables = createPageVariablesMap(request);
+        boolean isFound = findCookie(sessions, request.getCookies());
 
-        if (sessions.contains(request.getSession().getId())) {
+        if (isFound) {
             redirect(request, response, DASHBOARD);
         } else {
             response.getWriter().println(PageGenerator.instance().getPage(INDEX, pageVariables));
@@ -52,7 +55,10 @@ public class Index extends HttpServlet implements MyServlet {
 
         if (login.toUpperCase().equals("ADMIN") &&
                 password.toUpperCase().equals("ADMIN")) {
-            sessions.add(request.getSession().getId());
+            String id = request.getSession().getId();
+
+            sessions.add(id);
+            saveToCookie(response, id);
             redirect(request, response, DASHBOARD);
         } else {
             pageVariables.put("login", request.getParameter("login"));
@@ -63,8 +69,13 @@ public class Index extends HttpServlet implements MyServlet {
         setOK(response);
     }
 
+    private void saveToCookie(HttpServletResponse response, String id) {
+        response.addCookie(new Cookie(id, "otus-" + ManagementFactory.getRuntimeMXBean().getName()));
+    }
+
     private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
         Map<String, Object> pageVariables = new HashMap<>();
+
         pageVariables.put("login", "");
         pageVariables.put("message", "");
         pageVariables.put("parameters", request.getParameterMap().toString());

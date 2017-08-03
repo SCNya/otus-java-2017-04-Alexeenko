@@ -28,10 +28,11 @@ public class Grabber extends HttpServlet implements MyServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        if (sessions.contains(request.getSession().getId())) {
+        boolean isFoundId = findCookie(sessions, request.getCookies());
+
+        if (isFoundId)
             redirect(request, response, DASHBOARD);
-        } else {
+        else
             redirect(request, response, INDEX);
-        }
     }
 }
