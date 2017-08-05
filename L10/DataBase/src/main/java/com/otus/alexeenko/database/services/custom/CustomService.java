@@ -63,8 +63,6 @@ public class CustomService implements DataBaseService {
         myCache = ((MyCache) context.getBean("cache"));
         cache = myCache.getCache(CACHE_NAME);
 
-        myCache.registerMBeans();
-
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
         dataSource.setUser("sa");
@@ -81,8 +79,6 @@ public class CustomService implements DataBaseService {
         context = new ClassPathXmlApplicationContext("DataBaseBeans.xml");
         myCache = ((MyCache) context.getBean("cache"));
         cache = myCache.getCache(CACHE_NAME);
-
-        myCache.registerMBeans();
 
         connections = JdbcConnectionPool.create(dataSource);
     }

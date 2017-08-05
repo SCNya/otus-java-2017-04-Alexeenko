@@ -21,6 +21,7 @@ public class MyCache {
 
     private MyCache() {
         this.cacheManager = new CacheManager();
+        registerMBeans();
     }
 
     public synchronized static MyCache getInstance() {
@@ -51,7 +52,7 @@ public class MyCache {
         return cacheManager;
     }
 
-    public void registerMBeans() {
+    private void registerMBeans() {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ManagementService.registerMBeans(cacheManager, mBeanServer, false, false,
                 true, true);
