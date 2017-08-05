@@ -56,9 +56,8 @@ public class CustomService implements DataBaseService {
     private final Server server;
     private final MyCache myCache;
     private final Cache cache;
-    private final JdbcDataSource dataSource;
 
-    private JdbcConnectionPool connections;
+    private final JdbcConnectionPool connections;
 
     public CustomService() {
         check();
@@ -67,7 +66,7 @@ public class CustomService implements DataBaseService {
         myCache.createCache(CACHE_NAME);
         cache = myCache.getCache(CACHE_NAME);
         server = getLocalServer();
-        dataSource = getDefaultDataSource();
+        connections = JdbcConnectionPool.create(getDefaultDataSource());
     }
 
     //For connect to own exist DataBase
@@ -78,7 +77,7 @@ public class CustomService implements DataBaseService {
         myCache = ((MyCache) context.getBean("cache"));
         myCache.createCache(CACHE_NAME);
         cache = myCache.getCache(CACHE_NAME);
-        this.dataSource = dataSource;
+        connections = JdbcConnectionPool.create(dataSource);
     }
 
     private JdbcDataSource getDefaultDataSource() {
@@ -97,7 +96,6 @@ public class CustomService implements DataBaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connections = JdbcConnectionPool.create(dataSource);
     }
 
     private Server getLocalServer() {
