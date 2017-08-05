@@ -163,5 +163,7 @@ public class CustomService implements DataBaseService {
         if (server != null) {
             server.stop();
         }
+
+        myCache.shutdown();
     }
 }
