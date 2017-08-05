@@ -33,12 +33,10 @@ public class MyCache {
     }
 
     public Cache getCache(String name) {
-        createCache(name);
-
         return cacheManager.getCache(name);
     }
 
-    private void createCache(String name) {
+    public void createCache(String name) {
         CacheConfiguration configuration = new CacheConfiguration();
         configuration.name(name)
                 .memoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.FIFO)

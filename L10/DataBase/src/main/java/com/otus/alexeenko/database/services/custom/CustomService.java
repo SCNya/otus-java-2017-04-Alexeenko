@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -49,27 +50,24 @@ public class CustomService implements DataBaseService {
 
     private static final String DB_NAME = "otus";
     private static final String CACHE_NAME = "userCache";
-    private static final Logger CACHE_LOGGER = getLogger("Cache");
+    private static final Logger CACHE_LOGGER = getLogger("Cache [" + ManagementFactory.getRuntimeMXBean().getName() + ']');
 
     private final ApplicationContext context;
     private final Server server;
-    private final JdbcConnectionPool connections;
     private final MyCache myCache;
     private final Cache cache;
+    private final JdbcDataSource dataSource;
+
+    private JdbcConnectionPool connections;
 
     public CustomService() {
         check();
         context = new ClassPathXmlApplicationContext("DataBaseBeans.xml");
         myCache = ((MyCache) context.getBean("cache"));
+        myCache.createCache(CACHE_NAME);
         cache = myCache.getCache(CACHE_NAME);
-
-        JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
-
-        server = startLocalServer();
-        connections = JdbcConnectionPool.create(dataSource);
+        server = getLocalServer();
+        dataSource = getDefaultDataSource();
     }
 
     //For connect to own exist DataBase
@@ -78,16 +76,35 @@ public class CustomService implements DataBaseService {
         server = null;
         context = new ClassPathXmlApplicationContext("DataBaseBeans.xml");
         myCache = ((MyCache) context.getBean("cache"));
+        myCache.createCache(CACHE_NAME);
         cache = myCache.getCache(CACHE_NAME);
+        this.dataSource = dataSource;
+    }
 
+    private JdbcDataSource getDefaultDataSource() {
+        JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setURL("jdbc:h2:tcp://localhost/mem:" + DB_NAME + ";DB_CLOSE_DELAY=-1");
+        dataSource.setUser("sa");
+        dataSource.setPassword("");
+
+        return dataSource;
+    }
+
+    public void start() {
+        try {
+            if (server != null)
+                server.start();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         connections = JdbcConnectionPool.create(dataSource);
     }
 
-    private Server startLocalServer() {
+    private Server getLocalServer() {
         Server TcpServer = null;
 
         try {
-            TcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
+            TcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -147,7 +164,5 @@ public class CustomService implements DataBaseService {
         if (server != null) {
             server.stop();
         }
-
-        myCache.shutdown();
     }
 }

@@ -65,6 +65,8 @@ public class DB {
 
     private void work(UserDataSet dataSet1, UserDataSet dataSet2) {
         try {
+            db.start();
+
             db.save(dataSet1);
 
             db.save(dataSet2);

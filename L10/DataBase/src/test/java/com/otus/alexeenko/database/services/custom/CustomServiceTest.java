@@ -44,6 +44,7 @@ public class CustomServiceTest {
         dataSet.setAddress(address);
         dataSet.setPhones(phones);
 
+        db.start();
         db.save(dataSet);
     }
 
