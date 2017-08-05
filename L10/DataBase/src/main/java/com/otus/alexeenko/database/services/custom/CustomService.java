@@ -56,7 +56,6 @@ public class CustomService implements DataBaseService {
     private final Server server;
     private final MyCache myCache;
     private final Cache cache;
-
     private final JdbcConnectionPool connections;
 
     public CustomService() {
