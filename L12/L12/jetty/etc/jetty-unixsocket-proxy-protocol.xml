@@ -2,9 +2,9 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 
 <Configure id="unixSocketConnector" class="org.eclipse.jetty.server.ServerConnector">
-    <Call name="addFirstConnectionFactory">
-        <Arg>
-            <New class="org.eclipse.jetty.server.ProxyConnectionFactory"/>
-        </Arg>
-    </Call>
+  <Call name="addFirstConnectionFactory">
+    <Arg>
+      <New class="org.eclipse.jetty.server.ProxyConnectionFactory"/>
+    </Arg>
+  </Call>
 </Configure>

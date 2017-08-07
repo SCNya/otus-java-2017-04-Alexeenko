@@ -1,9 +1,9 @@
 [description]
-        Enable JASPI authentication for deployed webapplications.
+Enable JASPI authentication for deployed webapplications.
 
-        [depend]
-        security
+[depend]
+security
 
-        [lib]
-        lib/jetty-jaspi-${jetty.version}.jar
-        lib/jaspi/*.jar
+[lib]
+lib/jetty-jaspi-${jetty.version}.jar
+lib/jaspi/*.jar

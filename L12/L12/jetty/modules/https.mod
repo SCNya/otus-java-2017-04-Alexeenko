@@ -1,19 +1,19 @@
 [description]
-        Adds HTTPS protocol support to the TLS(SSL) Connector
+Adds HTTPS protocol support to the TLS(SSL) Connector
 
-        [tags]
-        connector
-        https
-        http
-        ssl
+[tags]
+connector
+https
+http
+ssl
 
-        [depend]
-        ssl
+[depend]
+ssl
 
-        [optional]
-        http2
-        http-forwarded
+[optional]
+http2
+http-forwarded
 
-        [xml]
-        etc/jetty-https.xml
+[xml]
+etc/jetty-https.xml
 

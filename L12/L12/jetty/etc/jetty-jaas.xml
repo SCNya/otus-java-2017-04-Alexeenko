@@ -9,10 +9,8 @@
     <!-- it is placed here for convenience.                       -->
     <!-- ======================================================== -->
     <Call class="java.lang.System" name="setProperty">
-        <Arg>java.security.auth.login.config</Arg>
-        <Arg><Property name="jetty.base" default="."/>/
-            <Property name="jetty.jaas.login.conf" deprecated="jaas.login.conf" default="etc/login.conf"/>
-        </Arg>
+      <Arg>java.security.auth.login.config</Arg>
+      <Arg><Property name="jetty.base" default="." />/<Property name="jetty.jaas.login.conf" deprecated="jaas.login.conf" default="etc/login.conf"/></Arg>
     </Call>
 
 </Configure>

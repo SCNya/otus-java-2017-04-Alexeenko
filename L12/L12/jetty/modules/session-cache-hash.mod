@@ -1,23 +1,23 @@
 [description]
-        Enable first level session cache in ConcurrentHashMap.
-        If not enabled, sessions will use a HashSessionCache by default, so enabling
-        via this module is only needed if the configuration properties need to be
-        changed.
+Enable first level session cache in ConcurrentHashMap.
+If not enabled, sessions will use a HashSessionCache by default, so enabling
+via this module is only needed if the configuration properties need to be
+changed.
 
-        [tags]
-        session
+[tags]
+session
 
-        [provides]
-        session-cache
+[provides]
+session-cache
 
-        [depends]
-        sessions
+[depends]
+sessions
 
-        [xml]
-        etc/sessions/session-cache-hash.xml
+[xml]
+etc/sessions/session-cache-hash.xml
 
-        [ini-template]
-        #jetty.session.evictionPolicy=-1
-        #jetty.session.saveOnInactiveEvict=false
-        #jetty.session.saveOnCreate=false
-        #jetty.session.removeUnloadableSessions=false
+[ini-template]
+#jetty.session.evictionPolicy=-1
+#jetty.session.saveOnInactiveEvict=false
+#jetty.session.saveOnCreate=false
+#jetty.session.removeUnloadableSessions=false

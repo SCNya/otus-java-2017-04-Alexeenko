@@ -1,6 +1,6 @@
 [description]
-        Server/port address connections for session storage
+Server/port address connections for session storage
 
-        [xml]
-        etc/sessions/mongo/session-store-by-address.xml
+[xml]
+etc/sessions/mongo/session-store-by-address.xml
 

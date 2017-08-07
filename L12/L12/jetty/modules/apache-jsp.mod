@@ -1,6 +1,6 @@
 [description]
-        Enables use of the apache implementation of JSP
+Enables use of the apache implementation of JSP
 
-        [lib]
-        lib/apache-jsp/*.jar
+[lib]
+lib/apache-jsp/*.jar
 

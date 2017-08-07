@@ -1,13 +1,13 @@
 [description]
-        Enable websockets for deployed web applications
+Enable websockets for deployed web applications
 
-        [depend]
-        # websocket client needs jetty-client
-        client
-        # javax.websocket needs annotations
-        annotations
+[depend]
+# websocket client needs jetty-client
+client
+# javax.websocket needs annotations
+annotations
 
-        [lib]
-        lib/websocket/*.jar
+[lib]
+lib/websocket/*.jar
 
 

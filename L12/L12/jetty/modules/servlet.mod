@@ -1,8 +1,8 @@
 [description]
-        Enables standard Servlet handling.
+Enables standard Servlet handling.
 
-        [depend]
-        server
+[depend]
+server
 
-        [lib]
-        lib/jetty-servlet-${jetty.version}.jar
+[lib]
+lib/jetty-servlet-${jetty.version}.jar

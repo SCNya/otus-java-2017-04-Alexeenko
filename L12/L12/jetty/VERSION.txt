@@ -5629,7 +5629,7 @@ jetty-6.1.23 - 02 April 2010
  + JETTY-875 Allow setting of advice field in response to Handshake
  + JETTY-983 Range handling cleanup
  + JETTY-1133 Handle multiple URL ; parameters
- + JETTY-1134 BayeuxClient: Connect message should be sent as array
+ + JETTY-1134 BayeuxClient: Connect msg should be sent as array
  + JETTY-1149 transient should be volatile in AbstractLifeCycle
  + JETTY-1153 System property for UrlEncoded charset
  + JETTY-1155 HttpConnection.close notifies HttpExchange

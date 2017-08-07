@@ -1,13 +1,13 @@
 [description]
-        Enables Annotation scanning for deployed webapplications.
+Enables Annotation scanning for deployed webapplications.
 
-        [depend]
-        plus
+[depend]
+plus
 
-        [lib]
-        lib/jetty-annotations-${jetty.version}.jar
-        lib/annotations/*.jar
+[lib]
+lib/jetty-annotations-${jetty.version}.jar
+lib/annotations/*.jar
 
-        [xml]
-        # Enable annotation scanning webapp configurations
-        etc/jetty-annotations.xml
+[xml]
+# Enable annotation scanning webapp configurations
+etc/jetty-annotations.xml

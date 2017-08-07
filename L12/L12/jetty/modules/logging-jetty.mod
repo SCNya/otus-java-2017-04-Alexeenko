@@ -1,15 +1,15 @@
 [description]
-        Configure jetty logging mechanism.
-        Provides a ${jetty.base}/resources/jetty-logging.properties.
+Configure jetty logging mechanism.
+Provides a ${jetty.base}/resources/jetty-logging.properties.
 
-        [tags]
-        logging
+[tags]
+logging
 
-        [depends]
-        resources
+[depends]
+resources
 
-        [provides]
-        logging
+[provides]
+logging
 
-        [files]
-        basehome:modules/logging-jetty
+[files]
+basehome:modules/logging-jetty

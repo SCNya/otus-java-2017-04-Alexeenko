@@ -1,10 +1,10 @@
 [description]
-        Adds the Jetty JNDI implementation to the classpath.
+Adds the Jetty JNDI implementation to the classpath.
 
-        [depend]
-        server
+[depend]
+server
 
-        [lib]
-        lib/jetty-jndi-${jetty.version}.jar
-        lib/jndi/*.jar
+[lib]
+lib/jetty-jndi-${jetty.version}.jar
+lib/jndi/*.jar
 

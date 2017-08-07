@@ -1,22 +1,22 @@
 [description]
-        Provides a SLF4J binding to Logback logging.
+Provides a SLF4J binding to Logback logging.
 
-        [tags]
-        logging
-        slf4j
-        internal
+[tags]
+logging
+slf4j
+internal
 
-        [depends]
-        slf4j-api
-        logback-impl
-        resources
+[depends]
+slf4j-api
+logback-impl
+resources
 
-        [provides]
-        slf4j-impl
+[provides]
+slf4j-impl
 
-        [files]
-        maven://ch.qos.logback/logback-classic/${logback.version}|lib/logback/logback-classic-${logback.version}.jar
+[files]
+maven://ch.qos.logback/logback-classic/${logback.version}|lib/logback/logback-classic-${logback.version}.jar
 
-        [lib]
-        lib/logback/logback-classic-${logback.version}.jar
+[lib]
+lib/logback/logback-classic-${logback.version}.jar
 

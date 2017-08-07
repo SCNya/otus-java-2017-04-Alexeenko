@@ -1,16 +1,16 @@
 [description]
-        Configure jetty logging to use slf4j.
-        Any slf4j-impl implementation is used
+Configure jetty logging to use slf4j.
+Any slf4j-impl implementation is used
 
-        [tags]
-        logging
+[tags]
+logging
 
-        [depends]
-        slf4j-api
-        slf4j-impl
+[depends]
+slf4j-api
+slf4j-impl
 
-        [provides]
-        logging
+[provides]
+logging
 
-        [exec]
-        -Dorg.eclipse.jetty.util.log.class?=org.eclipse.jetty.util.log.Slf4jLog
+[exec]
+-Dorg.eclipse.jetty.util.log.class?=org.eclipse.jetty.util.log.Slf4jLog

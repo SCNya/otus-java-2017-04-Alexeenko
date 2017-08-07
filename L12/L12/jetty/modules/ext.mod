@@ -1,14 +1,14 @@
 [description]
-        Adds all jar files discovered in $JETTY_HOME/lib/ext
-        and $JETTY_BASE/lib/ext to the servers classpath.
+Adds all jar files discovered in $JETTY_HOME/lib/ext
+and $JETTY_BASE/lib/ext to the servers classpath.
 
-        [tags]
-        classpath
+[tags]
+classpath
 
-        [lib]
-        lib/ext/**.jar
+[lib]
+lib/ext/**.jar
 
-        [files]
-        lib/
-        lib/ext/
+[files]
+lib/
+lib/ext/
 

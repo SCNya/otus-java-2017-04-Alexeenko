@@ -1,28 +1,28 @@
 [description]
-        Redirects JVMs console stderr and stdout to a log file,
-        including output from Jetty's default StdErrLog logging.
+Redirects JVMs console stderr and stdout to a log file,
+including output from Jetty's default StdErrLog logging.
 
-        [tags]
-        logging
+[tags]
+logging
 
-        [xml]
-        etc/console-capture.xml
+[xml]
+etc/console-capture.xml
 
-        [files]
-        logs/
+[files]
+logs/
 
-        [lib]
-        resources/
+[lib]
+resources/
 
-        [ini-template]
-        ## Logging directory (relative to $jetty.base)
-        # jetty.console-capture.dir=logs
+[ini-template]
+## Logging directory (relative to $jetty.base)
+# jetty.console-capture.dir=logs
 
-        ## Whether to append to existing file
-        # jetty.console-capture.append=true
+## Whether to append to existing file
+# jetty.console-capture.append=true
 
-        ## How many days to retain old log files
-        # jetty.console-capture.retainDays=90
+## How many days to retain old log files
+# jetty.console-capture.retainDays=90
 
-        ## Timezone of the log timestamps
-        # jetty.console-capture.timezone=GMT
+## Timezone of the log timestamps
+# jetty.console-capture.timezone=GMT

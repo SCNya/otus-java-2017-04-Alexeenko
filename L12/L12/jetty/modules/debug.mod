@@ -1,33 +1,33 @@
 [description]
-        Enables the DebugListener to generate additional
-        logging regarding detailed request handling events.
-        Renames threads to include request URI.
+Enables the DebugListener to generate additional 
+logging regarding detailed request handling events.
+Renames threads to include request URI.
 
-        [tags]
-        debug
+[tags]
+debug
 
-        [depend]
-        deploy
+[depend]
+deploy
 
-        [files]
-        logs/
+[files]
+logs/
 
-        [xml]
-        etc/jetty-debug.xml
+[xml]
+etc/jetty-debug.xml
 
-        [ini-template]
+[ini-template]
 
-        ## How many days to retain old log files
-        # jetty.debug.retainDays=14
+## How many days to retain old log files
+# jetty.debug.retainDays=14
 
-        ## Timezone of the log entries
-        # jetty.debug.timezone=GMT
+## Timezone of the log entries
+# jetty.debug.timezone=GMT
 
-        ## Show Request/Response headers
-        # jetty.debug.showHeaders=true
+## Show Request/Response headers
+# jetty.debug.showHeaders=true
 
-        ## Rename threads while in context scope
-        # jetty.debug.renameThread=false
+## Rename threads while in context scope
+# jetty.debug.renameThread=false
 
-        ## Dump context as deployed
-        # jetty.debug.dumpContext=true
+## Dump context as deployed
+# jetty.debug.dumpContext=true

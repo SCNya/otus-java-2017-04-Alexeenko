@@ -6,14 +6,14 @@
 <!-- =============================================================== -->
 
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
-    <Ref refid="DeploymentManager">
-        <Call name="addLifeCycleBinding">
-            <Arg>
-                <New
-                        class="org.eclipse.jetty.cdi.servlet.WeldDeploymentBinding">
-                </New>
-            </Arg>
-        </Call>
-    </Ref>
+  <Ref refid="DeploymentManager">
+    <Call name="addLifeCycleBinding">
+      <Arg>
+        <New
+          class="org.eclipse.jetty.cdi.servlet.WeldDeploymentBinding">
+        </New>
+      </Arg>
+    </Call>
+  </Ref>
 </Configure>
 

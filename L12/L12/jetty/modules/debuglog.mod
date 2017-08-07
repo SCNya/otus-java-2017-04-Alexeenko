@@ -1,28 +1,28 @@
 [description]
-        Deprecated Debug Log using the DebugHandle.
-        Replaced with the debug module.
+Deprecated Debug Log using the DebugHandle.
+Replaced with the debug module.
 
-        [tags]
-        debug
+[tags]
+debug
 
-        [depend]
-        server
+[depend]
+server
 
-        [files]
-        logs/
+[files]
+logs/
 
-        [xml]
-        etc/jetty-debuglog.xml
+[xml]
+etc/jetty-debuglog.xml
 
-        [ini-template]
-        ## Logging directory (relative to $jetty.base)
-        # jetty.debuglog.dir=logs
+[ini-template]
+## Logging directory (relative to $jetty.base)
+# jetty.debuglog.dir=logs
 
-        ## Whether to append to existing file
-        # jetty.debuglog.append=false
+## Whether to append to existing file
+# jetty.debuglog.append=false
 
-        ## How many days to retain old log files
-        # jetty.debuglog.retainDays=90
+## How many days to retain old log files
+# jetty.debuglog.retainDays=90
 
-        ## Timezone of the log entries
-        # jetty.debuglog.timezone=GMT
+## Timezone of the log entries
+# jetty.debuglog.timezone=GMT

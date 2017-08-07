@@ -1,6 +1,6 @@
 [description]
-        MongoURI connections for session storage
+MongoURI connections for session storage
 
-        [xml]
-        etc/sessions/mongo/session-store-by-uri.xml
+[xml]
+etc/sessions/mongo/session-store-by-uri.xml
 

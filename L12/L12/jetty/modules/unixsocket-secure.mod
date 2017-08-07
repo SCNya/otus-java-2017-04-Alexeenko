@@ -1,20 +1,20 @@
 [description]
-        Enable a secure request customizer on the HTTP Configuration
-        used by the Unix Domain Socket Connector.
-        This looks for a secure scheme transported either by the
-        unixsocket-forwarded, unixsocket-proxy-protocol or in a
-        HTTP2 request.
+Enable a secure request customizer on the HTTP Configuration
+used by the Unix Domain Socket Connector.
+This looks for a secure scheme transported either by the
+unixsocket-forwarded, unixsocket-proxy-protocol or in a
+HTTP2 request.
 
-        [tags]
-        connector
+[tags]
+connector
 
-        [depend]
-        unixsocket-http
+[depend]
+unixsocket-http
 
-        [xml]
-        etc/jetty-unixsocket-secure.xml
+[xml]
+etc/jetty-unixsocket-secure.xml
 
-        [ini-template]
-        ### SecureRequestCustomizer Configuration
+[ini-template]
+### SecureRequestCustomizer Configuration
 
 

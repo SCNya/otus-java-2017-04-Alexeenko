@@ -1,5 +1,5 @@
 [description]
-        JDBC Driver connections for session storage
+JDBC Driver connections for session storage
 
-        [xml]
-        etc/sessions/jdbc/driver.xml
+[xml]
+etc/sessions/jdbc/driver.xml

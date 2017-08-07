@@ -3,28 +3,25 @@
 
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
 
-    <!-- ===================================================================== -->
-    <!-- Configure a factory for CachingSessionDataStores                      -->
-    <!-- ===================================================================== -->
+  <!-- ===================================================================== -->
+  <!-- Configure a factory for CachingSessionDataStores                      -->
+  <!-- ===================================================================== -->
 
-    <Call name="removeBean">
-        <Arg>
-            <Ref id="sessionDataStoreFactory"/>
-        </Arg>
-    </Call>
+  <Call name="removeBean">
+    <Arg>
+      <Ref id="sessionDataStoreFactory"/>
+    </Arg>
+  </Call>
 
-
-    <Call name="addBean">
-        <Arg>
-            <New class="org.eclipse.jetty.server.session.CachingSessionDataStoreFactory">
-                <Set name="sessionStoreFactory">
-                    <Ref id="sessionDataStoreFactory"/>
-                </Set>
-                <Set name="sessionDataMapFactory">
-                    <Ref id="sessionDataMapFactory"/>
-                </Set>
-            </New>
-        </Arg>
-    </Call>
+  
+  
+  <Call name="addBean">
+   <Arg>
+    <New class="org.eclipse.jetty.server.session.CachingSessionDataStoreFactory">
+       <Set name="sessionStoreFactory"><Ref id="sessionDataStoreFactory"/></Set>
+       <Set name="sessionDataMapFactory"><Ref id="sessionDataMapFactory"/></Set>
+    </New>
+   </Arg> 
+  </Call>
 
 </Configure>

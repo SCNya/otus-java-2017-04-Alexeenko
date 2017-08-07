@@ -1,18 +1,18 @@
 [description]
-        A trivial SessionCache that does not actually cache sessions.
+A trivial SessionCache that does not actually cache sessions.
 
-        [tags]
-        session
+[tags]
+session
 
-        [provides]
-        session-cache
+[provides]
+session-cache
 
-        [depends]
-        sessions
+[depends]
+sessions
 
-        [xml]
-        etc/sessions/session-cache-null.xml
+[xml]
+etc/sessions/session-cache-null.xml
 
-        [ini-template]
-        #jetty.session.saveOnCreate=false
-        #jetty.session.removeUnloadableSessions=false
+[ini-template]
+#jetty.session.saveOnCreate=false
+#jetty.session.removeUnloadableSessions=false

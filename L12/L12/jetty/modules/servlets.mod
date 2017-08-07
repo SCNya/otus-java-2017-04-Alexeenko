@@ -1,12 +1,12 @@
 [description]
-        Puts a collection of jetty utility servlets and filters
-        on the server classpath (CGI, CrossOriginFilter, DosFilter,
-        MultiPartFilter, PushCacheFilter, QoSFilter, etc.) for
-        use by all webapplications.
+Puts a collection of jetty utility servlets and filters
+on the server classpath (CGI, CrossOriginFilter, DosFilter,
+MultiPartFilter, PushCacheFilter, QoSFilter, etc.) for
+use by all webapplications.
 
-        [depend]
-        servlet
+[depend]
+servlet
 
-        [lib]
-        lib/jetty-servlets-${jetty.version}.jar
+[lib]
+lib/jetty-servlets-${jetty.version}.jar
 

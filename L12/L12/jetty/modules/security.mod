@@ -1,8 +1,8 @@
 [description]
-        Adds servlet standard security handling to the classpath.
+Adds servlet standard security handling to the classpath.
 
-        [depend]
-        server
+[depend]
+server
 
-        [lib]
-        lib/jetty-security-${jetty.version}.jar
+[lib]
+lib/jetty-security-${jetty.version}.jar
