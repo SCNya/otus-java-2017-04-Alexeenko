@@ -6,8 +6,8 @@ import net.sf.ehcache.management.CacheStatisticsMBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Vsevolod on 15/07/2017.
@@ -18,7 +18,7 @@ public class WebConfig {
 
     @Bean
     public Set<String> sessions() {
-        return new HashSet<>();
+        return ConcurrentHashMap.newKeySet();
     }
 
     @Bean

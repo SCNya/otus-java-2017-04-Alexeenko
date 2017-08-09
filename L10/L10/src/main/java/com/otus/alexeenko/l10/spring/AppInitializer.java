@@ -16,7 +16,7 @@ public class AppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context
                 = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("com.otus.alexeenko.l10.spring.WebConfig");
+        context.setConfigLocation(WebConfig.class.getCanonicalName());
         container.addListener(new ContextLoaderListener(context));
         PageGenerator.setContext(container);
         DB db = DB.getInstance();
