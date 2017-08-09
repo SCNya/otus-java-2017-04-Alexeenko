@@ -4,21 +4,25 @@ package com.otus.alexeenko.msg.types;
  * Created by Vsevolod on 04/08/2017.
  */
 public class Message {
-    private MsgTypes type;
+    private final MsgTypes type;
+    private final MsgHeaders header;
+    private final String message;
+
+    public Message(MsgTypes type, MsgHeaders header, String message) {
+        this.type = type;
+        this.header = header;
+        this.message = message;
+    }
 
     public MsgTypes getType() {
         return type;
     }
 
-    private String message;
-
-    public Message(MsgTypes type, String message) {
-        this.type = type;
-        this.message = message;
+    public MsgHeaders getHeader() {
+        return header;
     }
 
-    @Override
-    public String toString() {
+    public String getMessage() {
         return message;
     }
 }

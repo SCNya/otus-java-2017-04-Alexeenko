@@ -1,6 +1,7 @@
 package com.otus.alexeenko.frontend.spring;
 
-import com.otus.alexeenko.frontend.db.DB;
+import com.otus.alexeenko.frontend.net.FrontendNetService;
+import com.otus.alexeenko.frontend.net.MsgNetFrontendService;
 import com.otus.alexeenko.frontend.templater.PageGenerator;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -19,7 +20,7 @@ public class AppInitializer implements WebApplicationInitializer {
         context.setConfigLocation("com.otus.alexeenko.l10.spring.WebConfig");
         container.addListener(new ContextLoaderListener(context));
         PageGenerator.setContext(container);
-        DB db = DB.getInstance();
-        db.run();
+        FrontendNetService netService = MsgNetFrontendService.getInstance();
+        netService.start();
     }
 }

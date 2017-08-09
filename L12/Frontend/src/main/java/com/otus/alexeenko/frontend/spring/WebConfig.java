@@ -1,13 +1,12 @@
 package com.otus.alexeenko.frontend.spring;
 
-import com.otus.alexeenko.frontend.db.DB;
-import net.sf.ehcache.management.CacheConfigurationMBean;
-import net.sf.ehcache.management.CacheStatisticsMBean;
+import com.otus.alexeenko.frontend.net.FrontendNetService;
+import com.otus.alexeenko.frontend.net.MsgNetFrontendService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Vsevolod on 15/07/2017.
@@ -18,22 +17,12 @@ public class WebConfig {
 
     @Bean
     public Set<String> sessions() {
-        return new HashSet<>();
+        return ConcurrentHashMap.newKeySet();
     }
 
     @Bean
-    public DB dataBase() {
-        return DB.getInstance();
-    }
-
-    @Bean
-    CacheStatisticsMBean statisticsMBean(DB db) {
-        return db.getCacheCacheStatisticsMBean();
-    }
-
-    @Bean
-    CacheConfigurationMBean configurationMBean(DB db) {
-        return db.getCacheConfigurationMBean();
+    public FrontendNetService netService() {
+        return MsgNetFrontendService.getInstance();
     }
 
     @Bean

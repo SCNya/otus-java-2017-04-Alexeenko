@@ -1,6 +1,6 @@
 package com.otus.alexeenko.frontend.spring;
 
-import com.otus.alexeenko.frontend.db.DB;
+import com.otus.alexeenko.frontend.net.FrontendNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -12,7 +12,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
  */
 public class EventListener implements ApplicationListener {
     @Autowired
-    DB dataBase;
+    FrontendNetService netService;
 
     public EventListener() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
@@ -21,7 +21,7 @@ public class EventListener implements ApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextClosedEvent) {
-            dataBase.dispose();
+            netService.dispose();
         }
     }
 }

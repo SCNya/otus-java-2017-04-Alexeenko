@@ -76,7 +76,7 @@ function update() {
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            clearInterval(updater);
+            location.reload();
         });
 }
 

@@ -1,13 +1,9 @@
 package com.otus.alexeenko.frontend.servlets;
 
-import net.sf.ehcache.management.CacheConfigurationMBean;
+import com.otus.alexeenko.frontend.net.FrontendNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +23,7 @@ public class Management extends HttpServlet implements MyJsonServlet {
     @Autowired
     private Set<String> sessions;
     @Autowired
-    private CacheConfigurationMBean configurationMBean;
+    FrontendNetService netService;
 
     @Override
     public void init() {
@@ -39,7 +35,7 @@ public class Management extends HttpServlet implements MyJsonServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         if (sessions.contains(request.getSession().getId())) {
-            response.getWriter().println(getStatisticJson());
+            response.getWriter().println(netService.getManagementInfo());
             setOK(response);
         } else
             setForbidden(response);
@@ -51,32 +47,11 @@ public class Management extends HttpServlet implements MyJsonServlet {
         boolean isFoundId = findCookie(sessions, request.getCookies());
 
         if (isFoundId) {
-            StringReader requestData = new StringReader(request.getReader().lines().collect(Collectors.joining()));
+            String requestData = request.getReader().lines().collect(Collectors.joining());
 
-            try (JsonReader jsonReader = Json.createReader(requestData)) {
-                JsonObject jData = jsonReader.readObject();
-                setValues(jData);
-            }
+            netService.setConfiguration(requestData);
         }
 
         setOK(response);
-    }
-
-    private void setValues(JsonObject jData) {
-        configurationMBean.setMemoryStoreEvictionPolicy(jData.getString("policy"));
-        configurationMBean.setTimeToLiveSeconds(jData.getInt("time"));
-    }
-
-    private String getStatisticJson() {
-        JsonObjectBuilder jObjectBuilder = Json.createObjectBuilder();
-
-        jObjectBuilder.add("heapName", "MaxBytesLocalHeap")
-                .add("heapSize", configurationMBean.getMaxBytesLocalHeap())
-                .add("memoryName", "MemoryStoreEvictionPolicy")
-                .add("policy", configurationMBean.getMemoryStoreEvictionPolicy())
-                .add("timeName", "TimeToLiveSeconds")
-                .add("time", configurationMBean.getTimeToLiveSeconds());
-
-        return jObjectBuilder.build().toString();
     }
 }

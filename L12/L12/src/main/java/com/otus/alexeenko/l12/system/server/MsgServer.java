@@ -5,7 +5,6 @@ import com.otus.alexeenko.msg.MsgNetSystem;
 import com.otus.alexeenko.msg.connection.SimpleMsgConnection;
 import com.otus.alexeenko.msg.types.ClientTypes;
 import com.otus.alexeenko.msg.types.Message;
-import com.otus.alexeenko.msg.types.MsgTypes;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -16,6 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.otus.alexeenko.msg.types.MsgHeaders.HANDSHAKE;
+import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -57,8 +58,7 @@ public class MsgServer implements MsgNetSystem {
                 client = new SimpleMsgConnection(id, clientSocket);
                 client.start();
 
-                if (getType(client)) {
-
+                if (isTyped(client)) {
                     if (isBackend(client))
                         backends.add(client);
                     else
@@ -76,7 +76,7 @@ public class MsgServer implements MsgNetSystem {
         }
     }
 
-    private boolean getType(MsgConnection client) {
+    private boolean isTyped(MsgConnection client) {
         try {
             int i = 0;
             sendInfo(client);
@@ -85,8 +85,8 @@ public class MsgServer implements MsgNetSystem {
                 Message msg = client.pool();
 
                 if (msg != null)
-                    if (msg.getType() == MsgTypes.INFO) {
-                        client.setType(ClientTypes.valueOf(msg.toString()));
+                    if (msg.getType() == INFO) {
+                        client.setType(ClientTypes.valueOf(msg.getMessage()));
                         return true;
                     } else {
                         LOGGER.error("Bad client type");
@@ -94,7 +94,7 @@ public class MsgServer implements MsgNetSystem {
                         return false;
                     }
 
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 ++i;
             }
         } catch (InterruptedException e) {
@@ -106,7 +106,7 @@ public class MsgServer implements MsgNetSystem {
     }
 
     private void sendInfo(MsgConnection client) {
-        Message infoMessage = new Message(MsgTypes.INFO, "");
+        Message infoMessage = new Message(INFO, HANDSHAKE, "");
         client.send(infoMessage);
     }
 
@@ -212,9 +212,16 @@ public class MsgServer implements MsgNetSystem {
     @Override
     public synchronized void dispose() {
         executor.shutdownNow();
+
         for (Map.Entry<MsgConnection, MsgConnection> pair : clientPairs) {
             pair.getValue().dispose();
             pair.getKey().dispose();
         }
+
+        for (MsgConnection backend : backends)
+            backend.dispose();
+
+        for (MsgConnection frontend : frontends)
+            frontend.dispose();
     }
 }

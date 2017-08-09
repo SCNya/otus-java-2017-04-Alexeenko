@@ -1,53 +1,28 @@
 package com.otus.alexeenko.database.services.custom.net;
 
-import com.otus.alexeenko.msg.MsgConnection;
-import com.otus.alexeenko.msg.MsgNetSystem;
-import com.otus.alexeenko.msg.connection.SimpleMsgConnection;
-import com.otus.alexeenko.msg.types.ClientTypes;
+import com.otus.alexeenko.database.services.custom.beans.internal.DataBaseMBeanConfiguration;
+import com.otus.alexeenko.database.services.custom.beans.spi.MBeanConfiguration;
+import com.otus.alexeenko.msg.service.MsgNetService;
 import com.otus.alexeenko.msg.types.Message;
-import com.otus.alexeenko.msg.types.MsgTypes;
-import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import static com.otus.alexeenko.msg.types.MsgHeaders.MANAGEMENT_INFO;
+import static com.otus.alexeenko.msg.types.MsgHeaders.STATISTICS;
+import static com.otus.alexeenko.msg.types.MsgTypes.RESPONSE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Created by Vsevolod on 05/08/2017.
  */
-public class MsgNetDbService implements MsgNetSystem {
-    private static final Logger LOGGER = getLogger("MsgNetDbService");
-    private static final String HOST = "127.0.0.1";
-    private static final int PORT = 5050;
-
-    private final ExecutorService executor;
-    private MsgConnection server;
+public final class MsgNetDbService extends MsgNetService {
+    private final MBeanConfiguration configuration;
 
     public MsgNetDbService() {
-        executor = Executors.newSingleThreadExecutor();
+        super(getLogger("MsgNetDbService"));
+        configuration = new DataBaseMBeanConfiguration();
     }
 
     @Override
-    public void start() {
-        executor.execute(this::work);
-    }
-
-    private void work() {
-        try {
-            while (!executor.isShutdown()) {
-                checkConnection();
-                receiveMsg();
-                Thread.sleep(100);
-            }
-        } catch (InterruptedException e) {
-            LOGGER.info("dispose");
-        }
-    }
-
-    private void receiveMsg() {
+    protected void msgProcessing() {
         Message msg = server.pool();
 
         if (msg != null)
@@ -56,49 +31,30 @@ public class MsgNetDbService implements MsgNetSystem {
                     sendInfo();
                     break;
                 case REQUEST:
+                    response(msg);
                     break;
                 default:
-                    LOGGER.error("Bad message");
+                    LOGGER.error("Bad message type");
                     break;
             }
     }
 
-    private void sendInfo() {
-        Message infoMessage = new Message(MsgTypes.INFO, ClientTypes.BACKEND.toString());
-        server.send(infoMessage);
-    }
-
-    private void checkConnection() throws InterruptedException {
-        if (server != null) {
-            if (server.isClose())
-                getConnection();
-        } else {
-            getConnection();
-        }
-    }
-
-    private void getConnection() throws InterruptedException {
-        while (!executor.isShutdown()) {
-            try {
-                LOGGER.info("Try connection");
-                server = new SimpleMsgConnection(0, new Socket(HOST, PORT));
-                server.start();
-                LOGGER.info("Success");
+    private void response(Message msg) {
+        switch (msg.getHeader()) {
+            case STATISTICS:
+                server.send(new Message(RESPONSE, STATISTICS,
+                        configuration.getStatistics()));
                 break;
-            } catch (IOException e) {
-                if (server != null)
-                    server.dispose();
-                LOGGER.error(e.getMessage());
-            }
-            Thread.sleep(1000);
+            case MANAGEMENT_INFO:
+                server.send(new Message(RESPONSE, MANAGEMENT_INFO,
+                        configuration.getManagementInfo()));
+                break;
+            case CONFIGURATION:
+                configuration.setConfiguration(msg.getMessage());
+                break;
+            default:
+                LOGGER.error("Bad message header");
+                break;
         }
-    }
-
-
-    @Override
-    public synchronized void dispose() {
-        executor.shutdownNow();
-        if (server != null)
-            server.dispose();
     }
 }

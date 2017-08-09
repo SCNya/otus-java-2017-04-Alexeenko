@@ -1,11 +1,9 @@
 package com.otus.alexeenko.frontend.servlets;
 
-import net.sf.ehcache.management.CacheStatisticsMBean;
+import com.otus.alexeenko.frontend.net.FrontendNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +21,7 @@ public class Statistics extends HttpServlet implements MyJsonServlet {
     @Autowired
     private Set<String> sessions;
     @Autowired
-    private CacheStatisticsMBean statisticsMBean;
+    FrontendNetService netService;
 
     @Override
     public void init() {
@@ -36,36 +34,9 @@ public class Statistics extends HttpServlet implements MyJsonServlet {
         boolean isFoundId = findCookie(sessions, request.getCookies());
 
         if (isFoundId) {
-            response.getWriter().println(getStatisticJson());
+            response.getWriter().println(netService.getStatistics());
             setOK(response);
         } else
             setForbidden(response);
-    }
-
-    private String getStatisticJson() {
-        JsonArrayBuilder jArrayBuilder = Json.createArrayBuilder();
-
-        jArrayBuilder.add(
-                Json.createObjectBuilder().add("name", "AssociatedCacheName")
-                        .add("value", statisticsMBean.getAssociatedCacheName())
-        );
-        jArrayBuilder.add(
-                Json.createObjectBuilder().add("name", "CacheHits")
-                        .add("value", statisticsMBean.getCacheHits())
-        );
-        jArrayBuilder.add(
-                Json.createObjectBuilder().add("name", "CacheMisses")
-                        .add("value", statisticsMBean.getCacheMisses())
-        );
-        jArrayBuilder.add(
-                Json.createObjectBuilder().add("name", "CacheHitPercentage")
-                        .add("value", Math.round(statisticsMBean.getCacheHitPercentage() * 100d))
-        );
-        jArrayBuilder.add(
-                Json.createObjectBuilder().add("name", "CacheMissPercentage")
-                        .add("value", Math.round(statisticsMBean.getCacheMissPercentage() * 100d))
-        );
-
-        return jArrayBuilder.build().toString();
     }
 }
