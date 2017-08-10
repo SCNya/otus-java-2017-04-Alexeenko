@@ -19,21 +19,29 @@ public class MyRunner implements ProcessRunner {
 
     private final ProcessBuilder pb;
     private Process process;
+    private StreamListener output;
 
     public MyRunner(String command) {
         pb = new ProcessBuilder(command.split(" "));
+        pb.redirectErrorStream(true);
     }
 
     @Override
-    public void start() throws IOException {
+    public void start(boolean logging) throws IOException {
         process = pb.start();
+        output = new StreamListener(process.getInputStream(), logging);
+
+        output.start();
     }
 
     @Override
     public void enableLogging() {
-        StreamListener output = new StreamListener(process.getInputStream());
+        output.enableLogging();
+    }
 
-        output.start();
+    @Override
+    public void disableLogging() {
+        output.disableLogging();
     }
 
     @Override
@@ -44,9 +52,19 @@ public class MyRunner implements ProcessRunner {
     private class StreamListener extends Thread {
 
         private final InputStream is;
+        private boolean logging;
 
-        private StreamListener(InputStream is) {
+        private StreamListener(InputStream is, boolean logging) {
             this.is = is;
+            this.logging = logging;
+        }
+
+        private void enableLogging() {
+            logging = true;
+        }
+
+        private void disableLogging() {
+            logging = false;
         }
 
         @Override
@@ -56,6 +74,7 @@ public class MyRunner implements ProcessRunner {
                 String line;
 
                 while ((line = br.readLine()) != null)
+                    if (logging)
                     LOGGER.info(line);
 
             } catch (IOException e) {

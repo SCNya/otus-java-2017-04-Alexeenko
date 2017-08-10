@@ -37,8 +37,7 @@ public class Executor {
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
+            return null;
         }
-
-        return null;
     }
 }

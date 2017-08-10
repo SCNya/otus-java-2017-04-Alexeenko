@@ -46,10 +46,8 @@ public class MessageSystem implements MsgNetSystem {
 
     private void startFrontend() {
         try {
-            for (ProcessRunner frontend : frontendServices) {
-                frontend.start();
-                //frontend.enableLogging();
-            }
+            for (ProcessRunner frontend : frontendServices)
+                frontend.start(false);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
@@ -57,10 +55,8 @@ public class MessageSystem implements MsgNetSystem {
 
     private void startBackend() {
         try {
-            for (ProcessRunner backend : dataBaseServices) {
-                backend.start();
-                //backend.enableLogging();
-            }
+            for (ProcessRunner backend : dataBaseServices)
+                backend.start(false);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }

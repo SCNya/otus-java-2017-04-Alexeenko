@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.annotation.Nullable;
 import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -141,25 +142,24 @@ public class CustomService implements DataBaseService {
 
     @SuppressWarnings("unchecked")
     @Override
+    @Nullable
     public <T extends BaseDataSet> T load(long id, Class<T> clazz) {
         T value;
         Key key = new Key(id, clazz);
         Element element = cache.get(key);
 
         if (element == null) {
-            CACHE_LOGGER.info("Cache miss!");
             try (Connection connection = connections.getConnection()) {
                 UserDAO dao = new UserDAO(connection);
                 value = dao.load(id, clazz);
-                cache.put(new Element(key, value));
 
+                cache.put(new Element(key, value));
                 return value;
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
                 return null;
             }
         } else {
-            CACHE_LOGGER.info("Cache hit!");
             return (T) element.getObjectValue();
         }
     }
