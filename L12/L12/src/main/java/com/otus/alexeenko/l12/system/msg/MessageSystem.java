@@ -59,7 +59,7 @@ public class MessageSystem implements MsgNetSystem {
         try {
             for (ProcessRunner backend : dataBaseServices) {
                 backend.start();
-                backend.enableLogging();
+                //backend.enableLogging();
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
