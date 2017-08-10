@@ -14,8 +14,8 @@ import java.util.List;
  * Created by Vsevolod on 01/08/2017.
  */
 public class DB {
-    private DataBaseService db;
-    private List<BaseDataSet> dataSets;
+    private final DataBaseService db;
+    private final List<BaseDataSet> dataSets;
 
     public DB() {
         db = new CustomService();
@@ -31,6 +31,7 @@ public class DB {
                 phones, new AddressDataSet(2L, "Dorado", 200)));
     }
 
+    @SuppressWarnings("InfiniteLoopStatement")
     public void run() {
         try {
             db.start();

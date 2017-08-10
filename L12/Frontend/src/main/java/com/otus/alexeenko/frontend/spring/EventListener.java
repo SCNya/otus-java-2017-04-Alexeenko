@@ -12,7 +12,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
  */
 public class EventListener implements ApplicationListener {
     @Autowired
-    FrontendNetService netService;
+    private FrontendNetService netService;
 
     public EventListener() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);

@@ -3,17 +3,12 @@ package com.otus.alexeenko.msg.service;
 import com.otus.alexeenko.msg.MsgConnection;
 import com.otus.alexeenko.msg.MsgNetSystem;
 import com.otus.alexeenko.msg.connection.SimpleMsgConnection;
-import com.otus.alexeenko.msg.types.Message;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.otus.alexeenko.msg.types.ClientTypes.BACKEND;
-import static com.otus.alexeenko.msg.types.MsgHeaders.HANDSHAKE;
-import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 
 /**
  * Created by Vsevolod on 05/08/2017.
@@ -22,8 +17,8 @@ public abstract class MsgNetService implements MsgNetSystem {
     private static final String HOST = "127.0.0.1";
     private static final int PORT = 5050;
 
+    private final ExecutorService executor;
     protected final Logger LOGGER;
-    protected final ExecutorService executor;
     protected MsgConnection server;
 
     public MsgNetService(Logger logger) {
@@ -50,10 +45,7 @@ public abstract class MsgNetService implements MsgNetSystem {
 
     protected abstract void msgProcessing();
 
-    protected void sendInfo() {
-        Message infoMessage = new Message(INFO, HANDSHAKE, BACKEND.toString());
-        server.send(infoMessage);
-    }
+    protected abstract void sendInfo();
 
     private void checkConnection() throws InterruptedException {
         if (server != null) {

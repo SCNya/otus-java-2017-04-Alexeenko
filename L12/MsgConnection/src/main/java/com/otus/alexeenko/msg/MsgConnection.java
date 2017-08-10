@@ -14,8 +14,6 @@ public interface MsgConnection extends MsgNetSystem {
 
     Message pool();
 
-    Message take() throws InterruptedException;
-
     boolean isClose();
 
     void dispose();

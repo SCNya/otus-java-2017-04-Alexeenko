@@ -69,8 +69,8 @@ public class SimpleMsgConnection implements MsgConnection {
                         ++i;
                         break;
                     case MESSAGE:
-                        LOGGER.info("Id=" + id + " Message received: type = " + data[TYPE]
-                                + " header = " + data[HEADER] + " body = \"" + inputLine + '\"');
+            /*            LOGGER.info("Id=" + id + " Message received: type = " + data[TYPE]
+                                + " header = " + data[HEADER] + " body = \"" + inputLine + "\"\n");*/
 
                         Message msg = new Message(MsgTypes.valueOf(data[TYPE]),
                                 MsgHeaders.valueOf(data[HEADER]), inputLine);
@@ -124,11 +124,6 @@ public class SimpleMsgConnection implements MsgConnection {
     @Override
     public Message pool() {
         return input.poll();
-    }
-
-    @Override
-    public Message take() throws InterruptedException {
-        return input.take();
     }
 
     @Override

@@ -13,11 +13,15 @@ import javax.servlet.ServletContext;
  * Created by Vsevolod on 14/07/2017.
  */
 public class AppInitializer implements WebApplicationInitializer {
+    static {
+        org.apache.log4j.BasicConfigurator.configure();
+    }
+
     @Override
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context
                 = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("com.otus.alexeenko.l10.spring.WebConfig");
+        context.setConfigLocation(WebConfig.class.getCanonicalName());
         container.addListener(new ContextLoaderListener(context));
         PageGenerator.setContext(container);
         FrontendNetService netService = MsgNetFrontendService.getInstance();

@@ -17,7 +17,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MessageSystem implements MsgNetSystem {
     private static final Logger LOGGER = getLogger("MessageSystem");
-    private static final int NUMBER_OF_SERVICES = 1;
+    private static final int NUMBER_OF_SERVICES = 3;
     private static final String DB_START_COMMAND = "java -jar ../DataBase/target/DataBase.jar";
     private static final String FRONTEND_START_COMMAND = "java -jar jetty/start.jar -Djetty.base=jetty/ -Djetty.http.port=808";
 
@@ -46,8 +46,10 @@ public class MessageSystem implements MsgNetSystem {
 
     private void startFrontend() {
         try {
-            for (ProcessRunner frontend : frontendServices)
+            for (ProcessRunner frontend : frontendServices) {
                 frontend.start();
+                //frontend.enableLogging();
+            }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
@@ -55,8 +57,10 @@ public class MessageSystem implements MsgNetSystem {
 
     private void startBackend() {
         try {
-            for (ProcessRunner db : dataBaseServices)
-                db.start();
+            for (ProcessRunner backend : dataBaseServices) {
+                backend.start();
+                backend.enableLogging();
+            }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,7 @@ public class Management extends HttpServlet implements MyJsonServlet {
     @Autowired
     private Set<String> sessions;
     @Autowired
+    private
     FrontendNetService netService;
 
     @Override
@@ -35,8 +35,13 @@ public class Management extends HttpServlet implements MyJsonServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         if (sessions.contains(request.getSession().getId())) {
-            response.getWriter().println(netService.getManagementInfo());
-            setOK(response);
+            String managementInfo = netService.getManagementInfo();
+
+            if (managementInfo != null) {
+                response.getWriter().println(netService.getManagementInfo());
+                setOK(response);
+            } else
+                setServiceUnavailable(response);
         } else
             setForbidden(response);
     }

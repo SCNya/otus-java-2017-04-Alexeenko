@@ -30,7 +30,6 @@ public interface MyServlet {
     }
 
     default void setForbidden(HttpServletResponse response) {
-        response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 

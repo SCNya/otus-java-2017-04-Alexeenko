@@ -78,7 +78,13 @@ function update() {
         .fail(function (jqXHR, textStatus, errorThrown) {
             location.reload();
         });
+
+    updater();
+}
+
+function updater() {
+    setTimeout(update, 1000);
 }
 
 init();
-var updater = setInterval(update, 1000);
+updater();

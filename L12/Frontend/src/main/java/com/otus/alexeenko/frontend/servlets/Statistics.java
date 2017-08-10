@@ -21,7 +21,7 @@ public class Statistics extends HttpServlet implements MyJsonServlet {
     @Autowired
     private Set<String> sessions;
     @Autowired
-    FrontendNetService netService;
+    private FrontendNetService netService;
 
     @Override
     public void init() {
@@ -34,8 +34,13 @@ public class Statistics extends HttpServlet implements MyJsonServlet {
         boolean isFoundId = findCookie(sessions, request.getCookies());
 
         if (isFoundId) {
-            response.getWriter().println(netService.getStatistics());
-            setOK(response);
+            String statistics = netService.getStatistics();
+
+            if (statistics != null) {
+                response.getWriter().println(statistics);
+                setOK(response);
+            } else
+                setServiceUnavailable(response);
         } else
             setForbidden(response);
     }

@@ -134,15 +134,15 @@ public class MsgServer implements MsgNetSystem {
     }
 
     private void toBackend(Map.Entry<MsgConnection, MsgConnection> pair) {
-        Message msg = pair.getValue().pool();  //from Frontend
-        if (msg != null)
-            pair.getKey().send(msg);
+        Message msg;
+        while ((msg = pair.getValue().pool()) != null)      //from Frontend
+            pair.getKey().send(msg);                       //to Backend
     }
 
     private void toFrontend(Map.Entry<MsgConnection, MsgConnection> pair) {
-        Message msg = pair.getKey().pool(); //from Backend
-        if (msg != null)
-            pair.getValue().send(msg);
+        Message msg;
+        while ((msg = pair.getKey().pool()) != null)       //from Backend
+            pair.getValue().send(msg);                    //to Frontend
     }
 
 
