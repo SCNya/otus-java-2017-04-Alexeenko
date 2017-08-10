@@ -4,6 +4,7 @@ import com.otus.alexeenko.database.services.custom.Executor;
 import com.otus.alexeenko.database.services.custom.builders.spi.QueryBuilder;
 import com.otus.alexeenko.database.services.datasets.BaseDataSet;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ public class Loader {
         this.it = it;
     }
 
+    @Nullable
     public <T extends BaseDataSet> T getDataSet(Class<T> clazz) {
         return exec.execQuery(it.next().build(), resultSet -> {
             resultSet.next();

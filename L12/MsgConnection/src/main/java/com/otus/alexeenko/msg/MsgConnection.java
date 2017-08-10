@@ -16,8 +16,6 @@ public interface MsgConnection extends MsgNetSystem {
 
     Message poll();
 
-    Message poll(long timeout, TimeUnit unit) throws InterruptedException;
-
     boolean isClose();
 
     void dispose();

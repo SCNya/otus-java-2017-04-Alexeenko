@@ -43,7 +43,10 @@ public abstract class MsgNetService implements MsgNetSystem {
                 msgProcessing();
                 Thread.sleep(WORK_DELAY);
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            if (server != null)
+            server.dispose();
+            
             LOGGER.info("dispose");
         }
     }
@@ -68,13 +71,14 @@ public abstract class MsgNetService implements MsgNetSystem {
         while (!executor.isShutdown()) {
             try {
                 LOGGER.info("Try connection");
-                server = new SimpleMsgConnection(0, new Socket(HOST, PORT));
+
+                Socket socket = new Socket(HOST, PORT);
+                server = new SimpleMsgConnection(0, socket);
                 server.start();
+
                 LOGGER.info("Success");
                 break;
             } catch (IOException e) {
-                if (server != null)
-                    server.dispose();
                 LOGGER.error(e.getMessage());
             }
             Thread.sleep(CONNECTION_DELAY);

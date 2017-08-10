@@ -94,7 +94,7 @@ public class MsgServer implements MsgNetSystem {
                 Thread.sleep(RECEIVE_DELAY);
                 ++i;
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             client.dispose();
             LOGGER.info("dispose");
         }

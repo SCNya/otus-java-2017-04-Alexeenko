@@ -124,11 +124,6 @@ public class SimpleMsgConnection implements MsgConnection {
     }
 
     @Override
-    public Message poll(long timeout, TimeUnit unit) throws InterruptedException {
-        return input.poll(timeout, unit);
-    }
-
-    @Override
     public boolean isClose() {
         return clientSocket.isClosed();
     }

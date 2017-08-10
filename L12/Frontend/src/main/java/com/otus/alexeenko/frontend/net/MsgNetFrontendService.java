@@ -28,8 +28,8 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     private MsgNetFrontendService() {
         super(getLogger("MsgNetFrontendService"));
 
-        managementInfoQueue = new ArrayBlockingQueue<String>(10);
-        statisticsQueue = new ArrayBlockingQueue<String>(10);
+        managementInfoQueue = new ArrayBlockingQueue<>(10);
+        statisticsQueue = new ArrayBlockingQueue<>(10);
         outQueue = new LinkedBlockingQueue<>();
     }
 
@@ -98,8 +98,8 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
             return statistics;
         } catch (InterruptedException e) {
             LOGGER.info("dispose");
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -116,8 +116,8 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
             return managementInfo;
         } catch (InterruptedException e) {
             LOGGER.info("dispose");
+            return null;
         }
-        return null;
     }
 
     @Override
