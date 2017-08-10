@@ -5,15 +5,20 @@ import com.otus.alexeenko.database.services.datasets.AddressDataSet;
 import com.otus.alexeenko.database.services.datasets.BaseDataSet;
 import com.otus.alexeenko.database.services.datasets.PhoneDataSet;
 import com.otus.alexeenko.database.services.datasets.UserDataSet;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Created by Vsevolod on 01/08/2017.
  */
 public class DB {
+    private static final Logger LOGGER = getLogger("DB");
+
     private final DataBaseService db;
     private final List<BaseDataSet> dataSets;
 
@@ -49,7 +54,7 @@ public class DB {
                 }
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
             db.dispose();
         }

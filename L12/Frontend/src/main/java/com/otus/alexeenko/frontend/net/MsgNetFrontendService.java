@@ -5,6 +5,7 @@ import com.otus.alexeenko.msg.types.Message;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -27,8 +28,8 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     private MsgNetFrontendService() {
         super(getLogger("MsgNetFrontendService"));
 
-        managementInfoQueue = new LinkedBlockingQueue<>();
-        statisticsQueue = new LinkedBlockingQueue<>();
+        managementInfoQueue = new ArrayBlockingQueue<String>(10);
+        statisticsQueue = new ArrayBlockingQueue<String>(10);
         outQueue = new LinkedBlockingQueue<>();
     }
 
@@ -72,10 +73,10 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     private void takeResponse(Message msg) {
         switch (msg.getHeader()) {
             case STATISTICS:
-                statisticsQueue.add(msg.getMessage());
+                statisticsQueue.offer(msg.getMessage());
                 break;
             case MANAGEMENT_INFO:
-                managementInfoQueue.add(msg.getMessage());
+                managementInfoQueue.offer(msg.getMessage());
                 break;
             default:
                 LOGGER.error("Bad message header");

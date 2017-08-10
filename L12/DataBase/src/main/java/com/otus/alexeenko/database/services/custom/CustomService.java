@@ -50,6 +50,8 @@ public class CustomService implements DataBaseService {
         }
     }
 
+    private static final Logger LOGGER = getLogger("CustomService");
+
     private static final String DB_NAME = "otus";
     private static final String CACHE_NAME = "userCache";
     private static final Logger CACHE_LOGGER = getLogger("Cache [" + ManagementFactory.getRuntimeMXBean().getName() + ']');
@@ -100,7 +102,7 @@ public class CustomService implements DataBaseService {
             if (server != null)
                 server.start();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         netService.start();
     }
@@ -111,7 +113,7 @@ public class CustomService implements DataBaseService {
         try {
             TcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return TcpServer;
@@ -133,7 +135,7 @@ public class CustomService implements DataBaseService {
             dao.save(dataSet);
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -153,7 +155,7 @@ public class CustomService implements DataBaseService {
 
                 return value;
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
                 return null;
             }
         } else {

@@ -1,5 +1,7 @@
 package com.otus.alexeenko.database.services;
 
+import org.slf4j.Logger;
+
 import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,10 +11,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Created by Vsevolod on 18/06/2017.
  */
 public abstract class ReflectionHelper {
+    private static final Logger LOGGER = getLogger("ReflectionHelper");
 
     public static <T> T instantiate(Class<T> type, Object... args) {
         try {
@@ -22,7 +27,7 @@ public abstract class ReflectionHelper {
                 return type.getConstructor(toClasses(args)).newInstance(args);
             }
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return null;
     }
@@ -44,7 +49,7 @@ public abstract class ReflectionHelper {
 
             field.set(object, value);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
             if (field != null && !access)
                 field.setAccessible(false);
@@ -74,7 +79,7 @@ public abstract class ReflectionHelper {
                 field.setAccessible(true);
             value = field.get(dataSet);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
             if (field != null && !access)
                 field.setAccessible(false);

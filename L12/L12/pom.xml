@@ -61,6 +61,7 @@
                     <target>1.8</target>
                     <meminitial>512m</meminitial>
                     <maxmem>512m</maxmem>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
