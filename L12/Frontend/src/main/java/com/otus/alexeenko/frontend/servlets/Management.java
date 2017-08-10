@@ -33,8 +33,9 @@ public class Management extends HttpServlet implements MyJsonServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
+        boolean isFoundId = findCookie(sessions, request.getCookies());
 
-        if (sessions.contains(request.getSession().getId())) {
+        if (isFoundId) {
             String managementInfo = netService.getManagementInfo();
 
             if (managementInfo != null) {
