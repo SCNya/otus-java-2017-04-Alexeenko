@@ -71,8 +71,8 @@ public class MessageSystem implements MsgNetSystem {
         for (ProcessRunner frontend : frontendServices)
             frontend.stop();
 
-        for (ProcessRunner db : dataBaseServices)
-            db.stop();
+        for (ProcessRunner backend : dataBaseServices)
+            backend.stop();
 
         msgServer.dispose();
     }
