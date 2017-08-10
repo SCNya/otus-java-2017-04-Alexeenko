@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -122,8 +119,13 @@ public class SimpleMsgConnection implements MsgConnection {
     }
 
     @Override
-    public Message pool() {
+    public Message poll() {
         return input.poll();
+    }
+
+    @Override
+    public Message poll(long timeout, TimeUnit unit) throws InterruptedException {
+        return input.poll(timeout, unit);
     }
 
     @Override

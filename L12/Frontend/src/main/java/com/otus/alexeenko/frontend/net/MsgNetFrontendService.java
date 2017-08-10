@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.otus.alexeenko.msg.types.ClientTypes.FRONTEND;
 import static com.otus.alexeenko.msg.types.MsgHeaders.*;
-import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 import static com.otus.alexeenko.msg.types.MsgTypes.REQUEST;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -42,16 +41,16 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
 
     @Override
     protected void msgProcessing() {
-        sendMessages();
         getMessages();
+        sendMessages();
     }
 
     private void getMessages() {
         Message msg;
-        while ((msg = server.pool()) != null)
+        while ((msg = server.poll()) != null)
             switch (msg.getType()) {
                 case INFO:
-                    sendInfo();
+                    sendInfo(FRONTEND);
                     break;
                 case RESPONSE:
                     takeResponse(msg);
@@ -68,12 +67,6 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
 
         for (Message message : messages)
             server.send(message);
-    }
-
-    @Override
-    protected void sendInfo() {
-        Message infoMessage = new Message(INFO, HANDSHAKE, FRONTEND.toString());
-        server.send(infoMessage);
     }
 
     private void takeResponse(Message msg) {
@@ -93,7 +86,7 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     @Override
     public String getStatistics() {
         try {
-            String statistics = null;
+            String statistics = "";
             Message configurationMessage = new Message(REQUEST, STATISTICS, "");
             outQueue.add(configurationMessage);
 
@@ -111,7 +104,7 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     @Override
     public String getManagementInfo() {
         try {
-            String managementInfo = null;
+            String managementInfo = "";
             Message configurationMessage = new Message(REQUEST, MANAGEMENT_INFO, "");
             outQueue.add(configurationMessage);
 

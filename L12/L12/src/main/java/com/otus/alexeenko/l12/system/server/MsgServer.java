@@ -26,7 +26,6 @@ public class MsgServer implements MsgNetSystem {
     private static final Logger LOGGER = getLogger("MsgServer");
     private static final int WORK_THREADS = 2;
     private static final int PORT = 5050;
-    private static final int DELAY = 100;
 
     private final ExecutorService executor;
     private final Queue<MsgConnection> backends;
@@ -81,8 +80,8 @@ public class MsgServer implements MsgNetSystem {
             int i = 0;
             sendInfo(client);
 
-            while (i < 3) {
-                Message msg = client.pool();
+            while (i < ATTEMPTS_TO_OBTAIN) {
+                Message msg = client.poll();
 
                 if (msg != null)
                     if (msg.getType() == INFO) {
@@ -90,11 +89,9 @@ public class MsgServer implements MsgNetSystem {
                         return true;
                     } else {
                         LOGGER.error("Bad client type");
-                        client.dispose();
-                        return false;
+                        break;
                     }
-
-                Thread.sleep(1000);
+                Thread.sleep(RECEIVE_DELAY);
                 ++i;
             }
         } catch (InterruptedException e) {
@@ -102,6 +99,7 @@ public class MsgServer implements MsgNetSystem {
             LOGGER.info("dispose");
         }
 
+        client.dispose();
         return false;
     }
 
@@ -119,7 +117,7 @@ public class MsgServer implements MsgNetSystem {
             while (!executor.isShutdown()) {
                 pairsCreation();
                 forwarding();
-                Thread.sleep(DELAY);
+                Thread.sleep(WORK_DELAY);
             }
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage());
@@ -135,13 +133,13 @@ public class MsgServer implements MsgNetSystem {
 
     private void toBackend(Map.Entry<MsgConnection, MsgConnection> pair) {
         Message msg;
-        while ((msg = pair.getValue().pool()) != null)      //from Frontend
+        while ((msg = pair.getValue().poll()) != null)      //from Frontend
             pair.getKey().send(msg);                       //to Backend
     }
 
     private void toFrontend(Map.Entry<MsgConnection, MsgConnection> pair) {
         Message msg;
-        while ((msg = pair.getKey().pool()) != null)       //from Backend
+        while ((msg = pair.getKey().poll()) != null)       //from Backend
             pair.getValue().send(msg);                    //to Frontend
     }
 
@@ -160,7 +158,8 @@ public class MsgServer implements MsgNetSystem {
             MsgConnection backend = pair.getKey();
             MsgConnection frontend = pair.getValue();
 
-            if (!backend.isClose() & !frontend.isClose()) {
+            if (backend.isClose() | frontend.isClose()) {
+                LOGGER.info("Pair destroyed clients: " + backend.getId() + " and " + frontend.getId());
                 destroyPair(backend, frontend);
                 it.remove();
             }
@@ -168,10 +167,11 @@ public class MsgServer implements MsgNetSystem {
     }
 
     private void createNewPairs() {
-        while (!frontends.isEmpty() & !backends.isEmpty()) {
+        while (!frontends.isEmpty() && !backends.isEmpty()) {
             MsgConnection backend = backends.poll();
             MsgConnection frontend = frontends.poll();
 
+            LOGGER.info("Pair created with clients: " + backend.getId() + " and " + frontend.getId());
             clientPairs.add(new AbstractMap.SimpleEntry<>(backend, frontend));
         }
     }
@@ -199,6 +199,7 @@ public class MsgServer implements MsgNetSystem {
 
     private void removeLostConnections(Iterator<MsgConnection> it) {
         MsgConnection client;
+
         while (it.hasNext()) {
             client = it.next();
             if (client.isClose()) {

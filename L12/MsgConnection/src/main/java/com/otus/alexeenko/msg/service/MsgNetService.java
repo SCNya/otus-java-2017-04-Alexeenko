@@ -3,12 +3,17 @@ package com.otus.alexeenko.msg.service;
 import com.otus.alexeenko.msg.MsgConnection;
 import com.otus.alexeenko.msg.MsgNetSystem;
 import com.otus.alexeenko.msg.connection.SimpleMsgConnection;
+import com.otus.alexeenko.msg.types.ClientTypes;
+import com.otus.alexeenko.msg.types.Message;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.otus.alexeenko.msg.types.MsgHeaders.HANDSHAKE;
+import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 
 /**
  * Created by Vsevolod on 05/08/2017.
@@ -36,7 +41,7 @@ public abstract class MsgNetService implements MsgNetSystem {
             while (!executor.isShutdown()) {
                 checkConnection();
                 msgProcessing();
-                Thread.sleep(100);
+                Thread.sleep(WORK_DELAY);
             }
         } catch (InterruptedException e) {
             LOGGER.info("dispose");
@@ -45,7 +50,10 @@ public abstract class MsgNetService implements MsgNetSystem {
 
     protected abstract void msgProcessing();
 
-    protected abstract void sendInfo();
+    protected void sendInfo(ClientTypes type) {
+        Message infoMessage = new Message(INFO, HANDSHAKE, type.toString());
+        server.send(infoMessage);
+    }
 
     private void checkConnection() throws InterruptedException {
         if (server != null) {
@@ -69,7 +77,7 @@ public abstract class MsgNetService implements MsgNetSystem {
                     server.dispose();
                 LOGGER.error(e.getMessage());
             }
-            Thread.sleep(1000);
+            Thread.sleep(CONNECTION_DELAY);
         }
     }
 
