@@ -3,7 +3,7 @@ package com.otus.alexeenko.msg;
 import com.otus.alexeenko.msg.types.ClientTypes;
 import com.otus.alexeenko.msg.types.Message;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 public interface MsgConnection extends MsgNetSystem {
     void setType(ClientTypes type);
@@ -15,6 +15,8 @@ public interface MsgConnection extends MsgNetSystem {
     void send(Message message);
 
     Message poll();
+
+    int drainTo(List<Message> messages);
 
     boolean isClose();
 

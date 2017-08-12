@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -123,6 +124,11 @@ public class SimpleMsgConnection implements MsgConnection {
     @Override
     public Message poll() {
         return input.poll();
+    }
+
+    @Override
+    public int drainTo(List<Message> messages) {
+        return input.drainTo(messages);
     }
 
     @Override

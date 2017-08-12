@@ -5,6 +5,9 @@ import com.otus.alexeenko.database.services.custom.beans.spi.MBeanConfiguration;
 import com.otus.alexeenko.msg.service.MsgNetService;
 import com.otus.alexeenko.msg.types.Message;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.otus.alexeenko.msg.types.ClientTypes.BACKEND;
 import static com.otus.alexeenko.msg.types.MsgHeaders.MANAGEMENT_INFO;
 import static com.otus.alexeenko.msg.types.MsgHeaders.STATISTICS;
@@ -28,8 +31,10 @@ public final class MsgNetDbService extends MsgNetService {
     }
 
     private void getMessages() {
-        Message msg;
-        while ((msg = server.poll()) != null)
+        List<Message> messages = new ArrayList<>();
+        server.drainTo(messages);
+
+        for (Message msg : messages)
             switch (msg.getType()) {
                 case INFO:
                     sendInfo(BACKEND);

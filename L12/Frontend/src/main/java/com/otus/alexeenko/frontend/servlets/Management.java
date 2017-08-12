@@ -39,7 +39,7 @@ public class Management extends HttpServlet implements MyJsonServlet {
             String managementInfo = netService.getManagementInfo();
 
             if (managementInfo != null) {
-                response.getWriter().println(netService.getManagementInfo());
+                response.getWriter().println(managementInfo);
                 setOK(response);
             } else
                 setServiceUnavailable(response);

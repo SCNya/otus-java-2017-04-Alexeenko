@@ -3,7 +3,7 @@ package com.otus.alexeenko.frontend.net;
 import com.otus.alexeenko.msg.service.MsgNetService;
 import com.otus.alexeenko.msg.types.Message;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -46,8 +46,10 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     }
 
     private void getMessages() {
-        Message msg;
-        while ((msg = server.poll()) != null)
+        List<Message> messages = new ArrayList<>();
+        server.drainTo(messages);
+
+        for (Message msg : messages)
             switch (msg.getType()) {
                 case INFO:
                     sendInfo(FRONTEND);
@@ -62,7 +64,7 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     }
 
     private void sendMessages() {
-        List<Message> messages = new LinkedList<>();
+        List<Message> messages = new ArrayList<>();
         outQueue.drainTo(messages);
 
         for (Message message : messages)
