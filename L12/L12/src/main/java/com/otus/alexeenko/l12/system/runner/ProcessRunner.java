@@ -1,4 +1,4 @@
-package com.otus.alexeenko.l12.system;
+package com.otus.alexeenko.l12.system.runner;
 
 import java.io.IOException;
 

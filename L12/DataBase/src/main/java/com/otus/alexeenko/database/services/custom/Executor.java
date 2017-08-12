@@ -3,6 +3,7 @@ package com.otus.alexeenko.database.services.custom;
 import com.otus.alexeenko.database.services.custom.handler.ResultHandler;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ public class Executor {
         }
     }
 
+    @Nullable
     public <T> T execQuery(String query, ResultHandler<T> handler) {
         try (Statement stmt = connection.createStatement()) {
             try (ResultSet result = stmt.executeQuery(query)) {

@@ -93,8 +93,10 @@ public class SimpleMsgConnection implements MsgConnection {
                 out.println(msg.getMessage());
                 out.flush();
             }
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Id = " + id + " " + e.getMessage());
+        } catch (InterruptedException e1) {
+            LOGGER.info("Id = " + id + " dispose");
         }
     }
 
@@ -131,7 +133,7 @@ public class SimpleMsgConnection implements MsgConnection {
     @Override
     public synchronized void dispose() {
         try {
-            executor.shutdown();
+            executor.shutdownNow();
             clientSocket.close();
         } catch (IOException e) {
             LOGGER.error("Id = " + id + " " + e.getMessage());

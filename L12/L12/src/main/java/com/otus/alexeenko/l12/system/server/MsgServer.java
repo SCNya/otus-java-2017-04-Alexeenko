@@ -68,35 +68,30 @@ public class MsgServer implements MsgNetSystem {
                     ++id;
                 }
             }
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             if (client != null)
                 client.dispose();
-            LOGGER.error(e.getMessage());
+            LOGGER.info("dispose");
         }
     }
 
-    private boolean isTyped(MsgConnection client) {
-        try {
-            int i = 0;
-            sendInfo(client);
+    private boolean isTyped(MsgConnection client) throws InterruptedException {
+        int i = 0;
+        sendInfo(client);
 
-            while (i < ATTEMPTS_TO_OBTAIN) {
-                Message msg = client.poll();
+        while (i < ATTEMPTS_TO_OBTAIN) {
+            Message msg = client.poll();
 
-                if (msg != null)
-                    if (msg.getType() == INFO) {
-                        client.setType(ClientTypes.valueOf(msg.getMessage()));
-                        return true;
-                    } else {
-                        LOGGER.error("Bad client type");
-                        break;
-                    }
-                Thread.sleep(RECEIVE_DELAY);
-                ++i;
-            }
-        } catch (Exception e) {
-            client.dispose();
-            LOGGER.info("dispose");
+            if (msg != null)
+                if (msg.getType() == INFO) {
+                    client.setType(ClientTypes.valueOf(msg.getMessage()));
+                    return true;
+                } else {
+                    LOGGER.error("Bad client type");
+                    break;
+                }
+            Thread.sleep(RECEIVE_DELAY);
+            ++i;
         }
 
         client.dispose();
@@ -120,7 +115,7 @@ public class MsgServer implements MsgNetSystem {
                 Thread.sleep(WORK_DELAY);
             }
         } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.info("dispose");
         }
     }
 

@@ -46,7 +46,6 @@ public abstract class MsgNetService implements MsgNetSystem {
         } catch (Exception e) {
             if (server != null)
             server.dispose();
-            
             LOGGER.info("dispose");
         }
     }
