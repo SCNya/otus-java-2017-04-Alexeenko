@@ -51,10 +51,8 @@ public class MessageSystem implements MsgNetSystem, MessageSystemMBean {
     private void enableMBean() {
         try {
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-            //MessageSystemMonitorMBean monitorMBean = new MessageSystemMonitor(this);
             ObjectName name = new ObjectName(this.getClass().getPackage().getName() +
                     ":type=" + this.getClass().getName());
-
 
             mbs.registerMBean(this, name);
         } catch (Exception e) {
