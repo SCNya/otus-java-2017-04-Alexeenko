@@ -65,10 +65,9 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
 
     private void sendMessages() {
         List<Message> messages = new ArrayList<>();
-        outQueue.drainTo(messages);
 
-        for (Message message : messages)
-            server.send(message);
+        outQueue.drainTo(messages);
+        server.send(messages);
     }
 
     private void takeResponse(Message msg) {

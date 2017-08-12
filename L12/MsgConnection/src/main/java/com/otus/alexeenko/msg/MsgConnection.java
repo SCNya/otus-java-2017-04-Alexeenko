@@ -14,6 +14,8 @@ public interface MsgConnection extends MsgNetSystem {
 
     void send(Message message);
 
+    void send(List<Message> messages);
+
     Message poll();
 
     int drainTo(List<Message> messages);

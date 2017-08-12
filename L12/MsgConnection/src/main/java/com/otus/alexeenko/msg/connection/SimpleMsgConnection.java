@@ -117,8 +117,13 @@ public class SimpleMsgConnection implements MsgConnection {
     }
 
     @Override
-    public void send(Message msg) {
-        output.add(msg);
+    public void send(Message message) {
+        output.add(message);
+    }
+
+    @Override
+    public void send(List<Message> messages) {
+        output.addAll(messages);
     }
 
     @Override
