@@ -2,7 +2,7 @@ package com.otus.alexeenko.l12.system.msg;
 
 import com.otus.alexeenko.l12.system.runner.MyRunner;
 import com.otus.alexeenko.l12.system.runner.ProcessRunner;
-import com.otus.alexeenko.l12.system.server.MsgServer;
+import com.otus.alexeenko.msg.server.MsgServer;
 import com.otus.alexeenko.msg.MsgNetSystem;
 import org.slf4j.Logger;
 

@@ -1,4 +1,4 @@
-package com.otus.alexeenko.l12.system.server;
+package com.otus.alexeenko.msg.server;
 
 import com.otus.alexeenko.msg.MsgConnection;
 import com.otus.alexeenko.msg.MsgNetSystem;
