@@ -164,7 +164,7 @@ public class MsgServer implements MsgNetSystem {
     }
 
     private void createNewPairs() {
-        while (!frontends.isEmpty() && !backends.isEmpty()) {
+        while (!frontends.isEmpty() & !backends.isEmpty()) {
             MsgConnection backend = backends.poll();
             MsgConnection frontend = frontends.poll();
 
