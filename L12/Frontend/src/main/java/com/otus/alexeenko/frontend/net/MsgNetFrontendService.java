@@ -3,6 +3,7 @@ package com.otus.alexeenko.frontend.net;
 import com.otus.alexeenko.msg.service.MsgNetService;
 import com.otus.alexeenko.msg.types.Message;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -25,7 +26,7 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
     private final BlockingQueue<Message> outQueue;
 
     private MsgNetFrontendService() {
-        super(getLogger("MsgNetFrontendService"));
+        super(getLogger("MsgNetFrontendService [" + ManagementFactory.getRuntimeMXBean().getName() + ']'));
 
         managementInfoQueue = new LinkedBlockingQueue<>();
         statisticsQueue = new LinkedBlockingQueue<>();

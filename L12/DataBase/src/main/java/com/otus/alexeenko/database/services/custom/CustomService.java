@@ -51,11 +51,10 @@ public class CustomService implements DataBaseService {
         }
     }
 
-    private static final Logger LOGGER = getLogger("CustomService");
+    private static final Logger LOGGER = getLogger("CustomService [" + ManagementFactory.getRuntimeMXBean().getName() + ']');
 
     private static final String DB_NAME = "otus";
     private static final String CACHE_NAME = "userCache";
-    private static final Logger CACHE_LOGGER = getLogger("Cache [" + ManagementFactory.getRuntimeMXBean().getName() + ']');
 
     private final ApplicationContext context;
     private final Server server;
