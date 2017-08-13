@@ -41,7 +41,7 @@ public class MessageSystem implements MsgNetSystem, MessageSystemMBean {
     }
 
     @Override
-    public void start() {
+    public synchronized void start() {
         msgServer.start();
         startBackend();
         startFrontend();
