@@ -54,7 +54,7 @@ public class DB {
                 }
             }
         } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.info(e.getMessage());
         } finally {
             db.dispose();
         }

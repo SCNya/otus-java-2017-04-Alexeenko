@@ -44,9 +44,10 @@ public abstract class MsgNetService implements MsgNetSystem {
                 Thread.sleep(WORK_DELAY);
             }
         } catch (InterruptedException e) {
-            if (server != null)
-            server.dispose();
             LOGGER.info("dispose");
+        } finally {
+            if (server != null)
+                server.dispose();
         }
     }
 

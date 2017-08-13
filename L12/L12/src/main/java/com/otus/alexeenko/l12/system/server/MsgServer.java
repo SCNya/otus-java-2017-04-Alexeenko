@@ -68,10 +68,13 @@ public class MsgServer implements MsgNetSystem {
                     ++id;
                 }
             }
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        } catch (InterruptedException e1) {
+            LOGGER.info("dispose");
+        } finally {
             if (client != null)
                 client.dispose();
-            LOGGER.info("dispose");
         }
     }
 
