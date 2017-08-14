@@ -7,7 +7,7 @@ public interface MsgNetSystem {
     int ATTEMPTS_TO_OBTAIN = 5;
     int WORK_DELAY = 100;
     int RECEIVE_DELAY = 1000;
-    int CONNECTION_DELAY= 1000;
+    int CONNECTION_DELAY = 1000;
 
     void start();
 

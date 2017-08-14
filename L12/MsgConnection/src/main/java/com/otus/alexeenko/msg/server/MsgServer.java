@@ -31,6 +31,7 @@ public class MsgServer implements MsgNetSystem {
     private final Queue<MsgConnection> backends;
     private final Queue<MsgConnection> frontends;
     private final List<Map.Entry<MsgConnection, MsgConnection>> clientPairs; //Map.Entry<Backend, Frontend>
+    private ServerSocket serverSocket;
 
     public MsgServer() {
         executor = Executors.newFixedThreadPool(WORK_THREADS);
@@ -48,6 +49,7 @@ public class MsgServer implements MsgNetSystem {
     private void listening() {
         MsgConnection client = null;
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            this.serverSocket = serverSocket;
             Integer id = 0;
             LOGGER.info("Server started on port: " + serverSocket.getLocalPort());
 
@@ -212,6 +214,12 @@ public class MsgServer implements MsgNetSystem {
 
     @Override
     public synchronized void dispose() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+        }
+
         executor.shutdownNow();
 
         for (Map.Entry<MsgConnection, MsgConnection> pair : clientPairs) {
