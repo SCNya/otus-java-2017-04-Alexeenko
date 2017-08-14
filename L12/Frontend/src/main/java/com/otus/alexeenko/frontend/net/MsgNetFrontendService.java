@@ -19,7 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by Vsevolod on 09/08/2017.
  */
 public final class MsgNetFrontendService extends MsgNetService implements FrontendNetService {
-    private static MsgNetFrontendService instance;
+    private static FrontendNetService instance;
 
     private final BlockingQueue<String> managementInfoQueue;
     private final BlockingQueue<String> statisticsQueue;
@@ -33,7 +33,7 @@ public final class MsgNetFrontendService extends MsgNetService implements Fronte
         outQueue = new LinkedBlockingQueue<>();
     }
 
-    public synchronized static MsgNetFrontendService getInstance() {
+    public synchronized static FrontendNetService getInstance() {
         if (instance == null)
             instance = new MsgNetFrontendService();
 
