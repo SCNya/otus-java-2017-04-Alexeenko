@@ -214,10 +214,12 @@ public class MsgServer implements MsgNetSystem {
 
     @Override
     public synchronized void dispose() {
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                LOGGER.info(e.getMessage());
+            }
         }
 
         executor.shutdownNow();

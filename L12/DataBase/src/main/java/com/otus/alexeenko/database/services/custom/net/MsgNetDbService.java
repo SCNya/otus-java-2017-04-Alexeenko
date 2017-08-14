@@ -31,31 +31,35 @@ public final class MsgNetDbService extends MsgNetService {
     }
 
     private void getMessages() {
-        List<Message> messages = new ArrayList<>();
-        server.drainTo(messages);
+        List<Message> requests = new ArrayList<>();
+        List<Message> responses = new ArrayList<>();
 
-        for (Message msg : messages)
+        server.drainTo(requests);
+        for (Message msg : requests)
             switch (msg.getType()) {
                 case INFO:
                     sendInfo(BACKEND);
                     break;
                 case REQUEST:
-                    response(msg);
+                    response(msg, responses);
                     break;
                 default:
                     LOGGER.error("Bad message type");
                     break;
             }
+
+        if (!responses.isEmpty())
+            server.send(responses);
     }
 
-    private void response(Message msg) {
+    private void response(Message msg, List<Message> responses) {
         switch (msg.getHeader()) {
             case STATISTICS:
-                server.send(new Message(RESPONSE, STATISTICS,
+                responses.add(new Message(RESPONSE, STATISTICS,
                         configuration.getStatistics()));
                 break;
             case MANAGEMENT_INFO:
-                server.send(new Message(RESPONSE, MANAGEMENT_INFO,
+                responses.add(new Message(RESPONSE, MANAGEMENT_INFO,
                         configuration.getManagementInfo()));
                 break;
             case CONFIGURATION:
