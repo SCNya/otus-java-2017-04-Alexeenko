@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.otus.alexeenko.msg.types.MsgHeaders.HANDSHAKE;
+import static com.otus.alexeenko.msg.types.Message.Headers.HANDSHAKE;
 import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 
 /**

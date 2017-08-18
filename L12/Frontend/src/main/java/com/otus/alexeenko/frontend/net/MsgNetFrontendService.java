@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import static com.otus.alexeenko.msg.types.ClientTypes.FRONTEND;
-import static com.otus.alexeenko.msg.types.MsgHeaders.*;
+import static com.otus.alexeenko.msg.types.Message.Headers.*;
 import static com.otus.alexeenko.msg.types.MsgTypes.REQUEST;
 import static org.slf4j.LoggerFactory.getLogger;
 

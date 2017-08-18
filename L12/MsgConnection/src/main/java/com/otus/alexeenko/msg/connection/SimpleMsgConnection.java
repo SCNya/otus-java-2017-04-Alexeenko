@@ -3,7 +3,6 @@ package com.otus.alexeenko.msg.connection;
 import com.otus.alexeenko.msg.MsgConnection;
 import com.otus.alexeenko.msg.types.ClientTypes;
 import com.otus.alexeenko.msg.types.Message;
-import com.otus.alexeenko.msg.types.MsgHeaders;
 import com.otus.alexeenko.msg.types.MsgTypes;
 import org.slf4j.Logger;
 
@@ -13,7 +12,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -71,7 +73,7 @@ public class SimpleMsgConnection implements MsgConnection {
                                 + " header = " + data[HEADER] + " body = \"" + inputLine + "\"\n");*/
 
                         Message msg = new Message(MsgTypes.valueOf(data[TYPE]),
-                                MsgHeaders.valueOf(data[HEADER]), inputLine);
+                                Message.Headers.valueOf(data[HEADER]), inputLine);
                         input.add(msg);
                         i = 0;
                         break;

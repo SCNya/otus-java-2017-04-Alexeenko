@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.otus.alexeenko.msg.types.ClientTypes.BACKEND;
-import static com.otus.alexeenko.msg.types.MsgHeaders.MANAGEMENT_INFO;
-import static com.otus.alexeenko.msg.types.MsgHeaders.STATISTICS;
+import static com.otus.alexeenko.msg.types.Message.Headers.MANAGEMENT_INFO;
+import static com.otus.alexeenko.msg.types.Message.Headers.STATISTICS;
 import static com.otus.alexeenko.msg.types.MsgTypes.RESPONSE;
 import static org.slf4j.LoggerFactory.getLogger;
 
