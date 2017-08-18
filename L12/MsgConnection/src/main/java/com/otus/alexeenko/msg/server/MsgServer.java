@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.otus.alexeenko.msg.types.Message.Headers.HANDSHAKE;
+import static com.otus.alexeenko.msg.types.HeaderTypes.HANDSHAKE;
 import static com.otus.alexeenko.msg.types.MsgTypes.INFO;
 import static org.slf4j.LoggerFactory.getLogger;
 

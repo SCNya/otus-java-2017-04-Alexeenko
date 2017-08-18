@@ -73,7 +73,7 @@ public class SimpleMsgConnection implements MsgConnection {
                                 + " header = " + data[HEADER] + " body = \"" + inputLine + "\"\n");*/
 
                         Message msg = new Message(MsgTypes.valueOf(data[TYPE]),
-                                Message.Headers.valueOf(data[HEADER]), inputLine);
+                                data[HEADER], inputLine);
                         input.add(msg);
                         i = 0;
                         break;
