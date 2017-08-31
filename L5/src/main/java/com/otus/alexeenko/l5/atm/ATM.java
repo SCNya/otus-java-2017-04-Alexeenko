@@ -18,6 +18,8 @@ public class ATM {
     }
 
     public void cashIn(Pack... additionalPacks) {
+        int sizeBefore = packs.size();
+
         for (Pack additionalPack : additionalPacks) {
             boolean find = false;
 
@@ -28,11 +30,12 @@ public class ATM {
                     break;
                 }
 
-            if (!find) {
+            if (!find)
                 packs.add(additionalPack);
-                Collections.sort(packs);
-            }
         }
+
+        if (packs.size() != sizeBefore)
+            Collections.sort(packs);
     }
 
     public void cashOut(final long cashOutSize) {
