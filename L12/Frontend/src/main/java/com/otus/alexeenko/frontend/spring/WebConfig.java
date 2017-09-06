@@ -20,13 +20,8 @@ public class WebConfig {
         return ConcurrentHashMap.newKeySet();
     }
 
-    @Bean
+    @Bean(initMethod = "start", destroyMethod = "dispose")
     public FrontendNetService netService() {
         return MsgNetFrontendService.getInstance();
-    }
-
-    @Bean
-    public EventListener eventListener() {
-        return new EventListener();
     }
 }
