@@ -21,7 +21,7 @@ public class WebConfig {
         return ConcurrentHashMap.newKeySet();
     }
 
-    @Bean
+    @Bean(initMethod = "start", destroyMethod = "dispose")
     public MsgSystem msgSystem() {
         return EmbeddedMsgSystem.getInstance();
     }
@@ -29,10 +29,5 @@ public class WebConfig {
     @Bean
     public FrontendMsgService msgService() {
         return EmbeddedMsgFrontendService.getInstance();
-    }
-
-    @Bean
-    public EventListener eventListener() {
-        return new EventListener();
     }
 }
