@@ -1,6 +1,5 @@
 package com.otus.alexeenko.l10.spring;
 
-import com.otus.alexeenko.l10.db.DB;
 import com.otus.alexeenko.l10.templater.PageGenerator;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -19,7 +18,5 @@ public class AppInitializer implements WebApplicationInitializer {
         context.setConfigLocation(WebConfig.class.getCanonicalName());
         container.addListener(new ContextLoaderListener(context));
         PageGenerator.setContext(container);
-        DB db = DB.getInstance();
-        db.run();
     }
 }

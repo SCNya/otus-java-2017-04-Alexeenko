@@ -21,7 +21,7 @@ public class WebConfig {
         return ConcurrentHashMap.newKeySet();
     }
 
-    @Bean
+    @Bean(initMethod = "run", destroyMethod = "dispose")
     public DB dataBase() {
         return DB.getInstance();
     }
@@ -34,10 +34,5 @@ public class WebConfig {
     @Bean
     CacheConfigurationMBean configurationMBean(DB db) {
         return db.getCacheConfigurationMBean();
-    }
-
-    @Bean
-    public EventListener eventListener() {
-        return new EventListener();
     }
 }
