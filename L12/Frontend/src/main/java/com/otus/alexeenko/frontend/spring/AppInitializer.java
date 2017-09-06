@@ -1,6 +1,5 @@
 package com.otus.alexeenko.frontend.spring;
 
-import com.otus.alexeenko.frontend.templater.PageGenerator;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -21,6 +20,5 @@ public class AppInitializer implements WebApplicationInitializer {
                 = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation(WebConfig.class.getCanonicalName());
         container.addListener(new ContextLoaderListener(context));
-        PageGenerator.setContext(container);
     }
 }

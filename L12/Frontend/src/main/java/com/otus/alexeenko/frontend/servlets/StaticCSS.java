@@ -19,6 +19,9 @@ import java.util.Set;
 @WebServlet(urlPatterns = {"/css/style.css"})
 public class StaticCSS extends HttpServlet implements MyServlet {
     @Autowired
+    private PageGenerator pageGenerator;
+
+    @Autowired
     private Set<String> sessions;
 
     @Override
@@ -32,7 +35,7 @@ public class StaticCSS extends HttpServlet implements MyServlet {
         boolean isFoundId = findCookie(sessions, request.getCookies());
 
         if (isFoundId) {
-            response.getWriter().println(PageGenerator.instance().getPage(STATIC + request.getRequestURI()));
+            response.getWriter().println(pageGenerator.getPage(STATIC + request.getRequestURI()));
             setOK(response);
         } else
             setForbidden(response);

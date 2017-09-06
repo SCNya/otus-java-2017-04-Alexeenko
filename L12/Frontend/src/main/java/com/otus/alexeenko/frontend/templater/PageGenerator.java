@@ -17,24 +17,13 @@ import java.util.Map;
  * Created by Vsevolod on 26/06/2017.
  */
 public class PageGenerator {
-    private static PageGenerator pageGenerator;
-    private static ServletContext context;
+    private final ServletContext context;
     private final Configuration cfg;
 
-    private PageGenerator() {
-        cfg = new Configuration(Configuration.getVersion());
-        cfg.setServletContextForTemplateLoading(context, "/");
-    }
-
-    public static void setContext(ServletContext context) {
-        PageGenerator.context = context;
-    }
-
-    public static PageGenerator instance() {
-        if (pageGenerator == null)
-            pageGenerator = new PageGenerator();
-
-        return pageGenerator;
+    public PageGenerator(ServletContext context) {
+        this.context = context;
+        this.cfg = new Configuration(Configuration.getVersion());
+        this.cfg.setServletContextForTemplateLoading(context, "/");
     }
 
     public String getPage(String filename, Map<String, Object> data) {
