@@ -23,6 +23,9 @@ import java.util.Set;
 @WebServlet(urlPatterns = {"/index.html"})
 public class Index extends HttpServlet implements MyServlet {
     @Autowired
+    private PageGenerator pageGenerator;
+
+    @Autowired
     private Set<String> sessions;
 
     @Override
@@ -39,7 +42,7 @@ public class Index extends HttpServlet implements MyServlet {
         if (isFound) {
             redirect(request, response, DASHBOARD);
         } else {
-            response.getWriter().println(PageGenerator.instance().getPage(INDEX, pageVariables));
+            response.getWriter().println(pageGenerator.getPage(INDEX, pageVariables));
         }
 
         setOK(response);
@@ -63,7 +66,7 @@ public class Index extends HttpServlet implements MyServlet {
         } else {
             pageVariables.put("login", request.getParameter("login"));
             pageVariables.put("message", "The username or password is incorrect");
-            response.getWriter().println(PageGenerator.instance().getPage(INDEX, pageVariables));
+            response.getWriter().println(pageGenerator.getPage(INDEX, pageVariables));
         }
 
         setOK(response);

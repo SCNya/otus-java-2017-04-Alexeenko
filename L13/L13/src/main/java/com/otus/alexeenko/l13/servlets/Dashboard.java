@@ -19,6 +19,9 @@ import java.util.Set;
 @WebServlet(urlPatterns = {"/dashboard.html"})
 public class Dashboard extends HttpServlet implements MyServlet {
     @Autowired
+    private PageGenerator pageGenerator;
+
+    @Autowired
     private Set<String> sessions;
 
     @Override
@@ -32,7 +35,7 @@ public class Dashboard extends HttpServlet implements MyServlet {
         boolean isFoundId = findCookie(sessions, request.getCookies());
 
         if (isFoundId) {
-            response.getWriter().println(PageGenerator.instance().getPage(DASHBOARD));
+            response.getWriter().println(pageGenerator.getPage(DASHBOARD));
         } else {
             redirect(request, response, INDEX);
         }
